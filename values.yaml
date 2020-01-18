@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: openworklabs/lotus
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -19,20 +19,20 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name:
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 2000
 
-securityContext: {}
+securityContext:
   # capabilities:
   #   drop:
   #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  readOnlyRootFilesystem: true
+  runAsNonRoot: false
+  runAsUser: 1000
 
 service:
   type: ClusterIP
-  port: 80
+  port: 1235
 
 ingress:
   enabled: false
@@ -47,6 +47,18 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+swarm:
+  enabled: false
+  type: ClusterIP
+  # loadBalancerIP: ""
+  # externalIP: ""
+  ## Further config for service of type NodePort
+  ## Default config with empty string "" will assign a dynamic nodePort
+  nodePort: ""
+  ## If static nodePort configuration is required it can be enabled as below
+  ## Configure ports in allowable range (eg. 30000 - 32767 on minikube)
+  # nodePort: 34001
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -58,6 +70,20 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+persistence:
+  enabled: true
+  ## ipfs data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  size: "8Gi"
+  accessModes:
+    - ReadWriteOnce
 
 nodeSelector: {}
 

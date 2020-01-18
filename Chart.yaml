@@ -1,5 +1,5 @@
 apiVersion: v2
-name: chart
+name: filecoin
 description: A Helm chart for hosting Filecoin nodes
 icon: https://filecoin.io/images/icon-coin-128.png
 home: https://filecoin.io/
@@ -12,4 +12,4 @@ version: 0.1.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
-appVersion: 0.1.0
+appVersion: latest ##0.1.0
