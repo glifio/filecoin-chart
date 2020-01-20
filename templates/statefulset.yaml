@@ -50,10 +50,10 @@ spec:
         - containerPort: 4001
           name: swarm
 {{- end }}
-        - containerPort: 1235
+        - containerPort: 1234
           name: api
-        - containerPort: 8080
-          name: gateway
+        - containerPort: 1235
+          name: p2p
         volumeMounts:
           - name: lotus-vol
             mountPath: /root/.lotus
