@@ -34,17 +34,21 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
-          httpGet:
-            path: /debug/metrics/prometheus
-            port: api
-          initialDelaySeconds: 15
-          periodSeconds: 3
+          exec:
+            command:
+              - test
+              - -f
+              - /root/.lotus/datastore/000000.vlog
+          initialDelaySeconds: 60
+          periodSeconds: 60
         readinessProbe:
-          httpGet:
-            path: /debug/metrics/prometheus
-            port: api
-          initialDelaySeconds: 15
-          periodSeconds: 3
+          exec:
+            command:
+              - test
+              - -f
+              - /root/.lotus/datastore/000000.vlog
+          initialDelaySeconds: 60
+          periodSeconds: 60
         ports:
 {{- if .Values.swarm.enabled }}
         - containerPort: 4001
