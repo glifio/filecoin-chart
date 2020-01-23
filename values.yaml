@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+replicaCount: 2
 
 image:
   repository: openworklabs/lotus
@@ -14,7 +14,7 @@ fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  create: false
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name:
@@ -31,8 +31,9 @@ securityContext:
   runAsUser: 1000
 
 service:
+  # API service
   type: ClusterIP
-  port: 1235
+  port: 1234
 
 ingress:
   enabled: false
@@ -73,7 +74,7 @@ resources: {}
 
 persistence:
   enabled: true
-  ## ipfs data Persistent Volume Storage Class
+  ## Filecoin data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
   ## If undefined (the default) or set to null, no storageClassName spec is
@@ -81,9 +82,14 @@ persistence:
   ##   GKE, AWS & OpenStack)
   ##
   # storageClass: "-"
-  size: "8Gi"
-  accessModes:
-    - ReadWriteOnce
+  lotus:
+    size: "8Gi"
+    accessModes:
+      - ReadWriteOnce
+  proof:
+    size: "100Mi"
+    accessModes:
+      - ReadWriteOnce
 
 nodeSelector: {}
 
