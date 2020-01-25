@@ -1,7 +1,7 @@
 all: lint package
 
 install:
-	helm install filecoin .
+	helm upgrade --install filecoin .
 
 uninstall:
 	helm uninstall filecoin
