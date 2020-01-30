@@ -25,6 +25,10 @@ spec:
         fsGroup: {{ .podSecurityContext.fsGroup }}
         runAsUser: {{ .Values.securityContext.runAsUser }}
 {{- end }}
+      volumes:
+        - name: token-secret-vol
+          secret:
+            secretName: lotus-token-secret
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
@@ -57,6 +61,9 @@ spec:
         - containerPort: 1235
           name: p2p
         volumeMounts:
+          - name: token-secret-vol
+            readOnly: false
+            mountPath: "/etc/secret-vol"
           - name: lotus-vol
             mountPath: /root/.lotus
           - name: proof-vol
