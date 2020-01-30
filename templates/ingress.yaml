@@ -8,7 +8,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ $fullName }}-api
   labels:
     {{- include "chart.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -27,6 +27,13 @@ spec:
   {{- end }}
 {{- end }}
   rules:
+#  - host: api.openworklabs.com
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: lotus-node-service
+          servicePort: {{ .Values.service.port }}  
   {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
       http:

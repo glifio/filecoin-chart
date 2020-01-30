@@ -50,6 +50,8 @@ spec:
         - containerPort: 4001
           name: swarm
 {{- end }}
+        - containerPort: 8080
+          name: api-proxy
         - containerPort: 1234
           name: api
         - containerPort: 1235
