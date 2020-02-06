@@ -1,0 +1,34 @@
+{
+	"folders": [
+		{
+			"name": "filecoin-lotus-node",
+			"path": "/Users/peter/code/filecoin-lotus-node"
+		},
+		{
+			"name": "ipfs",
+			"path": "/Users/peter/code/charts/stable/ipfs"
+		},
+		{
+			"name": "lotus-infra",
+			"path": "/Users/peter/code/lotus-infra"
+		},
+		{
+			"name": "filecoin-docker",
+			"path": "/Users/peter/code/filecoin-docker"
+		},
+		{
+			"name": "filecoin-chart",
+			"path": "."
+		},
+		{
+			"path": "/Users/peter/code/misc"
+		},
+		{
+			"path": "/Users/peter/code/chainwatch-api-server"
+		},
+		{
+			"path": "/Users/peter/code/filecoin-web-wallet"
+		}
+	],
+	"settings": {}
+}
