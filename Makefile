@@ -24,6 +24,10 @@ port-forward-service:
 port-forward-app:
 	kubectl port-forward pod/lotus-node-app-0 1234:1234
 
+## admin configuration
+create-secret:
+	kubectl create secret generic lotus-secret --from-file=token=token3 --from-file=privatekey=MF2XI2BNNJ3XILLQOJUXMYLUMU3
+
 ## debug
 log-nginx:
 	kubectl logs -n ingress-nginx -f nginx-ingress-controller-948ffd8cc-6g57p

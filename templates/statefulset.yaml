@@ -26,12 +26,34 @@ spec:
         runAsUser: {{ .Values.securityContext.runAsUser }}
 {{- end }}
       volumes:
-        - name: token-secret-vol
+        - name: lotus-secret-vol
           secret:
-            secretName: lotus-token-secret
+            secretName: lotus-secret
+            defaultMode: 384 # permission 0600
+      initContainers:
+      - name: api-keys
+        image: busybox
+        command: ["/bin/sh","-c"]
+        args: ["mkdir -p /lotus/keystore; cp /secret/privatekey /lotus/keystore/MF2XI2BNNJ3XILLQOJUXMYLUMU; cp /secret/token /lotus/token"]
+        volumeMounts:
+        - name: lotus-secret-vol
+          mountPath: "/secret"
+        - name: lotus-vol
+          mountPath: /lotus
+{{- if .Values.init.sync.enabled }}
+      - name: sync-wait
+        image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+        command: ["lotus","daemon","--bootstrap=false"]
+        volumeMounts:
+          - name: lotus-vol
+            mountPath: /root/.lotus
+          - name: proof-vol
+            mountPath: /var/tmp/filecoin-proof-parameters
+{{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+        command: ["/bin/entrypoint","-b"]
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           exec:
@@ -50,20 +72,11 @@ spec:
           initialDelaySeconds: 60
           periodSeconds: 60
         ports:
-{{- if .Values.swarm.enabled }}
-        - containerPort: 4001
-          name: swarm
-{{- end }}
-        - containerPort: 8080
-          name: api-proxy
         - containerPort: 1234
           name: api
         - containerPort: 1235
           name: p2p
         volumeMounts:
-          - name: token-secret-vol
-            readOnly: false
-            mountPath: "/etc/secret-vol"
           - name: lotus-vol
             mountPath: /root/.lotus
           - name: proof-vol

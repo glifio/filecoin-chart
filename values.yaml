@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 2
+replicaCount: 1
 
 image:
   #repository: rtradetech/lotus-node
@@ -55,17 +55,9 @@ ingress:
   #   hosts:
   #     - chart-example.local
 
-swarm:
-  enabled: false
-  # type: ClusterIP
-  # loadBalancerIP: ""
-  # externalIP: ""
-  ## Further config for service of type NodePort
-  ## Default config with empty string "" will assign a dynamic nodePort
-  #nodePort: ""
-  ## If static nodePort configuration is required it can be enabled as below
-  ## Configure ports in allowable range (eg. 30000 - 32767 on minikube)
-  # nodePort: 34001
+init:
+  sync:
+    enabled: false
 
 resources: #{}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -73,11 +65,11 @@ resources: #{}
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   requests:
-    cpu: 500m
-    memory: 4Gi
+    cpu: 2000m
+    memory: 12Gi
   limits:
-    cpu: 1000m
-    memory: 6Gi
+    cpu: 3000m
+    memory: 14Gi
 
 persistence:
   enabled: true
@@ -90,7 +82,7 @@ persistence:
   ##
   # storageClass: "-"
   lotus:
-    size: "20Gi"
+    size: "100Gi"
     accessModes:
       - ReadWriteOnce
   proof:
