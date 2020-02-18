@@ -6,6 +6,9 @@ install:
 upgrade:
 	helm upgrade --install filecoin . 
 
+minikube-upgrade:
+	helm upgrade --install -f values.yaml -f values-minikube.yaml filecoin . 
+
 uninstall:
 	helm uninstall filecoin
 
@@ -17,6 +20,9 @@ package:
 
 dry-run:
 	helm upgrade --install --dry-run --debug filecoin .
+
+minikube-dry-run:
+	helm upgrade --install --dry-run --debug -f values.yaml -f values-minikube.yaml filecoin .
 
 port-forward-service:
 	kubectl port-forward service/lotus-node-service 1234:1234
