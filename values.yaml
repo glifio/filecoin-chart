@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   #repository: rtradetech/lotus-node
   repository: openworklabs/lotus
-  pullPolicy: IfNotPresent
+  pullPolicy: IfNotPresent #Always
 
 imagePullSecrets: []
 nameOverride: ""
@@ -57,7 +57,7 @@ ingress:
 
 init:
   sync:
-    enabled: false
+    enabled: true
 
 resources: #{}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -65,11 +65,11 @@ resources: #{}
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   requests:
-    cpu: 2000m
-    memory: 12Gi
+    cpu: 1000m
+    memory: 4Gi
   limits:
     cpu: 3000m
-    memory: 14Gi
+    memory: 12Gi
 
 persistence:
   enabled: true
@@ -82,11 +82,8 @@ persistence:
   ##
   # storageClass: "-"
   lotus:
-    size: "100Gi"
-    accessModes:
-      - ReadWriteOnce
-  proof:
-    size: "100Mi"
+    size: "500Gi"
+    storageClassName: ebs-sc
     accessModes:
       - ReadWriteOnce
 

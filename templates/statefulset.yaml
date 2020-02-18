@@ -36,24 +36,22 @@ spec:
         command: ["/bin/sh","-c"]
         args: ["mkdir -p /lotus/keystore; cp /secret/privatekey /lotus/keystore/MF2XI2BNNJ3XILLQOJUXMYLUMU; cp /secret/token /lotus/token"]
         volumeMounts:
-        - name: lotus-secret-vol
-          mountPath: "/secret"
-        - name: lotus-vol
-          mountPath: /lotus
+          - name: lotus-secret-vol
+            mountPath: "/secret"
+          - name: lotus-vol
+            mountPath: /lotus
 {{- if .Values.init.sync.enabled }}
       - name: sync-wait
         image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
-        command: ["lotus","daemon","--bootstrap=false"]
+        command: ["/bin/entrypoint","-s"]
         volumeMounts:
           - name: lotus-vol
             mountPath: /root/.lotus
-          - name: proof-vol
-            mountPath: /var/tmp/filecoin-proof-parameters
 {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
-        command: ["/bin/entrypoint","-b"]
+        command: ["/bin/entrypoint","-d"]
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           exec:
@@ -79,58 +77,28 @@ spec:
         volumeMounts:
           - name: lotus-vol
             mountPath: /root/.lotus
-          - name: proof-vol
-            mountPath: /var/tmp/filecoin-proof-parameters
         resources:
 {{ toYaml .Values.resources | indent 10 }}
-
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
     - metadata:
         name: lotus-vol
         {{- range $key, $value := .Values.persistence.lotus.annotations }}
-          {{ $key }}: {{ $value }}
+            {{ $key }}: {{ $value }}
         {{- end }}
       spec:
         accessModes:
-          {{- range .Values.persistence.lotus.accessModes }}
-          - {{ . | quote }}
-          {{- end }}
+            {{- range .Values.persistence.lotus.accessModes }}
+            - {{ . | quote }}
+            {{- end }}
         resources:
-          requests:
-            storage: {{ .Values.persistence.lotus.size | quote }}
-      {{- if .Values.persistence.lotus.storageClass }}
-      {{- if (eq "-" .Values.persistence.lotus.storageClass) }}
+            requests:
+                storage: {{ .Values.persistence.lotus.size | quote }}
+        {{- if .Values.persistence.lotus.storageClassName }}
+        {{- if (eq "-" .Values.persistence.lotus.storageClassName) }}
         storageClassName: ""
-      {{- else }}
-        storageClassName: "{{ .Values.persistence.lotus.storageClass }}"
-      {{- end }}
-      {{- end }}
-    - metadata:
-        name: proof-vol
-        {{- range $key, $value := .Values.persistence.proof.annotations }}
-          {{ $key }}: {{ $value }}
+        {{- else }}
+        storageClassName: "{{ .Values.persistence.lotus.storageClassName }}"
         {{- end }}
-      spec:
-        accessModes:
-          {{- range .Values.persistence.proof.accessModes }}
-          - {{ . | quote }}
-          {{- end }}
-        resources:
-          requests:
-            storage: {{ .Values.persistence.proof.size | quote }}
-      {{- if .Values.persistence.proof.storageClass }}
-      {{- if (eq "-" .Values.persistence.proof.storageClass) }}
-        storageClassName: ""
-      {{- else }}
-        storageClassName: "{{ .Values.persistence.proof.storageClass }}"
-      {{- end }}
-      {{- end }}
-  {{- else }}
-      volumes:
-        - name: lotus-vol
-          emptyDir: {}
-      volumes:
-        - name: proof-vol
-          emptyDir: {}
+        {{- end }}
   {{- end }}
