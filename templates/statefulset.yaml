@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: lotus-node-app
+  name: {{ .Release.Name }}-lotus-node-app
   labels:
     app: lotus-node-app
 spec:
@@ -26,11 +26,17 @@ spec:
         runAsUser: {{ .Values.securityContext.runAsUser }}
 {{- end }}
       volumes:
+{{- if .Values.secretVolume.enabled }}
         - name: lotus-secret-vol
           secret:
             secretName: lotus-secret
             defaultMode: 384 # permission 0600
+{{- end }}
+{{- if .Values.init.import.volume }}
+{{ toYaml .Values.init.import.volume | indent 8 }}
+{{- end }}
       initContainers:
+{{- if .Values.secretVolume.enabled }}
       - name: api-keys
         image: busybox
         command: ["/bin/sh","-c"]
@@ -38,20 +44,34 @@ spec:
         volumeMounts:
           - name: lotus-secret-vol
             mountPath: "/secret"
-          - name: lotus-vol
+          - name: {{ .Release.Name }}-lotus-vol
             mountPath: /lotus
+{{- end }}
 {{- if .Values.init.sync.enabled }}
       - name: sync-wait
         image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
         command: ["/bin/entrypoint","-s"]
         volumeMounts:
-          - name: lotus-vol
+          - name: {{ .Release.Name }}-lotus-vol
             mountPath: /root/.lotus
+{{- end }}
+{{- if .Values.init.import.enabled }}
+      - name: import-wait
+        image: debian:stable
+        command: ["/bin/sh","-c"]
+        args: ["until [ -f /chain/chain.car ] && [ ! -f /chain/chain.car.lock ]; do sleep 5; done"]
+        volumeMounts:
+          - name: {{ (index .Values.init.import.volume 0).name }}
+            mountPath: /chain
 {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+        {{- if .Values.init.import.enabled }}
+        command: ["/bin/entrypoint","-d", "-i"]
+        {{- else }}
         command: ["/bin/entrypoint","-d"]
+        {{- end }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           exec:
@@ -75,14 +95,18 @@ spec:
         - containerPort: 1235
           name: p2p
         volumeMounts:
-          - name: lotus-vol
+          - name: {{ .Release.Name }}-lotus-vol
             mountPath: /root/.lotus
+        {{- if .Values.init.import.enabled }}
+          - name: {{ (index .Values.init.import.volume 0).name }}
+            mountPath: /chain
+        {{- end }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
     - metadata:
-        name: lotus-vol
+        name: {{ .Release.Name }}-lotus-vol
         {{- range $key, $value := .Values.persistence.lotus.annotations }}
             {{ $key }}: {{ $value }}
         {{- end }}

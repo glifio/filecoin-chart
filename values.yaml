@@ -58,6 +58,13 @@ ingress:
 init:
   sync:
     enabled: true
+  import:
+    enabled: true
+    # ideally a shared volume containing chain dump
+    volume: {}
+
+secretVolume:
+  enabled: true
 
 resources: #{}
   # We usually recommend not to specify default resources and to leave this as a conscious

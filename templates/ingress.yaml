@@ -8,7 +8,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}-api
+  name: {{ .Release.Name }}-{{ $fullName }}-api
   labels:
     {{- include "chart.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -33,7 +33,7 @@ spec:
       - path: /
         backend:
           serviceName: lotus-node-service
-          servicePort: {{ .Values.service.port }}  
+          servicePort: {{ .Values.service.port }}
   {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
