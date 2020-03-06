@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: lotus-api-ingress
+  namespace: default
+  {{- with .Values.ingressApi.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  tls:
+  - hosts:
+    - api.openworklabs.com
+    secretName: lotus-api-tls
+  rules:
+  - host: api.openworklabs.com
+    http:    
+      paths:
+        - path: /
+          backend:
+            serviceName: lotus-node-service
+            servicePort: 1234

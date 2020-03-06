@@ -34,26 +34,40 @@ securityContext:
 service:
   # API service
   type: ClusterIP
-#  type: NodePort
   port: 1234
   targetPort: 1234
 
 ingress:
   enabled: true
-  #hosts:
-  #  - api.localhost.localdomain
-  #  - localhost.localdomain/filecoin-api
+  hosts:
+  #- api.openworklabs.com
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range"
     nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
   #  nginx.ingress.kubernetes.io/server-alias: "_"
-  #  kubernetes.io/tls-acme: "true"
-  # tls:
-  # - secretName: chart-example-tls
-  #   hosts:
-  #     - chart-example.local
+  #  cert-manager.io/cluster-issuer: "letsencrypt-staging"
+  #  cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  #  tls:
+  #  - secretName: lotus-api-tls
+  #    hosts:
+  #      - api.openworklabs.com
+
+ingressApi:
+  enabled: false
+  hosts:
+  - api.openworklabs.com
+  annotations:
+    nginx.ingress.kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range"
+    # cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  tls:
+    - secretName: lotus-api-tls
+      hosts:
+        - api.openworklabs.com       
 
 init:
   sync:
@@ -83,7 +97,7 @@ persistence:
   # storageClass: "-"
   lotus:
     size: "500Gi"
-    storageClassName: ebs-sc
+    storageClassName: gp2
     accessModes:
       - ReadWriteOnce
 
