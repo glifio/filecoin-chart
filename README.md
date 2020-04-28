@@ -121,4 +121,4 @@ More information on generating a JWT for authenticating requests [here](https://
 
 ## License
 
-This project is licensed under the [Apache 2.0](https://github.com/openworklabs/filecoin-docker/blob/master/LICENSE) license.
+This project is licensed under the [Apache 2.0](https://github.com/openworklabs/filecoin-chart/blob/master/LICENSE) license.
