@@ -4,8 +4,6 @@
 
 Filecoin chart is a helm chart for hosting Lotus Node clients. [Lotus](https://github.com/filecoin-project/lotus) is an implementation of the [Filecoin spec](https://filecoin-project.github.io/specs/).
 
-To see a step-by-step walkthrough of running this on AWS, see [here]().
-
 ## Goals
 
 1. Deploy one or more instances of Lotus client nodes.
@@ -121,3 +119,6 @@ kubectl -n filecoin create secret generic lotus-token-secret --from-file=token=t
 
 More information on generating a JWT for authenticating requests [here](https://docs.lotu.sh/en+api-scripting-support).
 
+## License
+
+This project is licensed under the [Apache 2.0](https://github.com/openworklabs/filecoin-docker/blob/master/LICENSE) license.
