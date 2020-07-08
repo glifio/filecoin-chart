@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Release.Name }}-lotus-node-app
+  name: {{ .Release.Name }}-lotus 
   labels:
     app: lotus-node-app
 spec:
@@ -17,6 +17,8 @@ spec:
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         heritage: {{ .Release.Service }}
         release: {{ .Release.Name }}
+      annotations:
+        sidecar.istio.io/inject: "true"
     spec:
 {{- if .Values.securityContext.runAsNonRoot }}
       securityContext:
@@ -29,11 +31,8 @@ spec:
 {{- if .Values.secretVolume.enabled }}
         - name: lotus-secret-vol
           secret:
-            secretName: lotus-secret
+            secretName: {{ .Release.Name }}-lotus-secret
             defaultMode: 384 # permission 0600
-{{- end }}
-{{- if .Values.init.import.volume }}
-{{ toYaml .Values.init.import.volume | indent 8 }}
 {{- end }}
       initContainers:
 {{- if .Values.secretVolume.enabled }}
@@ -44,16 +43,8 @@ spec:
         volumeMounts:
           - name: lotus-secret-vol
             mountPath: "/secret"
-          - name: {{ .Release.Name }}-lotus-vol
+          - name: vol
             mountPath: /lotus
-{{- end }}
-{{- if .Values.init.sync.enabled }}
-      - name: sync-wait
-        image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
-        command: ["/bin/entrypoint","-s"]
-        volumeMounts:
-          - name: {{ .Release.Name }}-lotus-vol
-            mountPath: /root/.lotus
 {{- end }}
 {{- if .Values.init.import.enabled }}
       - name: import-wait
@@ -64,40 +55,57 @@ spec:
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
 {{- end }}
+{{- if .Values.init.import.enabled }}
+      - name: import-start
+        image: {{ .Values.image.repository }}
+        command: ["/bin/entrypoint","-i"]
+        volumeMounts:
+          - name: vol
+            mountPath: /root/.lotus
+          - name: {{ (index .Values.init.import.volume 0).name }}
+            mountPath: /chain
+{{- end }}
+{{- if .Values.init.sync.enabled }}
+      - name: sync-wait
+        image: {{ .Values.image.repository }}
+        command: ["/bin/entrypoint","-s"]
+        volumeMounts:
+          - name: vol
+            mountPath: /root/.lotus
+{{- end }}
+      # - name: sanity
+      #   image: busybox
+      #   command: ["/bin/sh","-c"]
+      #   args: ["chmod 600 /lotus/keystore/MF2XI2BNNJ3XILLQOJUXMYLUMU || chmod 600 /lotus/keystore/NRUWE4BSOAWWQ33TOQ || chmod 600 /lotus/token || :"]
+      #   volumeMounts:
+      #     - name: {{ .Release.Name }}-lotus-vol
+      #       mountPath: /lotus
       containers:
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
-        {{- if .Values.init.import.enabled }}
-        command: ["/bin/entrypoint","-d", "-i"]
-        {{- else }}
+        image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-d"]
-        {{- end }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
-          exec:
-            command:
-              - test
-              - -f
-              - /root/.lotus/datastore/000000.vlog
-          initialDelaySeconds: 60
-          periodSeconds: 60
+          httpGet:
+            path: /debug/metrics
+            port: api
+          initialDelaySeconds: 90
+          periodSeconds: 10
         readinessProbe:
-          exec:
-            command:
-              - test
-              - -f
-              - /root/.lotus/datastore/000000.vlog
-          initialDelaySeconds: 60
-          periodSeconds: 60
+          httpGet:
+            path: /debug/metrics
+            port: api
+          initialDelaySeconds: 120
+          periodSeconds: 10
         ports:
         - containerPort: 1234
           name: api
         - containerPort: 1235
           name: p2p
         volumeMounts:
-          - name: {{ .Release.Name }}-lotus-vol
+          - name: vol
             mountPath: /root/.lotus
-        {{- if .Values.init.import.enabled }}
+        {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
         {{- end }}
@@ -106,7 +114,7 @@ spec:
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
     - metadata:
-        name: {{ .Release.Name }}-lotus-vol
+        name: vol
         {{- range $key, $value := .Values.persistence.lotus.annotations }}
             {{ $key }}: {{ $value }}
         {{- end }}

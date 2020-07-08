@@ -5,8 +5,7 @@
 replicaCount: 1
 
 image:
-  #repository: rtradetech/lotus-node
-  repository: openworklabs/lotus
+  repository: openworklabs/lotus:v0.4.1
   pullPolicy: IfNotPresent #Always
 
 imagePullSecrets: []
@@ -53,6 +52,10 @@ ingress:
   #  - secretName: lotus-api-tls
   #    hosts:
   #      - api.openworklabs.com
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+    nginx.ingress.kubernetes.io/modsecurity-snippet: |
+      SecRuleEngine On
+      SecDebugLog /tmp/modsec_debug.log
 
 ingressApi:
   enabled: false
@@ -64,21 +67,24 @@ ingressApi:
     nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range"
     # cert-manager.io/cluster-issuer: "letsencrypt-staging"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  tls:
-    - secretName: lotus-api-tls
-      hosts:
-        - api.openworklabs.com       
+  #tls:
+  #  - secretName: lotus-api-tls
+  #    hosts:
+  #      - api.openworklabs.com       
 
 init:
   sync:
     enabled: true
   import:
-    enabled: true
+    enabled: false
     # ideally a shared volume containing chain dump
     volume: {}
+      #- name: filecoin-chain-vol
+      #  persistentVolumeClaim:
+      #    claimName: efs-claim
 
 secretVolume:
-  enabled: true
+  enabled: false
 
 resources: #{}
   # We usually recommend not to specify default resources and to leave this as a conscious
