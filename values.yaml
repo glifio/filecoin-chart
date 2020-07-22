@@ -109,11 +109,27 @@ persistence:
   ##
   # storageClass: "-"
   lotus:
-    size: "500Gi"
+    size: "200Gi"
+    storageClassName: gp2
+    accessModes:
+      - ReadWriteOnce
+  ipfs:
+    size: "200Gi"
+    storageClassName: gp2
+    accessModes:
+      - ReadWriteOnce
+  powergate:
+    size: "200Gi"
     storageClassName: gp2
     accessModes:
       - ReadWriteOnce
 
+Powergate:
+  enabled: true
+
+IPFS:
+  enabled: true
+  
 nodeSelector: {}
 
 tolerations: []

@@ -4,8 +4,8 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:v0.4.1
-  pullPolicy: IfNotPresent #Always 
+  repository: openworklabs/lotus:master
+  pullPolicy: Always #IfNotPresent
 
 ingress:
   enabled: false
@@ -21,7 +21,7 @@ init:
     volume: {}
 
 secretVolume:
-  enabled: false
+  enabled: true
 
 resources:
   requests:
@@ -41,8 +41,24 @@ persistence:
   ##   GKE, AWS & OpenStack)
   ##
   # storageClass: "-"
-  lotus:
-    size: "500Gi"
+  powergate:
+    size: "200Gi"
     storageClassName: gp2
     accessModes:
       - ReadWriteOnce
+  ipfs:
+    size: "200Gi"
+    storageClassName: gp2
+    accessModes:
+      - ReadWriteOnce
+  lotus:
+    size: "200Gi"
+    storageClassName: gp2
+    accessModes:
+      - ReadWriteOnce
+
+Powergate:
+  enabled: true
+
+IPFS:
+  enabled: true

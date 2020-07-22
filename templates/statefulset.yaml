@@ -81,10 +81,70 @@ spec:
       #     - name: {{ .Release.Name }}-lotus-vol
       #       mountPath: /lotus
       containers:
+{{- if .Values.Powergate.enabled }}
+      - name: {{ .Chart.Name }}-powergate
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        image: textile/powergate
+        livenessProbe:
+          httpGet:
+            port: 6002
+          initialDelaySeconds: 90
+          periodSeconds: 10
+        ports:
+        - containerPort: 8889
+        - containerPort: 8888
+        - containerPort: 6060
+        - containerPort: 5002
+        - containerPort: 6002
+        env:
+        - name: POWD_LOTUSHOST
+          value: "/dns4/127.0.0.1/tcp/1234"
+        - name: POWD_IPFSAPIADDR
+          value: "/dns4/127.0.0.1/tcp/5001"
+        - name: POWD_LOTUSTOKENFILE
+          value: "/root/.lotus/token"
+        - name: POWD_REPOPATH
+          value: "/root/powergate/.powergate"
+        volumeMounts:
+          - name: vol-powergate
+            mountPath: /root/powergate
+          - name: vol
+            mountPath: /root/.lotus
+{{- end }}
+{{- if .Values.IPFS.enabled }}
+      - name: {{ .Chart.Name }}-ipfs
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        image: ipfs/go-ipfs
+        livenessProbe:
+          httpGet:
+            path: /webui
+            port: 5001
+          initialDelaySeconds: 120
+          periodSeconds: 10
+        ports:
+        - containerPort: 4001
+        - containerPort: 5001
+        - containerPort: 8080
+          name: rpc
+        volumeMounts:
+          - name: vol-ipfs
+            mountPath: /data/ipfs
+{{- end }}
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-d"]
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+{{- if .Values.IPFS.enabled }}
+        env:
+        - name: LOTUS_API_LISTENADDRESS
+          value: "/ip4/0.0.0.0/tcp/1234/http"
+        - name: LOTUS_CLIENT_USEIPFS
+          value: "true"
+        - name: LOTUS_CLIENT_IPFSUSEFORRETRIEVAL
+          value: "true"
+        - name: LOTUS_CLIENT_IPFSMADDR
+          value: "/dns4/127.0.0.1/tcp/5001"
+{{- end }}
         livenessProbe:
           httpGet:
             path: /debug/metrics
@@ -131,6 +191,46 @@ spec:
         storageClassName: ""
         {{- else }}
         storageClassName: "{{ .Values.persistence.lotus.storageClassName }}"
+        {{- end }}
+        {{- end }}
+    - metadata:
+        name: vol-ipfs
+        {{- range $key, $value := .Values.persistence.ipfs.annotations }}
+            {{ $key }}: {{ $value }}
+        {{- end }}
+      spec:
+        accessModes:
+            {{- range .Values.persistence.ipfs.accessModes }}
+            - {{ . | quote }}
+            {{- end }}
+        resources:
+            requests:
+                storage: {{ .Values.persistence.ipfs.size | quote }}
+        {{- if .Values.persistence.ipfs.storageClassName }}
+        {{- if (eq "-" .Values.persistence.ipfs.storageClassName) }}
+        storageClassName: ""
+        {{- else }}
+        storageClassName: "{{ .Values.persistence.ipfs.storageClassName }}"
+        {{- end }}
+        {{- end }}
+    - metadata:
+        name: vol-powergate
+        {{- range $key, $value := .Values.persistence.powergate.annotations }}
+            {{ $key }}: {{ $value }}
+        {{- end }}
+      spec:
+        accessModes:
+            {{- range .Values.persistence.powergate.accessModes }}
+            - {{ . | quote }}
+            {{- end }}
+        resources:
+            requests:
+                storage: {{ .Values.persistence.powergate.size | quote }}
+        {{- if .Values.persistence.powergate.storageClassName }}
+        {{- if (eq "-" .Values.persistence.powergate.storageClassName) }}
+        storageClassName: ""
+        {{- else }}
+        storageClassName: "{{ .Values.persistence.powergate.storageClassName }}"
         {{- end }}
         {{- end }}
   {{- end }}
