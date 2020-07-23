@@ -21,7 +21,7 @@ init:
     volume: {}
 
 secretVolume:
-  enabled: true
+  enabled: false
 
 resources:
   requests:

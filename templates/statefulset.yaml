@@ -136,8 +136,6 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
 {{- if .Values.IPFS.enabled }}
         env:
-        - name: LOTUS_API_LISTENADDRESS
-          value: "/ip4/0.0.0.0/tcp/1234/http"
         - name: LOTUS_CLIENT_USEIPFS
           value: "true"
         - name: LOTUS_CLIENT_IPFSUSEFORRETRIEVAL
