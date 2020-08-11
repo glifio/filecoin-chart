@@ -24,12 +24,13 @@ secretVolume:
   enabled: false
 
 resources:
-  requests:
-    cpu: 1000m
-    memory: 4Gi
-  limits:
-    cpu: 3000m
-    memory: 12Gi
+  lotus: 
+    requests:
+      cpu: 1000m
+      memory: 4Gi
+    limits:
+      cpu: 3000m
+      memory: 12Gi
 
 persistence:
   enabled: true
@@ -58,7 +59,7 @@ persistence:
       - ReadWriteOnce
 
 Powergate:
-  enabled: true
+  enabled: false
 
 IPFS:
-  enabled: true
+  enabled: false
