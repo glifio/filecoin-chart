@@ -125,10 +125,10 @@ persistence:
       - ReadWriteOnce
 
 Powergate:
-  enabled: true
+  enabled: false
 
 IPFS:
-  enabled: true
+  enabled: false
   
 nodeSelector: {}
 
