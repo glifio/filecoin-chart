@@ -111,7 +111,7 @@ spec:
           - name: vol
             mountPath: /root/.lotus
         resources:
-{{ toYaml .Values.powergate.resources | indent 10 }}
+{{ toYaml .Values.resources.powergate | indent 10 }}
 {{- end }}
 {{- if .Values.IPFS.enabled }}
       - name: {{ .Chart.Name }}-ipfs
@@ -132,7 +132,7 @@ spec:
           - name: vol-ipfs
             mountPath: /data/ipfs
         resources:
-{{ toYaml .Values.ipfs.resources | indent 10 }}
+{{ toYaml .Values.resources.ipfs | indent 10 }}
 {{- end }}
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}
@@ -172,7 +172,7 @@ spec:
             mountPath: /chain
         {{- end }}
         resources:
-{{ toYaml .Values.lotus.resources | indent 10 }}
+{{ toYaml .Values.resources.lotus | indent 10 }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
     - metadata:
