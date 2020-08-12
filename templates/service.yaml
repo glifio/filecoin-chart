@@ -16,3 +16,21 @@ spec:
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
       name: tcp-api
+    - protocol: TCP
+      port: 5001
+      name: ipfs 
+    - protocol: TCP
+      port: 8888
+      name: powergate1
+    - protocol: TCP
+      port: 8889
+      name: powergate2
+    - protocol: TCP
+      port: 6060
+      name: powergate3
+    - protocol: TCP
+      port: 5002
+      name: powergate4
+    - protocol: TCP
+      port: 6002
+      name: powergate5

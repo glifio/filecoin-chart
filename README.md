@@ -89,13 +89,27 @@ These are our emphasized config options. For a full list, see the [values file](
 |-----------|-----------------------------------------|---------|
 | `replicaCount` | The number of Lotus replicas to run | 1 |
 | `image.repository` | Lotus Docker Image | `openworklabs/lotus` |
-| `resources.requests.cpu` | The amount of vCPU.  | `1000m` |
-| `resources.requests.memory` | The amount of memory.  | `4Gi` |
-| `resources.limit.cpu` | The ceiling amount of vCPU.  | `3000m` |
-| `resources.limit.memory` | The ceiling amount of memory.  | `12Gi` |
+| `IPFS.enabled` | Enable IPFS on the pod | `false` |
+| `Powergate.enabled` | Enable Powergate on the pod | `false` |
+| `resources.ipfs.requests.cpu` | The amount of vCPU (IPFS).  | `<unset>` |
+| `resources.ipfs.requests.memory` | The amount of memory (IPFS).  | `<unset>` |
+| `resources.ipfs.limit.cpu` | The ceiling amount of vCPU (IPFS).  | `<unset>` |
+| `resources.ipfs.limit.memory` | The ceiling amount of memory (IPFS).  | `<unset>` |
+| `resources.powergate.requests.cpu` | The amount of vCPU (Powergate).  | `<unset>` |
+| `resources.powergate.requests.memory` | The amount of memory (Powergate).  | `<unset>` |
+| `resources.powergate.limit.cpu` | The ceiling amount of vCPU (Powergate).  | `<unset>` |
+| `resources.powergate.limit.memory` | The ceiling amount of memory (Powergate).  | `<unset>` |
+| `resources.lotus.requests.cpu` | The amount of vCPU (Lotus).  | `<unset>` |
+| `resources.lotus.requests.memory` | The amount of memory (Lotus).  | `<unset>` |
+| `resources.lotus.limit.cpu` | The ceiling amount of vCPU (Lotus).  | `<unset>` |
+| `resources.lotus.limit.memory` | The ceiling amount of memory (Lotus).  | `<unset>` |
 | `persistence.enabled` | Enable persistent volume.  | `true` |
-| `persistence.lotus.size` | Persistent volume storage size.  | `"500Gi"` |
-| `persistence.lotus.storageClassName` | Storage provisioner (depends on your Kubernetes deployment). | `gp2` |
+| `persistence.ipfs.size` | Persistent volume storage size (IPFS).  | `"200Gi"` |
+| `persistence.ipfs.storageClassName` | Storage provisioner (IPFS). | `gp2` |
+| `persistence.powergate.size` | Persistent volume storage size (Powergate).  | `"200Gi"` |
+| `persistence.powergate.storageClassName` | Storage provisioner (Powergate). | `gp2` |
+| `persistence.lotus.size` | Persistent volume storage size (Lotus).  | `"200Gi"` |
+| `persistence.lotus.storageClassName` | Storage provisioner (Lotus). | `gp2` |
 | `secretVolume.enabled` | If you want to reuse token across installations. See [here](https://github.com/openworklabs/filecoin-chart/blob/master/README.md#Lotus-JWT) for more details. | `false` |
 
 ## Upgrading to a new version of Lotus
