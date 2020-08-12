@@ -1,0 +1,21 @@
+{{- if .Values.ingress.lotus.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  {{- with .Values.ingress.lotus.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+    nginx.org/mergeable-ingress-type: "minion"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+  - host: {{ .Values.ingress.lotus.host }}
+    http:    
+      paths:
+        - backend:
+            serviceName: {{ .Release.Name }}-lotus-service
+            servicePort: 1234
+          path: /{{ .Release.Name }}/lotus/(.*)
+{{- end }}
