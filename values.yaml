@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:v0.4.1
+  repository: openworklabs/lotus:ntwk-calibration-8.8.0
   pullPolicy: IfNotPresent #Always
 
 imagePullSecrets: []
@@ -39,38 +39,27 @@ service:
 ingress:
   enabled: true
   hosts:
-  #- api.openworklabs.com
+   - node.glif.io
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range"
     nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
-  #  nginx.ingress.kubernetes.io/server-alias: "_"
-  #  cert-manager.io/cluster-issuer: "letsencrypt-staging"
-  #  cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  #  tls:
-  #  - secretName: lotus-api-tls
-  #    hosts:
-  #      - api.openworklabs.com
+  # nginx.ingress.kubernetes.io/server-alias: "_"
     nginx.ingress.kubernetes.io/enable-modsecurity: "true"
     nginx.ingress.kubernetes.io/modsecurity-snippet: |
       SecRuleEngine On
       SecDebugLog /tmp/modsec_debug.log
-
-ingressApi:
-  enabled: false
-  hosts:
-  - api.openworklabs.com
-  annotations:
-    nginx.ingress.kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range"
-    # cert-manager.io/cluster-issuer: "letsencrypt-staging"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  #tls:
-  #  - secretName: lotus-api-tls
-  #    hosts:
-  #      - api.openworklabs.com       
+  lotus:
+    enabled: true
+    annotations:
+      # nginx.ingress.kubernetes.io/whitelist-source-range: 1.2.3.4/32
+      # nginx.ingress.kubernetes.io/configuration-snippet: |
+      #       more_set_headers "Authorization: Bearer <JWT>";
+  ipfs:
+    enabled: false
+  powergate:
+    enabled: false
 
 init:
   sync:
