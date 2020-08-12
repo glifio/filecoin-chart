@@ -1,13 +1,15 @@
 {{- if .Values.IPFS.enabled }}
-{{- if .Value.ingress.ipfs.enabled }}
+{{- if .Values.ingress.ipfs.enabled }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-ingress
+  name: {{ .Release.Name }}-ingress-ipfs
   annotations:
-    {{- toYaml .Values.ingress.ipfs.annotations | nindent 4 }}
     nginx.org/mergeable-ingress-type: "minion"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
+{{- with .Values.ingress.ipfs.annotations }}
+    {{- toYaml . | nindent 4 }}
+{{- end }}
 spec:
   rules:
   - host: {{ .Values.ingress.host }}

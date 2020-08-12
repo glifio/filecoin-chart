@@ -1,2 +1,3 @@
+*.local
 # package files
 *.tgz

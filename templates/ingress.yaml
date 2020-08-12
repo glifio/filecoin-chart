@@ -4,12 +4,14 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-{{ $fullName }}-api
+  name: {{ .Release.Name }}-ingress
   labels:
     {{- include "chart.labels" . | nindent 4 }}
   annotations:
     nginx.org/mergeable-ingress-type: "master"
-    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+{{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+{{- end }}
 spec:
   rules:
   {{- range .Values.ingress.hosts }}

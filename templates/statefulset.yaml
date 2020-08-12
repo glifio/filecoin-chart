@@ -198,7 +198,12 @@ spec:
                 storage: {{ .Values.persistence.lotus.size | quote }}
         {{- if .Values.persistence.lotus.storageClassName }}
         {{- if (eq "-" .Values.persistence.lotus.storageClassName) }}
+        {{- if .Values.persistence.snapshots.enabled }}
+        storageClassName: "ebs-sc"
+        {{- else }}
         storageClassName: ""
+        {{- end }}
+        {{- end }}
         {{- else }}
         storageClassName: "{{ .Values.persistence.lotus.storageClassName }}"
         {{- end }}
@@ -218,7 +223,11 @@ spec:
                 storage: {{ .Values.persistence.ipfs.size | quote }}
         {{- if .Values.persistence.ipfs.storageClassName }}
         {{- if (eq "-" .Values.persistence.ipfs.storageClassName) }}
+        {{- if .Values.persistence.snapshots.enabled }}
+        storageClassName: "ebs-sc"
+        {{- else }}
         storageClassName: ""
+        {{- end }}
         {{- else }}
         storageClassName: "{{ .Values.persistence.ipfs.storageClassName }}"
         {{- end }}
@@ -237,10 +246,13 @@ spec:
             requests:
                 storage: {{ .Values.persistence.powergate.size | quote }}
         {{- if .Values.persistence.powergate.storageClassName }}
-        {{- if (eq "-" .Values.persistence.powergate.storageClassName) }}
+          {{- if (eq "-" .Values.persistence.powergate.storageClassName) }}
+            {{- if .Values.persistence.snapshots.enabled }}
+        storageClassName: "ebs-sc"
+            {{- else }}
         storageClassName: ""
-        {{- else }}
+            {{- end }}
+          {{- else }}
         storageClassName: "{{ .Values.persistence.powergate.storageClassName }}"
-        {{- end }}
         {{- end }}
   {{- end }}
