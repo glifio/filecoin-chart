@@ -9,11 +9,10 @@ metadata:
     {{- include "chart.labels" . | nindent 4 }}
   annotations:
     nginx.org/mergeable-ingress-type: "master"
-    {{- toyaml .Values.ingress.annotations | nindent 4 }}
-  {{- end }}
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
 spec:
   rules:
   {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ . | quote }}
   {{- end }}
 {{- end }}
