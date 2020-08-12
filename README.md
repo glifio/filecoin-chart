@@ -49,12 +49,6 @@ For more details on installation, see [NGINX Installation Guide](https://kuberne
 
 **Note** - NGINX Ingress Controller is _different_ from [NGINX Kubernetes Ingress Controller](https://www.nginx.com/products/nginx/kubernetes-ingress-controller/) (which we are not using). 
 
-### Istio Gateway (optional)
-
-[Istio](https://ihttps://istio.io/docs/setup/getting-started/stio.io/) is an alternative option for exposing your Lotus node to the public (instead of NGINX Ingress Controller). Istio comes with a number of additional features that make authorization, authentication, and managing microservices easier.
-
-For more information on installation and usage, see [getting started with Istio](https://istio.io/docs/setup/getting-started/).
-
 ### Certbot (optional)
 
 [Certbot](https://certbot.eff.org/) for handling certs and enabling HTTPS.
