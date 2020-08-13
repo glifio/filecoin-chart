@@ -85,14 +85,14 @@ spec:
         image: textile/powergate
         livenessProbe:
           httpGet:
-            port: 6002
+            port: 7000
           initialDelaySeconds: 90
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 3
         ports:
         - containerPort: 8889
-        - containerPort: 8888
+        - containerPort: 7000
         - containerPort: 6060
         - containerPort: 5002
         - containerPort: 6002
@@ -201,10 +201,15 @@ spec:
         {{- else }}
         storageClassName: ""
         {{- end }}
-        {{- end }}
         {{- else }}
         storageClassName: "{{ .Values.persistence.lotus.storageClassName }}"
         {{- end }}
+        {{- end }}
+        {{- if .Values.persistence.snapshots.restore.enabled }}
+        dataSource:
+          name: {{ .Values.persistence.snapshots.restore.name }}
+          kind: VolumeSnapshot
+          apiGroup: snapshot.storage.k8s.io
         {{- end }}
     - metadata:
         name: vol-ipfs
@@ -252,5 +257,6 @@ spec:
             {{- end }}
           {{- else }}
         storageClassName: "{{ .Values.persistence.powergate.storageClassName }}"
+        {{- end }}
         {{- end }}
   {{- end }}

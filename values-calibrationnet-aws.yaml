@@ -38,8 +38,7 @@ service:
 
 ingress:
   enabled: true
-  hosts:
-    - node.glif.io
+  host: dev.node.glif.io
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -54,7 +53,7 @@ ingress:
     enabled: true
     annotations: 
     #  nginx.ingress.kubernetes.io/configuration-snippet: |
-    #    more_set_headers "Authorization: Bearer ";
+    #    proxy_set_header Authorization "Bearer ";
     #  nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
   ipfs:
     enabled: true
@@ -104,6 +103,11 @@ resources: {}
 
 persistence:
   enabled: true
+  snapshots:
+    enabled: true
+    restore: 
+      enabled: false
+  ##    name: blah-blah-blah
   snapshots:
     enabled: true 
   ## Filecoin data Persistent Volume Storage Class

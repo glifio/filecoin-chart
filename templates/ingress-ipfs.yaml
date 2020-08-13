@@ -5,8 +5,10 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-ingress-ipfs
   annotations:
-    nginx.org/mergeable-ingress-type: "minion"
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+{{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+{{- end }}
 {{- with .Values.ingress.ipfs.annotations }}
     {{- toYaml . | nindent 4 }}
 {{- end }}
@@ -18,6 +20,6 @@ spec:
         - backend:
             serviceName: {{ .Release.Name }}-ipfs-service
             servicePort: 5001
-          path: /{{ .Release.Name }}/ipfs/(.*)
+          path: /{{ .Release.Name }}/ipfs(/|$)(.*)
 {{- end }}
 {{- end }}
