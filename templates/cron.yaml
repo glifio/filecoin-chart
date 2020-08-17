@@ -1,0 +1,70 @@
+{{- if .Values.persistence.snapshots.automation.creation }}
+---
+apiVersion: v1
+data:
+  snapshot-template: |
+    apiVersion: snapshot.storage.k8s.io/v1beta1
+    kind: VolumeSnapshot
+    metadata:
+      generateName: {{ .Release.Name }}-
+      namespace: {{ .Release.Namespace }} 
+    spec:
+      volumeSnapshotClassName: csi-aws-vsc
+      source:
+        persistentVolumeClaimName: vol-{{ .Release.Name }}-lotus-0
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-snapshot-cm
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-snapshot-creator
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
+          containers:
+          - name: creator
+            image: bitnami/kubectl
+            args:
+            - create
+            - -f
+            - /tmp/creator
+            volumeMounts:
+            - name: {{ .Release.Name }}-snapshot-cm
+              mountPath: "/tmp/creator"
+              readOnly: true
+          restartPolicy: Never
+          volumes:
+          - name: {{ .Release.Name }}-snapshot-cm
+            configMap:
+              name: {{ .Release.Name }}-snapshot-cm
+{{- end }}
+
+{{- if .Values.persistence.snapshots.automation.deletion }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-snapshot-deleter
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
+          containers:
+          - name: deleter
+            image: bitnami/kubectl
+            command:
+            - sh
+            - -c
+            - kubectl get --sort-by .metadata.creationTimestamp -n {{ .Release.Namespace }} --no-headers volumesnapshots | awk '/{{ .Release.Name }}-/{start}NR=={{ .Values.persistence.snapshots.automation.retain.count }}{print $1}' | xargs kubectl delete volumesnapshots
+          restartPolicy: Never
+{{- end }}

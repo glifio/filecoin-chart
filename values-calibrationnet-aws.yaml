@@ -17,7 +17,7 @@ serviceAccount:
   create: false
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name:
+  name: acc
 
 podSecurityContext:
   fsGroup: 2000
@@ -105,11 +105,14 @@ persistence:
   enabled: true
   snapshots:
     enabled: true
+    automation:
+      deletion: true
+      creation: true
+      retain:
+        count: 2
     restore: 
       enabled: false
   ##    name: blah-blah-blah
-  snapshots:
-    enabled: true 
   ## Filecoin data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
