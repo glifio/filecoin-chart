@@ -194,7 +194,7 @@ spec:
         resources:
             requests:
                 storage: {{ .Values.persistence.lotus.size | quote }}
-        {{- if (eq "-" .Values.persistence.lotus.storageClassName) }}
+        {{- if not .Values.persistence.lotus.storageClassName }}
         {{- if .Values.persistence.snapshots.enabled }}
         storageClassName: "ebs-sc"
         {{- else }}

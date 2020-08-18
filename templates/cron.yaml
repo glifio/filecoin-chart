@@ -22,7 +22,7 @@ kind: CronJob
 metadata:
   name: {{ .Release.Name }}-snapshot-creator
 spec:
-  schedule: "0 0 * * *"
+  schedule: "0 1 * * *"
   jobTemplate:
     spec:
       template:
