@@ -1,7 +1,3 @@
-# Default values for chart.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 replicaCount: 1
 
 image:
@@ -13,10 +9,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
   create: false
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
   name: acc
 
 podSecurityContext:
@@ -30,7 +23,6 @@ securityContext:
   runAsNonRoot: false
   runAsUser: 1000
 
-# Using this varliable you can redefine Lotus service ports
 service:
   type: ClusterIP
   port: 1234
@@ -53,7 +45,7 @@ ingress:
     enabled: true
     annotations: 
     #  nginx.ingress.kubernetes.io/configuration-snippet: |
-    #    proxy_set_header Authorization "Bearer ";
+    #    proxy_set_header Authorization "Bearer <JWT>";
     #  nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
   ipfs:
     enabled: true
@@ -72,7 +64,7 @@ init:
       #    claimName: efs-claim
 
 secretVolume:
-  enabled: false 
+  enabled: false
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -115,15 +107,7 @@ persistence:
         enabled: true
     restore: 
       enabled: false
-  ##    name: blah-blah-blah
-  ## Filecoin data Persistent Volume Storage Class
-  ## If defined, storageClassName: <storageClass>
-  ## If set to "-", storageClassName: "", which disables dynamic provisioning
-  ## If undefined (the default) or set to null, no storageClassName spec is
-  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-  ##   GKE, AWS & OpenStack)
-  ##
-  # storageClass: "-"
+      #name: snapshotname
   lotus:
     size: "50Gi"
     accessModes:

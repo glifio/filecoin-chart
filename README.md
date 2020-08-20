@@ -7,9 +7,10 @@ Filecoin chart is a helm chart for hosting Lotus Node clients. [Lotus](https://g
 ## Goals
 
 1. Deploy one or more instances of Lotus client nodes.
-2. Expose Lotus node API's through HTTP endpoints.
-3. Enable importing chain data for faster syncs.
-4. Provide flexible configuration options to suit your needs.
+2. Deploy additional software such as [IPFS](https://github.com/ipfs/ipfs) and [Powergate](https://github.com/textileio/powergate).
+3. Expose Lotus, IPFS and Powergate APIs through HTTP endpoints.
+4. Enable importing chain data for faster syncs.
+5. Provide flexible configuration options to suit your needs.
 
 For monitoring and graphing, see [filecoin-k8s](https://github.com/openworklabs/filecoin-k8s).
 For customizing the Lotus Docker configuration, see [filecoin-docker](https://github.com/openworklabs/filecoin-docker).
@@ -24,7 +25,7 @@ This is the only required prerequisite. The rest of the prerequisites are option
 
 Information on [getting started](https://kubernetes.io/docs/setup/) with Kubernetes. For most use cases, we'd advise starting with Kubernetes running in the cloud. As far as we're aware, if you want to use this repository to run a Lotus miner node, you will need to use a bare metal install of Kubernetes, so you get access to a GPU.
 
-### Minimum Machine Requirements
+#### Minimum Machine Requirements
 
 In our experience, we have had good results on Lotus testnet/2 using these settings:
 
@@ -49,13 +50,18 @@ For more details on installation, see [NGINX Installation Guide](https://kuberne
 
 **Note** - NGINX Ingress Controller is _different_ from [NGINX Kubernetes Ingress Controller](https://www.nginx.com/products/nginx/kubernetes-ingress-controller/) (which we are not using). 
 
-### Certbot (optional)
+### CSI Driver (optional)
 
-[Certbot](https://certbot.eff.org/) for handling certs and enabling HTTPS.
+When CSI driver is installed charts provides additional features:
+
+1. Automatic creation of Lotus node snapshots
+2. Automatic cleanup of existing snapshots with customizable retain number
+
+**Note:** CSI driver should support snapshot feature. Our charts is currently supporting EBS CSI Driver by default with it's `ebs-sc` storage class, but one may override this class by setting `.Values.persistence.lotus.storageClassName` variable.
 
 ## Installation
 
-The chart can be installed (and upgraded) via helm. To install the chart with the with the namespace `filecoin`, run these commands:
+The chart can be installed (and upgraded) via Helm. To install the chart with the with the namespace `filecoin`, run these commands:
 
 Clone this repository:
 ```shell
@@ -81,38 +87,37 @@ These are our emphasized config options. For a full list, see the [values file](
 
 | Parameter | Description | Default |
 |-----------|-----------------------------------------|---------|
-| `replicaCount` | The number of Lotus replicas to run | 1 |
-| `image.repository` | Lotus Docker Image | `openworklabs/lotus` |
-| `IPFS.enabled` | Enable IPFS on the pod | `false` |
-| `Powergate.enabled` | Enable Powergate on the pod | `false` |
-| `resources.ipfs.requests.cpu` | The amount of vCPU (IPFS).  | `<unset>` |
-| `resources.ipfs.requests.memory` | The amount of memory (IPFS).  | `<unset>` |
-| `resources.ipfs.limit.cpu` | The ceiling amount of vCPU (IPFS).  | `<unset>` |
-| `resources.ipfs.limit.memory` | The ceiling amount of memory (IPFS).  | `<unset>` |
-| `resources.powergate.requests.cpu` | The amount of vCPU (Powergate).  | `<unset>` |
-| `resources.powergate.requests.memory` | The amount of memory (Powergate).  | `<unset>` |
-| `resources.powergate.limit.cpu` | The ceiling amount of vCPU (Powergate).  | `<unset>` |
-| `resources.powergate.limit.memory` | The ceiling amount of memory (Powergate).  | `<unset>` |
-| `resources.lotus.requests.cpu` | The amount of vCPU (Lotus).  | `<unset>` |
-| `resources.lotus.requests.memory` | The amount of memory (Lotus).  | `<unset>` |
-| `resources.lotus.limit.cpu` | The ceiling amount of vCPU (Lotus).  | `<unset>` |
-| `resources.lotus.limit.memory` | The ceiling amount of memory (Lotus).  | `<unset>` |
+| `replicaCount` | The number of Lotus replicas to run. | 1 |
+| `image.repository` | Lotus Docker Image. | `openworklabs/lotus` |
+| `IPFS.enabled` | Enable IPFS on the pod. | `false` |
+| `Powergate.enabled` | Enable Powergate on the pod. | `false` |
+| `serviceAccount.create` | Create service account. Must be enabled when enabling snapshot automation. | `false` |
+| `serviceAccount.name` | Must be set when `serviceAccount.create` is `true`. Will be prefixed with release name. | `acc` |
+| `ingress.enabled` | Enables ingress for this particular release | `true` |
+| `ingress.host` | Defines DNS name that is used by NGINX to recognize valid requests | `node.glif.io` |
+| `ingress.annotations` | Defines annotations for general ingress | See [values.yaml](values.yaml) |
+| `ingress.<service>.enabled` | Enables ingress for particular service. | `true` |
+| `ingress.<service>.annotations` | Defines annotations for particular service. Please read comments in `values.yaml` file to check the annotations that should be set to enable firewall-based access instead of JWT-based. | `<unset>` |
+| `resources.<service>.requests.cpu` | The amount of vCPU (per service). | `<unset>` |
+| `resources.<service>.requests.memory` | The amount of memory (per service). | `<unset>` |
+| `resources.<service>.limit.cpu` | The ceiling amount of vCPU (per service). | `<unset>` |
+| `resources.<service>.limit.memory` | The ceiling amount of memory (per service). | `<unset>` |
 | `persistence.enabled` | Enable persistent volume.  | `true` |
-| `persistence.ipfs.size` | Persistent volume storage size (IPFS).  | `"200Gi"` |
-| `persistence.ipfs.storageClassName` | Storage provisioner (IPFS). | `gp2` |
-| `persistence.powergate.size` | Persistent volume storage size (Powergate).  | `"200Gi"` |
-| `persistence.powergate.storageClassName` | Storage provisioner (Powergate). | `gp2` |
-| `persistence.lotus.size` | Persistent volume storage size (Lotus).  | `"200Gi"` |
-| `persistence.lotus.storageClassName` | Storage provisioner (Lotus). | `gp2` |
+| `persistence.<service>.size` | Persistent volume storage size (per service). | `"200Gi"` |
+| `persistence.<service>.storageClassName` | Storage provisioner (per service). | `gp2` |
+| `persistence.<service>.accessModes` | Persistent volume storage size (per service). | `"200Gi"` |
+| `persistence.snapshots.*` | Described at [Snapshots](#snapshots) section |                                |
 | `secretVolume.enabled` | If you want to reuse token across installations. See [here](https://github.com/openworklabs/filecoin-chart/blob/master/README.md#Lotus-JWT) for more details. | `false` |
 
-## Upgrading to a new version of Lotus
+## Snapshots
 
-(todo) for now, if your question is urgent, file an Issue.
+To start building Snapshots your persistent volume usually should be created using special CSI-compatible class. In most cases you can migrate your existing workloads, so please refer to the driver documentation for more details.
 
-## Fast-sync
+We are supporting [AWS EBS CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) out of the box. To create persistent volumes make sure you have the `ebs-sc` storage class installed. To perform installation go to the [examples folder](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/examples/kubernetes/snapshot) and complete the first step of instruction. After then set `persistence.snapshots.enabled` to `true` so the Charts will automatically create volumes of  the `ebs-sc` class. To override this behavior one can set `persistence.<service>.storageClassName` for each of the services. In this case Charts will create PV of the specified custom class.
 
-It is possible to deploy a node using a chain-data import to speed up the node's sync phase: (todo). FOr now, if your question is urgent, file an Issue. 
+To automate snapshot operations operator can set `persistence.snapshots.automation` parameters. If `creation` is set to `true` Charts will deploy a Cron job that will create snapshots on a daily basis.  If `deletion` is set to `true`  Charts will deploy a Cron job that will delete a snapshots for specific release if the number of snapshots is more than `retain.count`.
+
+In case you want to create the new release based on existing snapshot one can set `persistence.snapshots.automation.restore.enabled` to `true`. In that case Lotus PV will be created based on snapshot named `persistence.snapshots.automation.restore.name`. Note that Snapshot should exist in the very same namespace where the release is deployed.
 
 ## Lotus JWT
 
