@@ -41,7 +41,7 @@ spec:
         volumeMounts:
           - name: lotus-secret-vol
             mountPath: "/secret"
-          - name: vol
+          - name: vol-lotus
             mountPath: /lotus
 {{- end }}
 {{- if .Values.init.import.enabled }}
@@ -58,7 +58,7 @@ spec:
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-i"]
         volumeMounts:
-          - name: vol
+          - name: vol-lotus
             mountPath: /root/.lotus
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
@@ -68,7 +68,7 @@ spec:
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-s"]
         volumeMounts:
-          - name: vol
+          - name: vol-lotus
             mountPath: /root/.lotus
 {{- end }}
       containers:
@@ -101,7 +101,7 @@ spec:
         volumeMounts:
           - name: vol-powergate
             mountPath: /root/powergate
-          - name: vol
+          - name: vol-lotus
             mountPath: /root/.lotus
         resources:
 {{ toYaml .Values.resources.powergate | indent 10 }}
@@ -141,6 +141,12 @@ spec:
           value: "true"
         - name: LOTUS_CLIENT_IPFSMADDR
           value: "/dns4/127.0.0.1/tcp/5001"
+{{- if .Values.persistence.snapshots.uploadToIpfs }}
+        - name: LOTUS_EXPORT
+          value: "true"
+        - name: LOTUS_EXPORT_PATH
+          value: "/data/ipfs/chain.car"
+{{- end }}
 {{- end }}
         livenessProbe:
           httpGet:
@@ -164,18 +170,22 @@ spec:
         - containerPort: 1235
           name: p2p
         volumeMounts:
-          - name: vol
+          - name: vol-lotus
             mountPath: /root/.lotus
         {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
         {{- end }}
+{{- if and .Values.IPFS.enabled .Values.persistence.snapshots.uploadToIpfs }}
+          - name: vol-ipfs
+            mountPath: /data/ipfs
+{{- end }}
         resources:
 {{ toYaml .Values.resources.lotus | indent 10 }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
     - metadata:
-        name: vol
+        name: vol-lotus
         {{- range $key, $value := .Values.persistence.lotus.annotations }}
             {{ $key }}: {{ $value }}
         {{- end }}

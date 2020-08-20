@@ -1,5 +1,4 @@
 {{- if .Values.persistence.snapshots.enabled }}
-
 {{- if .Values.persistence.snapshots.automation.creation.enabled }}
 ---
 apiVersion: v1

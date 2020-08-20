@@ -10,4 +10,11 @@ spec:
   ports:
     - protocol: TCP
       port: 5001
-      name: ipfs 
+      name: ipfs
+    - protocol: TCP
+      port: 4001
+      name: ipfs4001
+    - protocol: TCP
+      port: 8080
+      name: web
+ 

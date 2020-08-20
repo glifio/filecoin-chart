@@ -36,7 +36,7 @@ service:
 
 ingress:
   enabled: true
-  host: dev.node.glif.io
+  host: node.glif.io
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -104,15 +104,18 @@ persistence:
 # If persistence is set to false no persistent volumes will be created
   enabled: true
   snapshots:
+# If uploadToIpfs is set to true the internal Lotus snapshot will be created and uploaded to the IPFS system. Note that IPFS must be nenabled in that case
+    uploadToIpfs: true
 # If snapshots are enabled - the PV will be deployed with ebs-sc class unless custom class is specified
     enabled: true
 # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
     automation:
-      deletion: true
-      creation: true
-# A number of snapshots to keep when automatic deletion is enabled
-      retain:
-        count: 2
+      deletion: 
+        enabled: true
+        retention:
+          count: 2
+      creation:
+        enabled: true
 # If restore is enabled the snapshot name must be specified. Charts will attempt to find the existing snapshot with this name and create a PV from that snapshot.
     restore: 
       enabled: false
