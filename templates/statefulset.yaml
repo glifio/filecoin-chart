@@ -71,13 +71,6 @@ spec:
           - name: vol
             mountPath: /root/.lotus
 {{- end }}
-      # - name: sanity
-      #   image: busybox
-      #   command: ["/bin/sh","-c"]
-      #   args: ["chmod 600 /lotus/keystore/MF2XI2BNNJ3XILLQOJUXMYLUMU || chmod 600 /lotus/keystore/NRUWE4BSOAWWQ33TOQ || chmod 600 /lotus/token || :"]
-      #   volumeMounts:
-      #     - name: {{ .Release.Name }}-lotus-vol
-      #       mountPath: /lotus
       containers:
 {{- if .Values.Powergate.enabled }}
       - name: {{ .Chart.Name }}-powergate

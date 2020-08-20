@@ -1,4 +1,6 @@
-{{- if .Values.persistence.snapshots.automation.creation }}
+{{- if .Values.persistence.snapshots.enabled }}
+
+{{- if .Values.persistence.snapshots.automation.creation.enabled }}
 ---
 apiVersion: v1
 data:
@@ -46,7 +48,7 @@ spec:
               name: {{ .Release.Name }}-snapshot-cm
 {{- end }}
 
-{{- if .Values.persistence.snapshots.automation.deletion }}
+{{- if .Values.persistence.snapshots.automation.deletion.enabled }}
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -65,6 +67,7 @@ spec:
             command:
             - sh
             - -c
-            - export ITEMS=$(kubectl get --sort-by .metadata.creationTimestamp -n {{ .Release.Namespace }} --no-headers volumesnapshots | awk '/{{ .Release.Name }}-/{start}NR=={{ .Values.persistence.snapshots.automation.retain.count }}{print $1}') && if [ ! -z "$ITEMS" ]; then kubectl delete volumesnapshots $ITEMS; fi
+            - export ITEMS=$(kubectl get --sort-by .metadata.creationTimestamp -n {{ .Release.Namespace }} --no-headers volumesnapshots | awk '/{{ .Release.Name }}-/{start}NR=={{ .Values.persistence.snapshots.automation.deletion.retention.count }}{print $1}') && if [ ! -z "$ITEMS" ]; then kubectl delete volumesnapshots $ITEMS; fi
           restartPolicy: Never
+{{- end }}
 {{- end }}
