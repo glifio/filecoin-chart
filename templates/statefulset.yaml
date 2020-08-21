@@ -225,8 +225,7 @@ spec:
         resources:
             requests:
                 storage: {{ .Values.persistence.ipfs.size | quote }}
-        {{- if .Values.persistence.ipfs.storageClassName }}
-        {{- if (eq "-" .Values.persistence.ipfs.storageClassName) }}
+        {{- if not .Values.persistence.ipfs.storageClassName }}
         {{- if .Values.persistence.snapshots.enabled }}
         storageClassName: "ebs-sc"
         {{- else }}
@@ -234,7 +233,6 @@ spec:
         {{- end }}
         {{- else }}
         storageClassName: "{{ .Values.persistence.ipfs.storageClassName }}"
-        {{- end }}
         {{- end }}
     - metadata:
         name: vol-powergate
@@ -249,8 +247,7 @@ spec:
         resources:
             requests:
                 storage: {{ .Values.persistence.powergate.size | quote }}
-        {{- if .Values.persistence.powergate.storageClassName }}
-          {{- if (eq "-" .Values.persistence.powergate.storageClassName) }}
+        {{- if not .Values.persistence.powergate.storageClassName }}
             {{- if .Values.persistence.snapshots.enabled }}
         storageClassName: "ebs-sc"
             {{- else }}
@@ -258,6 +255,5 @@ spec:
             {{- end }}
           {{- else }}
         storageClassName: "{{ .Values.persistence.powergate.storageClassName }}"
-        {{- end }}
         {{- end }}
   {{- end }}
