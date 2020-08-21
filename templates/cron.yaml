@@ -12,7 +12,7 @@ data:
     spec:
       volumeSnapshotClassName: csi-aws-vsc
       source:
-        persistentVolumeClaimName: vol-{{ .Release.Name }}-lotus-0
+        persistentVolumeClaimName: vol-lotus-{{ .Release.Name }}-lotus-0
 kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-snapshot-cm
