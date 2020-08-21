@@ -66,7 +66,7 @@ spec:
             command:
             - sh
             - -c
-            - export ITEMS=$(kubectl get --sort-by .metadata.creationTimestamp -n {{ .Release.Namespace }} --no-headers volumesnapshots | awk '/{{ .Release.Name }}-/{print $1}' | awk '{start}NR=={{ add .Values.persistence.snapshots.automation.deletion.retention.count  1 }}{print $1}') && [ ! -z "$ITEMS" ] && kubectl delete volumesnapshots $ITEMS
+            - export ITEMS=$(kubectl get --sort-by .metadata.creationTimestamp -n {{ .Release.Namespace }} --no-headers volumesnapshots | awk '/{{ .Release.Name }}-/{print $1}' | awk '{start}NR=={{ add .Values.persistence.snapshots.automation.deletion.retention.count  1 }}{print $1}') && ([ ! -z "$ITEMS" ] && kubectl delete volumesnapshots $ITEMS || true)
           restartPolicy: Never
 {{- end }}
 {{- end }}
