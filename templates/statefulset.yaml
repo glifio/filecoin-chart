@@ -212,6 +212,7 @@ spec:
           kind: VolumeSnapshot
           apiGroup: snapshot.storage.k8s.io
         {{- end }}
+{{- if .Values.IPFS.enabled }}
     - metadata:
         name: vol-ipfs
         {{- range $key, $value := .Values.persistence.ipfs.annotations }}
@@ -234,6 +235,8 @@ spec:
         {{- else }}
         storageClassName: "{{ .Values.persistence.ipfs.storageClassName }}"
         {{- end }}
+{{- end }}
+{{- if .Values.Powergate.enabled }}
     - metadata:
         name: vol-powergate
         {{- range $key, $value := .Values.persistence.powergate.annotations }}
@@ -256,4 +259,5 @@ spec:
           {{- else }}
         storageClassName: "{{ .Values.persistence.powergate.storageClassName }}"
         {{- end }}
-  {{- end }}
+{{- end }}
+{{- end }}
