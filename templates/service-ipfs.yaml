@@ -1,3 +1,4 @@
+{{- if .Values.IPFS.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -17,4 +18,4 @@ spec:
     - protocol: TCP
       port: 8080
       name: web
- 
+{{- end }}

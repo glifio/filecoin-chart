@@ -1,3 +1,4 @@
+{{- if .Values.Powergate.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -23,3 +24,4 @@ spec:
     - protocol: TCP
       port: 6002
       name: webproxy
+{{- end }}
