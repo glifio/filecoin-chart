@@ -143,12 +143,6 @@ spec:
           value: "true"
         - name: LOTUS_CLIENT_IPFSMADDR
           value: "/dns4/127.0.0.1/tcp/5001"
-{{- if .Values.persistence.snapshots.uploadToIpfs }}
-        - name: LOTUS_EXPORT
-          value: "true"
-        - name: LOTUS_EXPORT_PATH
-          value: "/data/ipfs/chain.car"
-{{- end }}
 {{- end }}
         livenessProbe:
           httpGet:
