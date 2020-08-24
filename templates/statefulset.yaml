@@ -98,6 +98,8 @@ spec:
           value: "/root/.lotus/token"
         - name: POWD_REPOPATH
           value: "/root/powergate/.powergate"
+        - name: POWD_GATEWAYBASEPATH
+          value: "/{{ .Release.Name }}/powergate/7000/"
         volumeMounts:
           - name: vol-powergate
             mountPath: /root/powergate
