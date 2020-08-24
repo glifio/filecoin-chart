@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: openworklabs/lotus:v0.5.1
-  pullPolicy: IfNotPresent #Always
+  pullPolicy: Always
 
 imagePullSecrets: []
 nameOverride: ""
