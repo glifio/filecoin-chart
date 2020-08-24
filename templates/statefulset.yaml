@@ -17,8 +17,6 @@ spec:
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         heritage: {{ .Release.Service }}
         release: {{ .Release.Name }}
-      annotations:
-        sidecar.istio.io/inject: "true"
     spec:
 {{- if .Values.securityContext.runAsNonRoot }}
       securityContext:
@@ -43,7 +41,7 @@ spec:
         volumeMounts:
           - name: lotus-secret-vol
             mountPath: "/secret"
-          - name: vol
+          - name: vol-lotus
             mountPath: /lotus
 {{- end }}
 {{- if .Values.init.import.enabled }}
@@ -60,7 +58,7 @@ spec:
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-i"]
         volumeMounts:
-          - name: vol
+          - name: vol-lotus
             mountPath: /root/.lotus
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
@@ -70,51 +68,126 @@ spec:
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-s"]
         volumeMounts:
-          - name: vol
+          - name: vol-lotus
             mountPath: /root/.lotus
 {{- end }}
-      # - name: sanity
-      #   image: busybox
-      #   command: ["/bin/sh","-c"]
-      #   args: ["chmod 600 /lotus/keystore/MF2XI2BNNJ3XILLQOJUXMYLUMU || chmod 600 /lotus/keystore/NRUWE4BSOAWWQ33TOQ || chmod 600 /lotus/token || :"]
-      #   volumeMounts:
-      #     - name: {{ .Release.Name }}-lotus-vol
-      #       mountPath: /lotus
       containers:
+{{- if .Values.Powergate.enabled }}
+      - name: {{ .Chart.Name }}-powergate
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        image: textile/powergate
+        livenessProbe:
+          httpGet:
+            port: 7000
+          initialDelaySeconds: 90
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 6
+        ports:
+        - containerPort: 8889
+        - containerPort: 7000
+        - containerPort: 6060
+        - containerPort: 5002
+        - containerPort: 6002
+        env:
+        - name: POWD_LOTUSHOST
+          value: "/dns4/127.0.0.1/tcp/1234"
+        - name: POWD_IPFSAPIADDR
+          value: "/dns4/127.0.0.1/tcp/5001"
+        - name: POWD_LOTUSTOKENFILE
+          value: "/root/.lotus/token"
+        - name: POWD_REPOPATH
+          value: "/root/powergate/.powergate"
+        - name: POWD_GATEWAYBASEPATH
+          value: "/{{ .Release.Name }}/powergate/7000/"
+        volumeMounts:
+          - name: vol-powergate
+            mountPath: /root/powergate
+          - name: vol-lotus
+            mountPath: /root/.lotus
+        resources:
+{{ toYaml .Values.resources.powergate | indent 10 }}
+{{- end }}
+{{- if .Values.IPFS.enabled }}
+      - name: {{ .Chart.Name }}-ipfs
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        image: ipfs/go-ipfs
+        livenessProbe:
+          httpGet:
+            path: /webui
+            port: 5001
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 6
+        ports:
+        - containerPort: 4001
+        - containerPort: 5001
+        - containerPort: 8080
+          name: rpc
+        volumeMounts:
+          - name: vol-ipfs
+            mountPath: /data/ipfs
+        resources:
+{{ toYaml .Values.resources.ipfs | indent 10 }}
+{{- end }}
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-d"]
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+{{- if .Values.IPFS.enabled }}
+        env:
+        - name: LOTUS_CLIENT_USEIPFS
+          value: "true"
+        - name: LOTUS_CLIENT_IPFSUSEFORRETRIEVAL
+          value: "true"
+        - name: LOTUS_CLIENT_IPFSMADDR
+          value: "/dns4/127.0.0.1/tcp/5001"
+{{- if .Values.persistence.snapshots.uploadToIpfs }}
+        - name: LOTUS_EXPORT
+          value: "true"
+        - name: LOTUS_EXPORT_PATH
+          value: "/data/ipfs/chain.car"
+{{- end }}
+{{- end }}
         livenessProbe:
           httpGet:
             path: /debug/metrics
             port: api
           initialDelaySeconds: 90
           periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 6
         readinessProbe:
           httpGet:
             path: /debug/metrics
             port: api
           initialDelaySeconds: 120
           periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
         ports:
         - containerPort: 1234
           name: api
         - containerPort: 1235
           name: p2p
         volumeMounts:
-          - name: vol
+          - name: vol-lotus
             mountPath: /root/.lotus
         {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
         {{- end }}
+{{- if and .Values.IPFS.enabled .Values.persistence.snapshots.uploadToIpfs }}
+          - name: vol-ipfs
+            mountPath: /data/ipfs
+{{- end }}
         resources:
-{{ toYaml .Values.resources | indent 10 }}
+{{ toYaml .Values.resources.lotus | indent 10 }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
     - metadata:
-        name: vol
+        name: vol-lotus
         {{- range $key, $value := .Values.persistence.lotus.annotations }}
             {{ $key }}: {{ $value }}
         {{- end }}
@@ -126,11 +199,67 @@ spec:
         resources:
             requests:
                 storage: {{ .Values.persistence.lotus.size | quote }}
-        {{- if .Values.persistence.lotus.storageClassName }}
-        {{- if (eq "-" .Values.persistence.lotus.storageClassName) }}
+        {{- if not .Values.persistence.lotus.storageClassName }}
+        {{- if .Values.persistence.snapshots.enabled }}
+        storageClassName: "ebs-sc"
+        {{- else }}
         storageClassName: ""
+        {{- end }}
         {{- else }}
         storageClassName: "{{ .Values.persistence.lotus.storageClassName }}"
         {{- end }}
+        {{- if .Values.persistence.snapshots.restore.enabled }}
+        dataSource:
+          name: {{ .Values.persistence.snapshots.restore.name }}
+          kind: VolumeSnapshot
+          apiGroup: snapshot.storage.k8s.io
         {{- end }}
-  {{- end }}
+{{- if .Values.IPFS.enabled }}
+    - metadata:
+        name: vol-ipfs
+        {{- range $key, $value := .Values.persistence.ipfs.annotations }}
+            {{ $key }}: {{ $value }}
+        {{- end }}
+      spec:
+        accessModes:
+            {{- range .Values.persistence.ipfs.accessModes }}
+            - {{ . | quote }}
+            {{- end }}
+        resources:
+            requests:
+                storage: {{ .Values.persistence.ipfs.size | quote }}
+        {{- if not .Values.persistence.ipfs.storageClassName }}
+        {{- if .Values.persistence.snapshots.enabled }}
+        storageClassName: "ebs-sc"
+        {{- else }}
+        storageClassName: ""
+        {{- end }}
+        {{- else }}
+        storageClassName: "{{ .Values.persistence.ipfs.storageClassName }}"
+        {{- end }}
+{{- end }}
+{{- if .Values.Powergate.enabled }}
+    - metadata:
+        name: vol-powergate
+        {{- range $key, $value := .Values.persistence.powergate.annotations }}
+            {{ $key }}: {{ $value }}
+        {{- end }}
+      spec:
+        accessModes:
+            {{- range .Values.persistence.powergate.accessModes }}
+            - {{ . | quote }}
+            {{- end }}
+        resources:
+            requests:
+                storage: {{ .Values.persistence.powergate.size | quote }}
+        {{- if not .Values.persistence.powergate.storageClassName }}
+            {{- if .Values.persistence.snapshots.enabled }}
+        storageClassName: "ebs-sc"
+            {{- else }}
+        storageClassName: ""
+            {{- end }}
+          {{- else }}
+        storageClassName: "{{ .Values.persistence.powergate.storageClassName }}"
+        {{- end }}
+{{- end }}
+{{- end }}

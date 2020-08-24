@@ -1,0 +1,21 @@
+{{- if .Values.IPFS.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-ipfs-service
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: lotus-node-app
+    release: {{ .Release.Name }}
+  ports:
+    - protocol: TCP
+      port: 5001
+      name: ipfs
+    - protocol: TCP
+      port: 4001
+      name: ipfs4001
+    - protocol: TCP
+      port: 8080
+      name: web
+{{- end }}

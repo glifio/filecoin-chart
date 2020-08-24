@@ -1,0 +1,27 @@
+{{- if .Values.Powergate.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-powergate-service
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: lotus-node-app
+    release: {{ .Release.Name }}
+  ports:
+    - protocol: TCP
+      port: 7000
+      name: web
+    - protocol: TCP
+      port: 8889
+      name: powergate8889
+    - protocol: TCP
+      port: 6060
+      name: powergate6060
+    - protocol: TCP
+      port: 5002
+      name: grpc
+    - protocol: TCP
+      port: 6002
+      name: webproxy
+{{- end }}

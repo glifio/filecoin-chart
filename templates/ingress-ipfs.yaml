@@ -1,0 +1,33 @@
+{{- if .Values.IPFS.enabled }}
+{{- if .Values.ingress.ipfs.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress-ipfs
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$3
+{{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+{{- end }}
+{{- with .Values.ingress.ipfs.annotations }}
+    {{- toYaml . | nindent 4 }}
+{{- end }}
+spec:
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:    
+      paths:
+        - backend:
+            serviceName: {{ .Release.Name }}-ipfs-service
+            servicePort: 4001
+          path: /{{ .Release.Name }}/ipfs/(4001)(/|$)(.*)
+        - backend:
+            serviceName: {{ .Release.Name }}-ipfs-service
+            servicePort: 5001
+          path: /{{ .Release.Name }}/ipfs/(5001|ipfs)(/|$)(.*)
+        - backend:
+            serviceName: {{ .Release.Name }}-ipfs-service
+            servicePort: 8080
+          path: /{{ .Release.Name }}/ipfs/(web|8080)(/|$)(.*)
+{{- end }}
+{{- end }}
