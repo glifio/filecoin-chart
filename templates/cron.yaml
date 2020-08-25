@@ -14,7 +14,7 @@ spec:
           serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
           initContainers:
           - name: export
-            image: bitname/kubectl
+            image: bitnami/kubectl
             args:
             - exec
             - -n {{ .Release.Namespace }} 
