@@ -1,5 +1,5 @@
 {{- if .Values.persistence.snapshots.enabled }}
-{{- if .Values.persistence.snapshots.uploadToIpfs }}
+{{- if and .Values.IPFS.enabled .Values.persistence.snapshots.uploadToIpfs.enabled }}
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -7,10 +7,13 @@ metadata:
   name: {{ .Release.Name }}-internal-snapshot-creator
 spec:
   schedule: "0 0 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
         spec:
+          restartPolicy: "Never"
           serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
           initContainers:
           - name: exporter
@@ -24,7 +27,7 @@ spec:
             - lotus
             - chain
             - export 
-            - /data/ipfs/lotus-new.car  
+            - /data/ipfs/lotus-new.car
           containers:
           - name: sharer
             image: bitnami/kubectl
@@ -36,8 +39,28 @@ spec:
             - --
             - sh
             - -c
-            - mkdir -p /data/ipfs/snapshots && mv /data/ipfs/lotus-new.car /data/ipfs/snapshots/lotus.car && ipfs add -r /data/ipfs/snapshots
-          restartPolicy: Never
+            - mkdir -p /data/ipfs/snapshots && mv /data/ipfs/lotus-new.car /data/ipfs/snapshots/lotus.car && ipfs add /data/ipfs/snapshots/lotus.car > /data/ipfs/snapshots/snapshot.log
+{{- if .Values.persistence.snapshots.uploadToIpfs.shareToGist.enabled }}
+          - name: gitter
+            image: bitnami/kubectl
+            volumeMounts:
+              - name: lotus-secret-vol
+                mountPath: "/secret"
+            env:
+            - name: GIT_SSH_COMMAND
+              value: ssh -i /secret/ssh -o IdentitiesOnly=yes
+            securityContext:
+             runAsUser: 0
+            command:
+            - sh
+            - -c 
+            - kubectl exec {{ .Release.Name }}-lotus-0 -c filecoin -- sh -c 'while true; do if [ -f "/data/ipfs/snapshots/snapshot.log" ]; then cat /data/ipfs/snapshots/snapshot.log && break; else sleep 5s; fi; done' > /tmp/snapshot.log && apt update -y && apt install git -y && mkdir -p /root/.ssh && ssh-keyscan -t rsa gist.github.com >> /root/.ssh/known_hosts && git clone {{ .Values.persistence.snapshots.uploadToIpfs.shareToGist.address }} /tmp/snapshots && cp /tmp/snapshot.log /tmp/snapshots/snapshot.log && cd /tmp/snapshots && git config user.name "{{ .Values.persistence.snapshots.uploadToIpfs.shareToGist.authorName }}" && git config user.email "{{ .Values.persistence.snapshots.uploadToIpfs.shareToGist.authorEmail }}" && git commit -a -m "new export" && git push && kubectl exec {{ .Release.Name }}-lotus-0 -c filecoin -- sh -c "rm /data/ipfs/snapshots/snapshot.log"
+          volumes:
+          - name: lotus-secret-vol
+            secret:
+              secretName: {{ .Release.Name }}-lotus-secret
+              defaultMode: 384  
+{{- end }}
 {{- end }}
 {{- if .Values.persistence.snapshots.automation.creation.enabled }}
 ---
@@ -64,10 +87,13 @@ metadata:
   name: {{ .Release.Name }}-snapshot-creator
 spec:
   schedule: "0 0 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
         spec:
+          restartPolicy: "Never"
           serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
           containers:
           - name: creator
@@ -80,7 +106,6 @@ spec:
             - name: {{ .Release.Name }}-snapshot-cm
               mountPath: "/tmp/creator"
               readOnly: true
-          restartPolicy: Never
           volumes:
           - name: {{ .Release.Name }}-snapshot-cm
             configMap:
@@ -95,10 +120,13 @@ metadata:
   name: {{ .Release.Name }}-snapshot-deleter
 spec:
   schedule: "0 1 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
         spec:
+          restartPolicy: "Never"
           serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
           containers:
           - name: deleter
@@ -107,6 +135,5 @@ spec:
             - sh
             - -c
             - export ITEMS=$(kubectl get --sort-by .metadata.creationTimestamp -n {{ .Release.Namespace }} --no-headers volumesnapshots | awk '/{{ .Release.Name }}-/{print $1}' | awk '{start}NR=={{ add .Values.persistence.snapshots.automation.deletion.retention.count  1 }}{print $1}') && ([ ! -z "$ITEMS" ] && kubectl delete volumesnapshots $ITEMS || true)
-          restartPolicy: Never
 {{- end }}
 {{- end }}

@@ -106,7 +106,13 @@ resources:
 persistence:
   enabled: true
   snapshots:
-    uploadToIpfs: true
+    uploadToIpfs: 
+      enabled: true
+      shareToGist: 
+        enabled: true
+        address: git@gist.github.com:d03393d1f6e70e089e9e8d18922474f6.git
+        authorName: Protofire Bot
+        authorEmail: openworklabbot@gmail.com
     enabled: true 
     automation:
       creation:
