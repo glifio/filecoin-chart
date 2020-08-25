@@ -13,15 +13,18 @@ spec:
         spec:
           serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
           initContainers:
-          - name: export
+          - name: exporter
             image: bitnami/kubectl
             args:
             - exec
-            - -n {{ .Release.Namespace }} 
-            - {{ .Release.Name }} 
-            - -c filecoin 
+            - {{ .Release.Name }}-lotus-0 
+            - -c 
+            - filecoin 
             - --
-            - lotus export /data/ipfs/lotus-new.car  
+            - lotus
+            - chain
+            - export 
+            - /data/ipfs/lotus-new.car  
           containers:
           - name: sharer
             image: bitnami/kubectl
