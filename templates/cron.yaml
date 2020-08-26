@@ -13,25 +13,30 @@ spec:
         spec:
           serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
           initContainers:
-          - name: export
-            image: bitname/kubectl
+          - name: exporter
+            image: bitnami/kubectl
             args:
             - exec
-            - -n {{ .Release.Namespace }} 
-            - {{ .Release.Name }} 
-            - -c filecoin 
+            - {{ .Release.Name }}-lotus-0 
+            - -c 
+            - filecoin 
             - --
-            - lotus export /data/ipfs/lotus-new.car  
+            - lotus
+            - chain
+            - export 
+            - /data/ipfs/lotus-new.car  
           containers:
           - name: sharer
             image: bitnami/kubectl
             args:
             - exec
-            - -n {{ .Release.Namespace }}              
-            - {{ .Release.Name }}
-            - -c filecoin-ipfs
+            - {{ .Release.Name }}-lotus-0
+            - -c 
+            - filecoin-ipfs
             - --
-            - mkdir -p /data/ipfs/snapshots && mv /data/ipfs/lotus-new.car /data/ipfs/snapshots/lotus.car && ipfs add -r /data/ipfs/snapshots && ipfs pin -r /data/ipfs/snapshots
+            - sh
+            - -c
+            - mkdir -p /data/ipfs/snapshots && mv /data/ipfs/lotus-new.car /data/ipfs/snapshots/lotus.car && ipfs add -r /data/ipfs/snapshots
           restartPolicy: Never
 {{- end }}
 {{- if .Values.persistence.snapshots.automation.creation.enabled }}
