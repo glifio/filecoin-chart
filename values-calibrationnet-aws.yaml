@@ -127,7 +127,10 @@ Powergate:
 IPFS:
   enabled: true
   
-nodeSelector: {}
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    role: worker
 
 tolerations: []
 
