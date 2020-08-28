@@ -178,6 +178,10 @@ spec:
 {{- end }}
         resources:
 {{ toYaml .Values.resources.lotus | indent 10 }}
+{{- if .Values.nodeSelector.enabled }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector.nodeLabel | indent 8 }}
+{{- end }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
     - metadata:
