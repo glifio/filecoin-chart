@@ -119,7 +119,9 @@ To automate snapshot operations operator can set `persistence.snapshots.automati
 
 In case you want to create the new release based on existing snapshot one can set `persistence.snapshots.automation.restore.enabled` to `true`. In that case Lotus PV will be created based on snapshot named `persistence.snapshots.automation.restore.name`. Note that Snapshot should exist in the very same namespace where the release is deployed.
 
-## Lotus JWT
+## Persistent Secrets
+
+### Lotus JWT
 
 If you need to do a full reinstall (uninstall chart, delete persistent volume, reinstall chart) of a Lotus node, the node's data will be erased. This means your node will lose its JWT, which will break existing clients relying on the API. To persist your Lotus JWT for reuse through multiple installations, enable `secretVolume.enabled`, and put the node's JWT into a secret:
 
@@ -127,10 +129,14 @@ If you need to do a full reinstall (uninstall chart, delete persistent volume, r
 ## Cat node01's JWT into a file
 kubectl -n filecoin exec -it node01-lotus-0 cat root/.lotus/token > token
 ## Take the file and put it into a secret
-kubectl -n filecoin create secret generic lotus-token-secret --from-file=token=token
+kubectl -n filecoin create secret generic node01-lotus-secret --from-file=token=token
 ```
 
 More information on generating a JWT for authenticating requests [here](https://docs.lotu.sh/en+api-scripting-support).
+
+### SSH
+
+You can also include your private `ssh` key into the installed persistent secret to allow Charts to authorize and push update about exported snapshot to the Gist when `persistence.snapshots.uploadToIpfs.shareToGist` is set. Use `ssh` as key in `<release_name>-lotus-secret` and base64 encoded private SSH key as value. 
 
 ## License
 

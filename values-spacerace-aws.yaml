@@ -104,7 +104,8 @@ resources:
 persistence:
   enabled: true
   snapshots:
-    uploadToIpfs: false
+    uploadToIpfs:
+      enabled: false
     enabled: true 
     automation:
       creation:

@@ -105,7 +105,13 @@ persistence:
   enabled: true
   snapshots:
 # If uploadToIpfs is set to true the internal Lotus snapshot will be created and uploaded to the IPFS system. Note that IPFS must be nenabled in that case
-    uploadToIpfs: true
+    uploadToIpfs:
+      enabled: false
+      shareToGist:
+        enabled: false
+        #address: https://gist.github.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6
+        #authorEmail: 
+        #authorName: Protofire Bot
 # If snapshots are enabled - the PV will be deployed with ebs-sc class unless custom class is specified
     enabled: true
 # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.

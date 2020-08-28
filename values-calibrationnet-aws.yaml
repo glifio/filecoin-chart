@@ -96,7 +96,8 @@ resources: {}
 persistence:
   enabled: true
   snapshots:
-    uploadToIpfs: true
+    uploadToIpfs: 
+      enabled: true
     enabled: true
     automation:
       deletion: 

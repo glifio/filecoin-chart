@@ -172,7 +172,7 @@ spec:
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
         {{- end }}
-{{- if and .Values.IPFS.enabled .Values.persistence.snapshots.uploadToIpfs }}
+{{- if and .Values.IPFS.enabled .Values.persistence.snapshots.uploadToIpfs.enabled }}
           - name: vol-ipfs
             mountPath: /data/ipfs
 {{- end }}
