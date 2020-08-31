@@ -22,7 +22,7 @@ spec:
             - exec
             - {{ .Release.Name }}-lotus-0 
             - -c 
-            - filecoin 
+            - {{ .Chart.Name }} 
             - --
             - lotus
             - chain
