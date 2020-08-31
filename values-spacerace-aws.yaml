@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:v0.5.4-custom
+  repository: openworklabs/lotus:v0.5.6-custom
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -43,6 +43,7 @@ ingress:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
     nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
     nginx.ingress.kubernetes.io/enable-modsecurity: "true"
     nginx.ingress.kubernetes.io/modsecurity-snippet: |
@@ -51,10 +52,11 @@ ingress:
     # nginx.ingress.kubernetes.io/server-alias: "_"
   lotus:
     enabled: true
-#    annotations: 
-#      nginx.ingress.kubernetes.io/configuration-snippet: |
-#        proxy_set_header Authorization "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.O58UONXPKPhtadDxr--MM3P6r8QeQoDySBJXAtlXeJU";
-#      nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
+    annotations:
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        proxy_set_header Authorization ""; 
+        proxy_cache_bypass      $http_upgrade;
+      nginx.ingress.kubernetes.io/whitelist-source-range: "0.0.0.0/0"
   ipfs:
     enabled: false
   powergate:
@@ -72,7 +74,7 @@ init:
       #    claimName: efs-claim
 
 secretVolume:
-  enabled: false
+  enabled: true
 
 resources: 
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -81,11 +83,11 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   lotus:
     requests:
-      cpu: 1000m
-      memory: 3Gi
-    limits:
-      cpu: 1800m
+      cpu: 3000m
       memory: 6Gi
+    limits:
+      cpu: 7500m
+      memory: 8Gi
   ipfs:
     requests:
       cpu: 500m
@@ -115,8 +117,8 @@ persistence:
         retention:
           count: 2
     restore:
-      enabled: false
-      name: snapshottest 
+      enabled: true
+      name: space02-j9dgc 
   ## Filecoin data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning

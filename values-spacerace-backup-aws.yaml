@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:v0.5.4-custom
+  repository: openworklabs/lotus:v0.5.6-custom
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -83,17 +83,17 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   lotus:
     requests:
-      cpu: 1000m
-      memory: 3Gi
-    limits:
-      cpu: 1800m
+      cpu: 3000m
       memory: 6Gi
+    limits:
+      cpu: 7500m
+      memory: 8Gi
   ipfs:
     requests:
-      cpu: 1000m
+      cpu: 1500m
       memory: 2Gi
     limits:
-      cpu: 1800m
+      cpu: 2500m
       memory: 4Gi
   powergate:
     requests:
@@ -122,8 +122,8 @@ persistence:
         retention:
           count: 7
     restore:
-      enabled: false
-      name: snapshottest 
+      enabled: true
+      name: space04-96cxq 
   ## Filecoin data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
