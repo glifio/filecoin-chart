@@ -53,7 +53,8 @@ ingress:
     enabled: true
     annotations: 
       nginx.ingress.kubernetes.io/configuration-snippet: |
-        proxy_set_header Authorization ""; 
+        proxy_set_header Authorization "";
+        proxy_cache_bypass      $http_upgrade;
       nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
   ipfs:
     enabled: false

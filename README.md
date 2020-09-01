@@ -119,6 +119,13 @@ To automate snapshot operations operator can set `persistence.snapshots.automati
 
 In case you want to create the new release based on existing snapshot one can set `persistence.snapshots.automation.restore.enabled` to `true`. In that case Lotus PV will be created based on snapshot named `persistence.snapshots.automation.restore.name`. Note that Snapshot should exist in the very same namespace where the release is deployed.
 
+### Internal snapshots
+
+One can setup `persistence.snapshots.uploadToIpfs.enabled` to `true` to make an automated cronjob that will take chain snapshots on a daily basis using `lotus chain export` command, and import the exported `.car` file into IPFS system. Note that IPFS must be running for `persistence.snapshots.uploadToIpfs.enabled` to take any effect.
+Also `persistence.snapshots.uploadToIpfs.shareToGist` can be configured to automatically refresh the IPFS hash of the exported `.car` at the GitHub Gist. Note that the job will need an access to this Gist. To provide the job with the credentials use secret described in the [persistent secrets](#persistent-secret) section and add `ssh` key to Kubernetes Secret with base64-encoded private key content.
+
+Note: You must use SSH URL in `persistence.snapshots.uploadToIpfs.shareToGist.address` so the `git push` command used inside of the job could use the provided ssh key to access the Gist.
+
 ## Persistent Secrets
 
 ### Lotus JWT

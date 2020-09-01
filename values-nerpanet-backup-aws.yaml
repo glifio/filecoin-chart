@@ -53,7 +53,7 @@ ingress:
   lotus:
     enabled: true
   ipfs:
-    enabled: false
+    enabled: true
   powergate:
     enabled: false
 
@@ -102,23 +102,23 @@ persistence:
   enabled: true
   snapshots:
     uploadToIpfs:
-      enabled: false
+      enabled: true
       shareToGist:
-       enabled: false
+       enabled: true
        address: https://gist.github.com/openworklabbot/d32543d42ed318f6dfde516c3d8668a0
        authorEmail: openworklabbot@gmail.com
        authorName: Protofire Bot 
-    enabled: true
+    enabled: true 
     automation:
       creation:
         enabled: true
       deletion: 
         enabled: true
         retention:
-          count: 2
+          count: 4
     restore:
       enabled: false
-      name: nerpa00-kb2dx 
+      name: space02-j9dgc 
   ## Filecoin data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -144,7 +144,7 @@ Powergate:
   enabled: false
 
 IPFS:
-  enabled: false
+  enabled: true
   
 nodeSelector:
   enabled: true
