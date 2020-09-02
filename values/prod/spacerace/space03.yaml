@@ -29,6 +29,9 @@ persistence:
         cron: "0 9 * * *"
       deletion:
         cron: "0 10 * * *"
+    restore:
+      enabled: true
+      name: space06-2ktfv
   enabled: true 
   lotus:
     size: "100Gi"

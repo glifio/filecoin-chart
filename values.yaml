@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: openworklabs/lotus:ntwk-calibration-8.8.0
-  pullPolicy: IfNotPresent #Always
+  pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""

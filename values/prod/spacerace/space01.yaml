@@ -20,6 +20,9 @@ persistence:
         cron: "0 3 * * *"
       deletion:
         cron: "0 4 * * *"
+    restore:
+      enabled: true
+      name: space05-fln8w
   enabled: true
   lotus:
     size: "100Gi"
