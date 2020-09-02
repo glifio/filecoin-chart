@@ -109,6 +109,7 @@ persistence:
       enabled: false
       shareToGist:
         enabled: false
+        cron: "0 0 * * *"
         #address: https://gist.github.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6
         #authorEmail: 
         #authorName: Protofire Bot
@@ -117,10 +118,12 @@ persistence:
 # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
     automation:
       deletion: 
+        cron: "0 0 * * *"
         enabled: true
         retention:
           count: 2
       creation:
+        cron: "0 0 * * *"
         enabled: true
 # If restore is enabled the snapshot name must be specified. Charts will attempt to find the existing snapshot with this name and create a PV from that snapshot.
     restore: 

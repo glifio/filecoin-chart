@@ -119,7 +119,7 @@ kind: CronJob
 metadata:
   name: {{ .Release.Name }}-snapshot-deleter
 spec:
-  schedule: {{ .Values.persistence.snapshots.autmation.deletion.cron | default "0 1 * * *" }}
+  schedule: {{ .Values.persistence.snapshots.automation.deletion.cron | default "0 1 * * *" }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
