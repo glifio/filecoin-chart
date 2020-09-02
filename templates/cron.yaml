@@ -6,7 +6,7 @@ kind: CronJob
 metadata:
   name: {{ .Release.Name }}-internal-snapshot-creator
 spec:
-  schedule: "0 0 * * *"
+  schedule: {{ .Values.persistence.snapshots.uploadToIpfs.cron | default "0 0 * * *" }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
@@ -86,7 +86,7 @@ kind: CronJob
 metadata:
   name: {{ .Release.Name }}-snapshot-creator
 spec:
-  schedule: "0 0 * * *"
+  schedule: {{ .Values.persistence.snapshots.automation.creation.cron | default "0 0 * * *" }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
@@ -119,7 +119,7 @@ kind: CronJob
 metadata:
   name: {{ .Release.Name }}-snapshot-deleter
 spec:
-  schedule: "0 1 * * *"
+  schedule: {{ .Values.persistence.snapshots.autmation.deletion.cron | default "0 1 * * *" }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:

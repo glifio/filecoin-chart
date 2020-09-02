@@ -1,0 +1,54 @@
+image:
+  repository: openworklabs/lotus:ntwk-nerpa-8.28.0
+ingress:
+  enabled: true
+  host: dev.node.glif.io
+  lotus:
+    enabled: true
+  ipfs:
+    enabled: true
+secretVolume:
+  enabled: true
+resources: 
+  lotus:
+    requests:
+      cpu: 1000m
+      memory: 3Gi
+    limits:
+      cpu: 1900m
+      memory: 5Gi
+  ipfs:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+persistence:
+  enabled: true
+  snapshots:
+    uploadToIpfs:
+      enabled: true
+      shareToGist:
+       enabled: true
+       address: https://gist.github.com/openworklabbot/d32543d42ed318f6dfde516c3d8668a0
+       authorEmail: openworklabbot@gmail.com
+       authorName: Protofire Bot 
+    enabled: true 
+    automation:
+      creation:
+        enabled: true
+      deletion: 
+        enabled: true
+        retention:
+          count: 4
+  lotus:
+    size: "10Gi"
+    accessModes:
+      - ReadWriteOnce
+  ipfs:
+    size: "10Gi"
+    accessModes:
+      - ReadWriteOnce
+IPFS:
+  enabled: true 

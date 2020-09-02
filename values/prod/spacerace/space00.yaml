@@ -1,0 +1,70 @@
+replicaCount: 1
+image:
+  repository: openworklabs/lotus:v0.5.7-custom
+  pullPolicy: Always
+ingress:
+  lotus:
+    enabled: true
+    annotations: 
+      nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
+  ipfs:
+    enabled: true
+    annotations: 
+      nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
+secretVolume:
+  enabled: true 
+resources: 
+  lotus:
+    requests:
+      cpu: 3000m
+      memory: 6Gi
+    limits:
+      cpu: 7500m
+      memory: 8Gi
+  ipfs:
+    requests:
+      cpu: 1500m
+      memory: 2Gi
+    limits:
+      cpu: 2500m
+      memory: 4Gi
+persistence:
+  enabled: true
+  snapshots:
+    uploadToIpfs:
+      cron: "0 0 * * *" 
+      enabled: true
+      shareToGist: 
+        enabled: true
+        address: git@gist.github.com:d03393d1f6e70e089e9e8d18922474f6.git
+        authorName: Protofire Bot
+        authorEmail: openworklabbot@gmail.com
+    enabled: true 
+    automation:
+      creation:
+        enabled: true
+        cron: "0 0 * * *" 
+      deletion: 
+        enabled: true
+        cron: "0 1 * * *"
+        retention:
+          count: 7
+    restore:
+      enabled: true
+      name: space04-96cxq 
+  lotus:
+    size: "100Gi"
+    accessModes:
+      - ReadWriteOnce
+  ipfs:
+    size: "100Gi"
+    accessModes:
+      - ReadWriteOnce
+Powergate:
+  enabled: false
+IPFS:
+  enabled: true
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    role: worker

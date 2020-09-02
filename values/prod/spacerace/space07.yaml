@@ -1,0 +1,36 @@
+replicaCount: 1
+image:
+  repository: openworklabs/lotus:v0.5.7-custom
+ingress:
+  enabled: true
+  host: node.glif.io
+  lotus:
+    enabled: true
+    annotations: 
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        proxy_set_header Authorization $space07_jwt;
+        proxy_cache_bypass      $http_upgrade;
+      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
+      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+secretVolume:
+  enabled: true 
+resources: 
+  lotus:
+    requests:
+      cpu: 3000m
+      memory: 10Gi
+    limits:
+      cpu: 7500m
+      memory: 14Gi
+persistence:
+  snapshots:
+    automation:
+      creation:
+        cron: "0 21 * * *"
+      deletion:
+        cron: "0 22 * * *"
+  enabled: true
+  lotus:
+    size: "100Gi"
+    accessModes:
+      - ReadWriteOnce
