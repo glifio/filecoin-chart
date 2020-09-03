@@ -1,0 +1,27 @@
+ingress:
+  lotus:
+    annotations: 
+      nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
+  ipfs:
+    enabled: true
+    annotations: 
+      nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
+persistence:
+  snapshots:
+    uploadToIpfs:
+      cron: "0 0 * * *" 
+      enabled: true
+      shareToGist: 
+        enabled: true
+        address: git@gist.github.com:d03393d1f6e70e089e9e8d18922474f6.git
+        authorName: Protofire Bot
+        authorEmail: openworklabbot@gmail.com
+    automation:
+      deletion: 
+        retention:
+          count: 7
+    restore:
+      enabled: true
+      name: space03-trslw 
+IPFS:
+  enabled: true

@@ -1,0 +1,11 @@
+persistence:
+  enabled: true
+  snapshots:
+    automation:
+      creation:
+        cron: "0 18 * * *"
+      deletion:
+        cron: "0 19 * * *"
+    restore:
+      enabled: true
+      name: space02-j9dgc

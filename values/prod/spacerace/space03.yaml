@@ -1,0 +1,18 @@
+ingress:
+  lotus:
+    annotations: 
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        proxy_set_header Authorization $space03_jwt;
+        proxy_cache_bypass      $http_upgrade;
+      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
+      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+persistence:
+  snapshots:
+    automation:
+      creation:
+        cron: "0 9 * * *"
+      deletion:
+        cron: "0 10 * * *"
+    restore:
+      enabled: true
+      name: space06-2ktfv
