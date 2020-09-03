@@ -78,27 +78,27 @@ resources: {}
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-#  lotus:
-#    requests:
-#      cpu: 800m
-#      memory: 3Gi
-#    limits:
-#      cpu: 2500m
-#      memory: 6Gi
-#  ipfs:
-#    requests:
-#      cpu: 1000m
-#      memory: 2Gi
-#    limits:
-#      cpu: 3000m
-#      memory: 3Gi
-#  powergate:
-#    requests:
-#      cpu: 1000m
-#      memory: 2Gi
-#    limits:
-#      cpu: 2000m
-#      memory: 3Gi
+  lotus:
+    requests:
+      cpu: 2000m
+      memory: 3Gi
+    limits:
+      cpu: 4000m
+      memory: 6Gi
+  ipfs:
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+    limits:
+      cpu: 3000m
+      memory: 3Gi
+  powergate:
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+    limits:
+      cpu: 2000m
+      memory: 3Gi
 
 persistence:
 # If persistence is set to false no persistent volumes will be created

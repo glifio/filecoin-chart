@@ -81,10 +81,10 @@ resources: {}
   lotus:
     requests:
       cpu: 3000m
-      memory: 3Gi
+      memory: 10Gi
     limits:
       cpu: 7500m
-      memory: 6Gi
+      memory: 14Gi
   ipfs:
     requests:
       cpu: 1500m
