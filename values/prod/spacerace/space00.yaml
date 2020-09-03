@@ -16,11 +16,12 @@ persistence:
         address: git@gist.github.com:d03393d1f6e70e089e9e8d18922474f6.git
         authorName: Protofire Bot
         authorEmail: openworklabbot@gmail.com
+    automation:
       deletion: 
         retention:
           count: 7
     restore:
       enabled: true
-      name: space04-96cxq 
+      name: space03-trslw 
 IPFS:
   enabled: true
