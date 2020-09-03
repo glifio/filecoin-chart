@@ -1,5 +1,4 @@
 persistence:
-  enabled: true
   snapshots:
     automation:
       creation:
@@ -8,4 +7,4 @@ persistence:
         cron: "0 19 * * *"
     restore:
       enabled: true
-      name: space02-j9dgc
+      name: space05-vrl52
