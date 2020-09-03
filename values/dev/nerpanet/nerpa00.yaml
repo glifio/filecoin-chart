@@ -1,31 +1,7 @@
-image:
-  repository: openworklabs/lotus:ntwk-nerpa-8.28.0
 ingress:
-  enabled: true
-  host: dev.node.glif.io
-  lotus:
-    enabled: true
   ipfs:
     enabled: true
-secretVolume:
-  enabled: true
-resources: 
-  lotus:
-    requests:
-      cpu: 1000m
-      memory: 3Gi
-    limits:
-      cpu: 1900m
-      memory: 5Gi
-  ipfs:
-    requests:
-      cpu: 500m
-      memory: 1Gi
-    limits:
-      cpu: 1000m
-      memory: 2Gi
 persistence:
-  enabled: true
   snapshots:
     uploadToIpfs:
       enabled: true
@@ -42,13 +18,5 @@ persistence:
         enabled: true
         retention:
           count: 4
-  lotus:
-    size: "10Gi"
-    accessModes:
-      - ReadWriteOnce
-  ipfs:
-    size: "10Gi"
-    accessModes:
-      - ReadWriteOnce
 IPFS:
   enabled: true 

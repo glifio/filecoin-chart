@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:ntwk-calibration-8.8.0
-  pullPolicy: IfNotPresent
+  repository: openworklabs/lotus:ntwk-nerpa-8.28.0
+  pullPolicy: Always
 
 imagePullSecrets: []
 nameOverride: ""
@@ -36,7 +36,7 @@ service:
 
 ingress:
   enabled: true
-  host: node.glif.io
+  host: dev.node.glif.io
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -71,7 +71,7 @@ init:
       #    claimName: efs-claim
 
 secretVolume:
-  enabled: false
+  enabled: true
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -131,20 +131,17 @@ persistence:
       #name: snapshot-blah
 # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "200Gi"
-    #    storageClassName: gp2
+    size: "10Gi"
     accessModes:
       - ReadWriteOnce
-#  ipfs:
-#    size: "200Gi"
-#    storageClassName: gp2
-#    accessModes:
-#      - ReadWriteOnce
-#  powergate:
-#    size: "200Gi"
-#    storageClassName: gp2
-#    accessModes:
-#      - ReadWriteOnce
+  ipfs:
+    size: "10Gi"
+    accessModes:
+      - ReadWriteOnce
+  powergate:
+    size: "10Gi"
+    accessModes:
+      - ReadWriteOnce
 
 # Defines whether Powergate should be deployed with Lotus node. Note that IPFS must be enabled if Powergate is enabled.
 Powergate:
