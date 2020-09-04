@@ -7,10 +7,4 @@ persistence:
         cron: "0 19 * * *"
     restore:
       enabled: true
-      name: space05-vrl52
-resources:
-  lotus:
-    requests:
-      memory: 7Gi
-    limits:
-      memory: 9Gi
+      name: space03-j5htv
