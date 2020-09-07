@@ -113,7 +113,7 @@ persistence:
 # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
     automation:
       deletion: 
-        cron: "0 0 * * *"
+        cron: "0 1 * * *"
         enabled: true
         retention:
           count: 2
