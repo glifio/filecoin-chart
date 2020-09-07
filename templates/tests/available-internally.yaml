@@ -9,7 +9,7 @@ metadata:
 spec:
   containers:
     - name: available-internally
-      image: busybox
+      image: curlimages/curl
       command: ['curl']
       args:
       - --fail
