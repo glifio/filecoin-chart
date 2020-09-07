@@ -29,11 +29,6 @@ securityContext:
   runAsNonRoot: false
   runAsUser: 1000
 
-service:
-  type: ClusterIP
-  port: 1234
-  targetPort: 1234
-
 ingress:
   enabled: true
   host: node.glif.io
