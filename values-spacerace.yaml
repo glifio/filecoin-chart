@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:v0.5.10-custom
+  repository: openworklabs/lotus:v0.5.10-dev
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -36,7 +36,7 @@ service:
 
 ingress:
   enabled: true
-  host: node.glif.io
+  host: dev.node.glif.io
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -71,7 +71,7 @@ init:
       #    claimName: efs-claim
 
 secretVolume:
-  enabled: true
+  enabled: false
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -81,10 +81,10 @@ resources:
   lotus:
     requests:
       cpu: 3000m
-      memory: 10Gi
+      memory: 6Gi
     limits:
       cpu: 7500m
-      memory: 14Gi
+      memory: 8Gi
   ipfs:
     requests:
       cpu: 1500m
@@ -114,7 +114,7 @@ persistence:
         #authorEmail: 
         #authorName: Protofire Bot
 # If snapshots are enabled - the PV will be deployed with ebs-sc class unless custom class is specified
-    enabled: true
+    enabled: enable
 # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
     automation:
       deletion: 

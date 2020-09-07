@@ -145,13 +145,15 @@ spec:
           value: "/dns4/127.0.0.1/tcp/5001"
 {{- end }}
         livenessProbe:
-          httpGet:
-            path: /debug/metrics
-            port: api
+          exec:
+            command:
+              - /bin/sh
+              - -c
+              - /bin/healthcheck
           initialDelaySeconds: 150
-          periodSeconds: 10
+          periodSeconds: 120
           successThreshold: 1
-          timeoutSeconds: 6
+          timeoutSeconds: 30
         readinessProbe:
           httpGet:
             path: /debug/metrics
