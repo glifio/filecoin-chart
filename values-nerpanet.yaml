@@ -80,15 +80,15 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   lotus:
     requests:
-      cpu: 2000m
+      cpu: 1000m
       memory: 3Gi
     limits:
-      cpu: 4000m
-      memory: 6Gi
+      cpu: 1900m
+      memory: 5Gi
   ipfs:
     requests:
-      cpu: 1000m
-      memory: 2Gi
+      cpu: 500m
+      memory: 1Gi
     limits:
       cpu: 3000m
       memory: 3Gi
@@ -118,7 +118,7 @@ persistence:
 # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
     automation:
       deletion: 
-        cron: "0 0 * * *"
+        cron: "0 1 * * *"
         enabled: true
         retention:
           count: 2
