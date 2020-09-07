@@ -50,18 +50,3 @@ Selector labels
 app.kubernetes.io/name: {{ include "chart.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
-
-{{/*
-Create a name for the service to use.
-
-We allow overrides for name of service, since this service provides an API that could be directly
-called by end-users. For example, you could call it 'ipfs' and then all users running in a namespace
-could just connect to it by specifying 'ipfs'.
-*/}}
-{{- define "chart.servicename" -}}
-{{- if .Values.service.nameOverride -}}
-{{- .Values.service.nameOverride -}}
-{{- else -}}
-{{- template "chart.fullname" . }}
-{{- end -}}
-{{- end -}}

@@ -26,7 +26,8 @@ spec:
             - --
             - lotus
             - chain
-            - export 
+            - export
+            - --recent-stateroots=900 
             - /data/ipfs/lotus-new.car
           containers:
           - name: sharer
@@ -134,6 +135,6 @@ spec:
             command:
             - sh
             - -c
-            - export ITEMS=$(kubectl get --sort-by .metadata.creationTimestamp -n {{ .Release.Namespace }} --no-headers volumesnapshots | awk '/{{ .Release.Name }}-/{print $1}' | awk '{start}NR=={{ add .Values.persistence.snapshots.automation.deletion.retention.count  1 }}{print $1}') && ([ ! -z "$ITEMS" ] && kubectl delete volumesnapshots $ITEMS || true)
+            - export ITEMS=$(kubectl get --sort-by .metadata.creationTimestamp -n {{ .Release.Namespace }} --no-headers volumesnapshots | awk '/{{ .Release.Name }}-/{print $1}' | head -n -{{ add .Values.persistence.snapshots.automation.deletion.retention.count }}) && ([ ! -z "$ITEMS" ] && kubectl delete volumesnapshots $ITEMS || true)
 {{- end }}
 {{- end }}
