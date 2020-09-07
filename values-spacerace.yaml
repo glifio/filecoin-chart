@@ -131,15 +131,15 @@ persistence:
       #name: snapshot-blah
 # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "100Gi"
+    size: "150Gi"
     accessModes:
       - ReadWriteOnce
   ipfs:
-    size: "100Gi"
+    size: "150Gi"
     accessModes:
       - ReadWriteOnce
   powergate:
-    size: "100Gi"
+    size: "150Gi"
     accessModes:
       - ReadWriteOnce
 
