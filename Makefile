@@ -1,42 +1,15 @@
 all: lint package
+NODE = nodename
 
-install:
-	helm upgrade --install filecoin .
-
-upgrade:
-	helm upgrade --install filecoin . 
+## lotus nodes management
+nodedelete:
+	helm -n spacerace delete $(NODE)
+	kubectl -n spacerace delete pvc vol-lotus-$(NODE)-lotus-0
+nodeinstall:
+	helm upgrade --install -f values-spacerace.yaml -f values/prod/spacerace/$(NODE).yaml $(NODE) -n spacerace .
 
 minikube-upgrade:
 	helm upgrade --install -f values.yaml -f values-minikube.yaml filecoin . 
-
-interop-aws-upgrade:
-	helm upgrade --install --namespace interopnet -f values.yaml -f values-interopnet-aws.yaml node01 .
-	helm upgrade --install --namespace interopnet -f values.yaml -f values-interopnet-aws.yaml node02 .
-	helm upgrade --install --namespace interopnet -f values.yaml -f values-interopnet-aws.yaml node03 .
-	helm upgrade --install --namespace interopnet -f values.yaml -f values-interopnet-aws.yaml node04 .
-	helm upgrade --install --namespace interopnet -f values.yaml -f values-interopnet-aws.yaml node05 .
-	helm upgrade --install --namespace interopnet -f values.yaml -f values-interopnet-aws.yaml node06 .
-	helm upgrade --install --namespace interopnet -f values.yaml -f values-interopnet-aws.yaml node07 .
-
-aws-delete-pods:
-	kubectl -n interopnet delete po node01-lotus-0
-	kubectl -n interopnet delete po node02-lotus-0
-	kubectl -n interopnet delete po node03-lotus-0
-	kubectl -n interopnet delete po node04-lotus-0
-	kubectl -n interopnet delete po node05-lotus-0
-	kubectl -n interopnet delete po node06-lotus-0
-	kubectl -n interopnet delete po node07-lotus-0
-
-interop-aws-reset:
-	kubectl -n interopnet delete sts $(NODE)-lotus
-	kubectl -n interopnet delete pvc vol-$(NODE)-lotus-0
-	helm upgrade --install --namespace interopnet -f values.yaml -f values-interopnet-aws.yaml $(NODE) .
-
-interop-aws-install:
-	helm upgrade --install --dry-run --namespace interopnet -f values.yaml -f values-interopnet-aws.yaml $(NODE) .
-
-uninstall:
-	helm uninstall filecoin
 
 lint:
 	helm lint .
@@ -66,4 +39,3 @@ log-nginx:
 
 conf-nginx:
 	kubectl exec -it -n ingress-nginx nginx-ingress-controller-948ffd8cc-6g57p cat /etc/nginx/nginx.conf
-
