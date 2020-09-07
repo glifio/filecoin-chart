@@ -26,7 +26,8 @@ spec:
             - --
             - lotus
             - chain
-            - export 
+            - export
+            - --recent-stateroots=900 
             - /data/ipfs/lotus-new.car
           containers:
           - name: sharer
