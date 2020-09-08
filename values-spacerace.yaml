@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:v0.5.10-custom
+  repository: openworklabs/lotus:v0.6.0-custom
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -122,8 +122,8 @@ persistence:
         enabled: true
 # If restore is enabled the snapshot name must be specified. Charts will attempt to find the existing snapshot with this name and create a PV from that snapshot.
     restore: 
-      enabled: false
-      #name: snapshot-blah
+      enabled: true
+      name: space00-qxjm6
 # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
     size: "150Gi"

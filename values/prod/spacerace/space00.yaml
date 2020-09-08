@@ -20,8 +20,5 @@ persistence:
       deletion: 
         retention:
           count: 7
-    restore:
-      enabled: true
-      name: space03-trslw 
 IPFS:
   enabled: true
