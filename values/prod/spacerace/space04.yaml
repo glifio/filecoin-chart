@@ -13,3 +13,6 @@ persistence:
         cron: "0 12 * * *"
       deletion:
         cron: "0 13 * * *"
+    restore:
+      enabled: true
+      name: space00-qxjm6

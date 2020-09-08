@@ -20,5 +20,8 @@ persistence:
       deletion: 
         retention:
           count: 7
+    restore:
+      enabled: true
+      name: space00-qxjm6
 IPFS:
   enabled: true

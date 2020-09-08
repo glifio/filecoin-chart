@@ -122,8 +122,8 @@ persistence:
         enabled: true
 # If restore is enabled the snapshot name must be specified. Charts will attempt to find the existing snapshot with this name and create a PV from that snapshot.
     restore: 
-      enabled: true
-      name: space00-qxjm6
+      enabled: false
+      #name: snapshot-blah
 # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
     size: "150Gi"
