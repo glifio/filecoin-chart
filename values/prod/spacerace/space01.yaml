@@ -2,9 +2,9 @@ persistence:
   snapshots:
     automation:
       creation:
-        cron: "0 3 * * *"
+        cron: "0 */5 * * *"
       deletion:
         cron: "0 4 * * *"
     restore:
       enabled: true
-      name: space05-fln8w
+      name: space00-qxjm6

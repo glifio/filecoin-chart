@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:v0.5.10-custom
+  repository: openworklabs/lotus:v0.6.0-custom
   pullPolicy: Always
 
 imagePullSecrets: []

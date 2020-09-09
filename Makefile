@@ -1,5 +1,5 @@
 all: lint package
-NODE = nodename
+NODE = space02
 
 ## lotus nodes management
 nodedelete:
@@ -7,18 +7,18 @@ nodedelete:
 	kubectl -n spacerace delete pvc vol-lotus-$(NODE)-lotus-0
 nodeinstall:
 	helm upgrade --install -f values-spacerace.yaml -f values/prod/spacerace/$(NODE).yaml $(NODE) -n spacerace .
-
-minikube-upgrade:
-	helm upgrade --install -f values.yaml -f values-minikube.yaml filecoin . 
+nodedry:
+	helm upgrade --install -f values-spacerace.yaml -f values/prod/spacerace/$(NODE).yaml $(NODE) -n spacerace --dry-run .
 
 lint:
 	helm lint .
 
 package:
 	helm package .
+## minikube options
 
-dry-run:
-	helm upgrade --install --dry-run --debug filecoin .
+minikube-upgrade:
+	helm upgrade --install -f values.yaml -f values-minikube.yaml filecoin .
 
 minikube-dry-run:
 	helm upgrade --install --dry-run --debug -f values.yaml -f values-minikube.yaml filecoin .

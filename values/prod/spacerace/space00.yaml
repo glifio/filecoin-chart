@@ -22,6 +22,6 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space03-trslw 
+      name: space00-qxjm6
 IPFS:
   enabled: true
