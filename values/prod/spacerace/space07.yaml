@@ -1,0 +1,10 @@
+persistence:
+  snapshots:
+    automation:
+      creation:
+        cron: "0 17 * * *"
+      deletion:
+        cron: "0 18 * * *"
+    restore:
+      enabled: true
+      name: space04-5c8sj
