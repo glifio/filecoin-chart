@@ -53,6 +53,8 @@ ingress:
     enabled: false
   powergate:
     enabled: false
+  statediff:
+    enabled: false
 
 init:
   sync:
@@ -94,6 +96,13 @@ resources:
     limits:
       cpu: 3000m
       memory: 4Gi
+  statediff:
+    requests:
+      cpu: 100m
+      memory: 200Mi
+    limits:
+      cpu: 250m
+      memory: 400Mi   
 
 persistence:
 # If persistence is set to false no persistent volumes will be created
@@ -145,7 +154,10 @@ Powergate:
 # Defines whether IPFS should be deployed with Lotus node.
 IPFS:
   enabled: false
-  
+
+StateDiff:
+  enabled: false
+
 nodeSelector:
   enabled: true
   nodeLabel:
