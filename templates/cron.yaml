@@ -133,7 +133,7 @@ spec:
           - name: deleter
             image: bitnami/kubectl
             command:
-            - sh
+            - bash
             - -c
             - export ITEMS=$(kubectl get --sort-by .metadata.creationTimestamp -n {{ .Release.Namespace }} --no-headers volumesnapshots | awk '/{{ .Release.Name }}-/{print $1}' | head -n -{{ add .Values.persistence.snapshots.automation.deletion.retention.count }}) && ([ ! -z "$ITEMS" ] && kubectl delete volumesnapshots $ITEMS || true)
 {{- end }}
