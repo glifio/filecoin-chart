@@ -1,3 +1,8 @@
+StateDiff:
+  enabled: true
+ingress:
+  statediff:
+    enabled: true
 persistence:
   snapshots:
     automation:

@@ -126,9 +126,6 @@ spec:
         ports:
         - containerPort: 33333
           name: rpc
-        volumeMounts:
-          - name: vol-ipfs
-            mountPath: /data/ipfs
         resources:
 {{ toYaml .Values.resources.ipfs | indent 10 }}
 {{- end }}
