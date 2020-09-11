@@ -113,6 +113,9 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         image: filecoin/stateexplorer:latest
         args:
+          - explore
+          - --bind 
+          - 0.0.0.0:33333
           - --api
           - :/ip4/127.0.0.1/tcp/1234/http
         livenessProbe:
