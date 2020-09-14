@@ -7,7 +7,7 @@ persistence:
         cron: "0 19 * * *"
     restore:
       enabled: true
-      name: space08-7h6sf
+      name: space05-5bv6d
 resources:
   lotus:
     requests:
