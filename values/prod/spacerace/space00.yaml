@@ -1,3 +1,5 @@
+image:
+  repository: openworklabs/lotus:latest
 ingress:
   lotus:
     annotations: 
