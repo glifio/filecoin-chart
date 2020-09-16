@@ -180,7 +180,11 @@ spec:
           httpGet:
             path: /debug/metrics
             port: api
-          initialDelaySeconds: 150
+{{- if and .Values.IPFS.enabled (eq .Values.persistence.snapshots.uploadToIpfs.export "shed") }}
+          initialDelaySeconds: 1200
+{{- else }}
+          initialDelaySeconds: 200
+{{- end }}
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 6
