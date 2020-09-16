@@ -15,6 +15,7 @@ spec:
         spec:
           restartPolicy: "Never"
           serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
+{{- if eq .Values.persistence.snapshots.uploadToIpfs.export "true" }}
           initContainers:
           - name: exporter
             image: bitnami/kubectl
@@ -29,6 +30,7 @@ spec:
             - export
             - --recent-stateroots=900 
             - /data/ipfs/lotus-new.car
+{{- end }}
           containers:
           - name: sharer
             image: bitnami/kubectl

@@ -159,14 +159,22 @@ spec:
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-d"]
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-{{- if .Values.IPFS.enabled }}
         env:
+{{- if .Values.IPFS.enabled }}
         - name: LOTUS_CLIENT_USEIPFS
           value: "true"
         - name: LOTUS_CLIENT_IPFSUSEFORRETRIEVAL
           value: "true"
         - name: LOTUS_CLIENT_IPFSMADDR
           value: "/dns4/127.0.0.1/tcp/5001"
+{{- end }}
+{{- if and .Values.IPFS.enabled (eq .Values.persistence.snapshots.uploadToIpfs.export "shed") }}
+        - name: SHEDEXPORT
+          value: "true"
+        - name: SHEDEXPORTPATH
+          value: "/data/ipfs/lotus-new.car"
+        - name: SHEDEXPORTPERIOD
+          value: "{{ .Values.persistence.snapshots.uploadToIpfs.shedPeriod }}" 
 {{- end }}
         livenessProbe:
           httpGet:
