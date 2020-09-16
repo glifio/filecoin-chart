@@ -7,4 +7,4 @@ persistence:
         cron: "0 4 * * *"
     restore:
       enabled: true
-      name: space00-qxjm6
+      name: space08-bsg5l
