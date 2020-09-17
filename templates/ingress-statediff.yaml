@@ -20,6 +20,6 @@ spec:
         - backend:
             serviceName: {{ .Release.Name }}-statediff-service
             servicePort: 33333
-          path: /{{ .Release.Name }}/statediff/(33333|rpc)(/|$)(.*)
+          path: /{{ .Release.Name }}/statediff(/)?(33333|rpc)?(/|$)?(.*)
 {{- end }}
 {{- end }}
