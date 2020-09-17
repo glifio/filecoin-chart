@@ -111,7 +111,7 @@ persistence:
 # If uploadToIpfs is set to true the internal Lotus snapshot will be created and uploaded to the IPFS system. Note that IPFS must be nenabled in that case
     uploadToIpfs:
       enabled: false
-      export: true
+      export: hot
       # shedPeriod: 6h
       shareToGist:
         enabled: false

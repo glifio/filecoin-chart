@@ -169,7 +169,7 @@ spec:
         - name: LOTUS_CLIENT_IPFSMADDR
           value: "/dns4/127.0.0.1/tcp/5001"
 {{- end }}
-{{- if and .Values.IPFS.enabled (eq .Values.persistence.snapshots.uploadToIpfs.export "shed") }}
+{{- if and .Values.IPFS.enabled (eq .Values.persistence.snapshots.uploadToIpfs.export "cold") }}
         - name: SHEDEXPORT
           value: "true"
         - name: SHEDEXPORTPATH
@@ -177,7 +177,7 @@ spec:
         - name: SHEDEXPORTPERIOD
           value: "{{ .Values.persistence.snapshots.uploadToIpfs.shedPeriod }}" 
 {{- end }}
-{{- if ne .Values.persistence.snapshots.uploadToIpfs.export "shed" }}
+{{- if ne .Values.persistence.snapshots.uploadToIpfs.export "cold" }}
         livenessProbe:
           httpGet:
             path: /debug/metrics

@@ -15,7 +15,7 @@ spec:
         spec:
           restartPolicy: "Never"
           serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
-{{- if eq .Values.persistence.snapshots.uploadToIpfs.export "true" }}
+{{- if eq .Values.persistence.snapshots.uploadToIpfs.export "hot" }}
           initContainers:
           - name: exporter
             image: bitnami/kubectl
