@@ -8,14 +8,14 @@ resources:
       memory: 30Gi
   ipfs:
     requests:
-      cpu: 900m
+      cpu: 800m
       memory: 2Gi
     limits:
       cpu: 3000m
       memory: 4Gi
   powergate:
     requests:
-      cpu: 900m
+      cpu: 800m
       memory: 2Gi
     limits:
       cpu: 3000m

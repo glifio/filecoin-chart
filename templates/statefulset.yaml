@@ -78,6 +78,7 @@ spec:
         image: textile/powergate
         livenessProbe:
           httpGet:
+            path: /{{ .Release.Name }}/powergate/7000
             port: 7000
           initialDelaySeconds: 150
           periodSeconds: 10
@@ -130,7 +131,7 @@ spec:
         - containerPort: 33333
           name: rpc
         resources:
-{{ toYaml .Values.resources.ipfs | indent 10 }}
+{{ toYaml .Values.resources.statediff | indent 10 }}
 {{- end }}
 {{- if .Values.IPFS.enabled }}
       - name: {{ .Chart.Name }}-ipfs
