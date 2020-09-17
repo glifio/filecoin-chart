@@ -114,6 +114,8 @@ persistence:
       enabled: false
       shareToGist:
         enabled: false
+        # shedPeriod: 6h
+        export: true
         cron: "0 0 * * *"
         #address: https://gist.github.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6
         #authorEmail: 

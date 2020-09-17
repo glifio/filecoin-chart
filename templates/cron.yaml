@@ -15,6 +15,7 @@ spec:
         spec:
           restartPolicy: "Never"
           serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
+{{- if eq .Values.persistence.snapshots.uploadToIpfs.export "true" }}
           initContainers:
           - name: exporter
             image: bitnami/kubectl
@@ -29,6 +30,7 @@ spec:
             - export
             - --recent-stateroots=900 
             - /data/ipfs/lotus-new.car
+{{- end }}
           containers:
           - name: sharer
             image: bitnami/kubectl
@@ -40,7 +42,7 @@ spec:
             - --
             - sh
             - -c
-            - mkdir -p /data/ipfs/snapshots && mv /data/ipfs/lotus-new.car /data/ipfs/snapshots/lotus.car && ipfs add /data/ipfs/snapshots/lotus.car > /data/ipfs/snapshots/snapshot.log
+            - while true; do if ! [[ `pgrep -x "lotus-shed"` ]] && [ -s "/data/ipfs/lotus-new.car" ]; then mkdir -p /data/ipfs/snapshots && mv /data/ipfs/lotus-new.car /data/ipfs/snapshots/lotus.car && ipfs add /data/ipfs/snapshots/lotus.car > /data/ipfs/snapshots/snapshot.log && break; else sleep 60s; fi; done
 {{- if .Values.persistence.snapshots.uploadToIpfs.shareToGist.enabled }}
           - name: gitter
             image: bitnami/kubectl
