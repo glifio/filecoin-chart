@@ -42,7 +42,7 @@ spec:
             - --
             - sh
             - -c
-            - if [ -s "/data/ipfs/lotus-new.car" ]; then mkdir -p /data/ipfs/snapshots && mv /data/ipfs/lotus-new.car /data/ipfs/snapshots/lotus.car && ipfs add /data/ipfs/snapshots/lotus.car > /data/ipfs/snapshots/snapshot.log; fi
+            - while true; do if ! [[ `pgrep -x "lotus-shed"` ]] && [ -s "/data/ipfs/lotus-new.car" ]; then mkdir -p /data/ipfs/snapshots && mv /data/ipfs/lotus-new.car /data/ipfs/snapshots/lotus.car && ipfs add /data/ipfs/snapshots/lotus.car > /data/ipfs/snapshots/snapshot.log && break; else sleep 60s; fi; done
 {{- if .Values.persistence.snapshots.uploadToIpfs.shareToGist.enabled }}
           - name: gitter
             image: bitnami/kubectl
