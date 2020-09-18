@@ -179,7 +179,7 @@ spec:
 {{- end }}
 {{- if ne .Values.persistence.snapshots.uploadToIpfs.export "cold" }}
         livenessProbe:
-<<<<<<< HEAD
+  {{- if .Values.healthcheck.enabled }}
           exec:
             command:
               - /bin/bash
@@ -189,7 +189,7 @@ spec:
           periodSeconds: 120
           successThreshold: 1
           timeoutSeconds: 30
-=======
+  {{- else }}
           httpGet:
             path: /debug/metrics
             port: api
@@ -197,8 +197,8 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 6
+  {{- end }}
 {{- end }}
->>>>>>> master
         readinessProbe:
           httpGet:
             path: /debug/metrics

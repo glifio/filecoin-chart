@@ -5,11 +5,7 @@
 replicaCount: 1
 
 image:
-<<<<<<< HEAD
-  repository: openworklabs/lotus:v0.5.10-dev
-=======
   repository: openworklabs/lotus:v0.7.0-custom
->>>>>>> master
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -72,7 +68,7 @@ init:
       #    claimName: efs-claim
 
 secretVolume:
-  enabled: false
+  enabled: true
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -82,17 +78,11 @@ resources:
   lotus:
     requests:
       cpu: 3000m
-<<<<<<< HEAD
-      memory: 6Gi
-    limits:
-      cpu: 7500m
-      memory: 8Gi
-=======
+
       memory: 16Gi
     limits:
       cpu: 7500m
       memory: 30Gi
->>>>>>> master
   ipfs:
     requests:
       cpu: 1500m
@@ -131,7 +121,7 @@ persistence:
         #authorEmail: 
         #authorName: Protofire Bot
 # If snapshots are enabled - the PV will be deployed with ebs-sc class unless custom class is specified
-    enabled: enable
+    enabled: true
 # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
     automation:
       deletion: 
@@ -179,3 +169,6 @@ nodeSelector:
 tolerations: []
 
 affinity: {}
+
+healthcheck:
+  enabled: true
