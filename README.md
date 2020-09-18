@@ -83,7 +83,7 @@ The [values file](https://github.com/openworklabs/filecoin-chart/blob/master/val
 
 ## Configuration options
 
-These are our emphasized config options. For a full list, see the [values file](https://github.com/openworklabs/filecoin-chart/blob/master/values.yaml).
+These are our emphasized config options. For a full list, see the [values files](https://github.com/openworklabs/filecoin-chart/blob/master/values-spacerace.yaml).
 
 | Parameter | Description | Default |
 |-----------|-----------------------------------------|---------|
@@ -98,6 +98,7 @@ These are our emphasized config options. For a full list, see the [values file](
 | `ingress.annotations` | Defines annotations for general ingress | See [values.yaml](values.yaml) |
 | `ingress.<service>.enabled` | Enables ingress for particular service. | `true` |
 | `ingress.<service>.annotations` | Defines annotations for particular service. Please read comments in `values.yaml` file to check the annotations that should be set to enable firewall-based access instead of JWT-based. | `<unset>` |
+| `healthcheck.enabled` | If you want to use custom lotus storage node healthcheck. | `<true>` |
 | `resources.<service>.requests.cpu` | The amount of vCPU (per service). | `<unset>` |
 | `resources.<service>.requests.memory` | The amount of memory (per service). | `<unset>` |
 | `resources.<service>.limit.cpu` | The ceiling amount of vCPU (per service). | `<unset>` |
