@@ -13,6 +13,8 @@ persistence:
     uploadToIpfs:
       cron: "0 */6 * * *" 
       enabled: true
+      export: cold
+      shedPeriod: 6h
       shareToGist: 
         enabled: true
         address: git@gist.github.com:d03393d1f6e70e089e9e8d18922474f6.git

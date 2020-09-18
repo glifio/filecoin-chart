@@ -1,0 +1,62 @@
+resources:
+  lotus:
+    requests:
+      cpu: 2000m
+      memory: 16Gi
+    limits:
+      cpu: 7500m
+      memory: 30Gi
+  ipfs:
+    requests:
+      cpu: 800m
+      memory: 2Gi
+    limits:
+      cpu: 3000m
+      memory: 4Gi
+  powergate:
+    requests:
+      cpu: 800m
+      memory: 2Gi
+    limits:
+      cpu: 3000m
+      memory: 4Gi
+  statediff:
+    requests:
+      cpu: 100m
+      memory: 200Mi
+    limits:
+      cpu: 250m
+      memory: 400Mi   
+ingress:
+  lotus:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/whitelist-source-range: 82.209.244.50/32
+  ipfs:
+    annotations:
+      nginx.ingress.kubernetes.io/whitelist-source-range: 82.209.244.50/32
+    enabled: true
+  powergate:
+    annotations:
+      nginx.ingress.kubernetes.io/whitelist-source-range: 82.209.244.50/32
+    enabled: true
+  statediff:
+    annotations:
+      nginx.ingress.kubernetes.io/whitelist-source-range: 82.209.244.50/32
+    enabled: true
+persistence:
+  snapshots:
+    automation:
+      creation:
+        cron: "0 20 * * *"
+      deletion:
+        cron: "0 21 * * *"
+    restore:
+      enabled: true
+      name: space02-xn866
+IPFS:
+  enabled: true
+Powergate:
+  enabled: true
+StateDiff:
+  enabled: true  
