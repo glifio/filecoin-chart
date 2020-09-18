@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:ntwk-nerpa-8.28.0
+  repository: openworklabs/lotus:ntwk-nerpa-9.15.0
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -112,6 +112,7 @@ persistence:
 # If uploadToIpfs is set to true the internal Lotus snapshot will be created and uploaded to the IPFS system. Note that IPFS must be nenabled in that case
     uploadToIpfs:
       enabled: false
+      export: hot
       shareToGist:
         enabled: false
         # shedPeriod: 6h
@@ -169,3 +170,6 @@ nodeSelector:
 tolerations: []
 
 affinity: {}
+
+healthcheck:
+  enabled: false

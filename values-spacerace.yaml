@@ -78,6 +78,7 @@ resources:
   lotus:
     requests:
       cpu: 3000m
+
       memory: 16Gi
     limits:
       cpu: 7500m
@@ -168,3 +169,7 @@ nodeSelector:
 tolerations: []
 
 affinity: {}
+
+healthcheck:
+  enabled: true
+  
