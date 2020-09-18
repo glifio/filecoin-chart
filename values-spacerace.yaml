@@ -5,7 +5,11 @@
 replicaCount: 1
 
 image:
+<<<<<<< HEAD
   repository: openworklabs/lotus:v0.5.10-dev
+=======
+  repository: openworklabs/lotus:v0.7.0-custom
+>>>>>>> master
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -28,11 +32,6 @@ securityContext:
   readOnlyRootFilesystem: true
   runAsNonRoot: false
   runAsUser: 1000
-
-service:
-  type: ClusterIP
-  port: 1234
-  targetPort: 1234
 
 ingress:
   enabled: true
@@ -58,6 +57,8 @@ ingress:
     enabled: false
   powergate:
     enabled: false
+  statediff:
+    enabled: false
 
 init:
   sync:
@@ -81,10 +82,17 @@ resources:
   lotus:
     requests:
       cpu: 3000m
+<<<<<<< HEAD
       memory: 6Gi
     limits:
       cpu: 7500m
       memory: 8Gi
+=======
+      memory: 16Gi
+    limits:
+      cpu: 7500m
+      memory: 30Gi
+>>>>>>> master
   ipfs:
     requests:
       cpu: 1500m
@@ -99,6 +107,13 @@ resources:
     limits:
       cpu: 3000m
       memory: 4Gi
+  statediff:
+    requests:
+      cpu: 100m
+      memory: 200Mi
+    limits:
+      cpu: 250m
+      memory: 400Mi   
 
 persistence:
 # If persistence is set to false no persistent volumes will be created
@@ -107,6 +122,8 @@ persistence:
 # If uploadToIpfs is set to true the internal Lotus snapshot will be created and uploaded to the IPFS system. Note that IPFS must be nenabled in that case
     uploadToIpfs:
       enabled: false
+      export: hot
+      # shedPeriod: 6h
       shareToGist:
         enabled: false
         cron: "0 0 * * *"
@@ -118,7 +135,7 @@ persistence:
 # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
     automation:
       deletion: 
-        cron: "0 0 * * *"
+        cron: "0 1 * * *"
         enabled: true
         retention:
           count: 2
@@ -131,15 +148,15 @@ persistence:
       #name: snapshot-blah
 # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "100Gi"
+    size: "250Gi"
     accessModes:
       - ReadWriteOnce
   ipfs:
-    size: "100Gi"
+    size: "150Gi"
     accessModes:
       - ReadWriteOnce
   powergate:
-    size: "100Gi"
+    size: "150Gi"
     accessModes:
       - ReadWriteOnce
 
@@ -150,7 +167,10 @@ Powergate:
 # Defines whether IPFS should be deployed with Lotus node.
 IPFS:
   enabled: false
-  
+
+StateDiff:
+  enabled: false
+
 nodeSelector:
   enabled: true
   nodeLabel:

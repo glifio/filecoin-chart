@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:ntwk-nerpa-8.28.0
+  repository: openworklabs/lotus:ntwk-nerpa-9.15.0
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -28,11 +28,6 @@ securityContext:
   readOnlyRootFilesystem: true
   runAsNonRoot: false
   runAsUser: 1000
-
-service:
-  type: ClusterIP
-  port: 1234
-  targetPort: 1234
 
 ingress:
   enabled: true
@@ -58,6 +53,8 @@ ingress:
     enabled: false
   powergate:
     enabled: false
+  statediff:
+    enabled: false
 
 init:
   sync:
@@ -80,15 +77,15 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   lotus:
     requests:
-      cpu: 2000m
+      cpu: 1000m
       memory: 3Gi
     limits:
-      cpu: 4000m
-      memory: 6Gi
+      cpu: 1900m
+      memory: 5Gi
   ipfs:
     requests:
-      cpu: 1000m
-      memory: 2Gi
+      cpu: 500m
+      memory: 1Gi
     limits:
       cpu: 3000m
       memory: 3Gi
@@ -99,6 +96,14 @@ resources:
     limits:
       cpu: 2000m
       memory: 3Gi
+  statediff:
+    requests:
+      cpu: 100m
+      memory: 200Mi
+    limits:
+      cpu: 250m
+      memory: 400Mi
+
 
 persistence:
 # If persistence is set to false no persistent volumes will be created
@@ -109,6 +114,8 @@ persistence:
       enabled: false
       shareToGist:
         enabled: false
+        # shedPeriod: 6h
+        export: true
         cron: "0 0 * * *"
         #address: https://gist.github.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6
         #authorEmail: 
@@ -118,7 +125,7 @@ persistence:
 # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
     automation:
       deletion: 
-        cron: "0 0 * * *"
+        cron: "0 1 * * *"
         enabled: true
         retention:
           count: 2
@@ -149,6 +156,9 @@ Powergate:
 
 # Defines whether IPFS should be deployed with Lotus node.
 IPFS:
+  enabled: false
+
+StateDiff:
   enabled: false
   
 nodeSelector:

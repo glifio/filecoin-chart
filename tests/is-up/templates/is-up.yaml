@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-is-up"
+  annotations:
+    "helm.sh/hook": test
+spec:
+  serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
+  containers:
+    - name: is-up
+      image: bitnami/kubectl
+      args:
+      - get
+      - po
+      - {{ .Release.Name }}-lotus-0 
+      - -o 
+      - jsonpath={.status.phase} 
+  restartPolicy: Never

@@ -6,7 +6,7 @@ metadata:
     app: lotus-node-app
 spec:
   replicas: {{ .Values.replicaCount }}
-  serviceName: {{ template "chart.servicename" . }}
+  serviceName: {{ .Release.Name }}-lotus-service
   selector:
     matchLabels:
       app: lotus-node-app
@@ -78,6 +78,7 @@ spec:
         image: textile/powergate
         livenessProbe:
           httpGet:
+            path: /{{ .Release.Name }}/powergate/7000
             port: 7000
           initialDelaySeconds: 150
           periodSeconds: 10
@@ -99,7 +100,7 @@ spec:
         - name: POWD_REPOPATH
           value: "/root/powergate/.powergate"
         - name: POWD_GATEWAYBASEPATH
-          value: "/{{ .Release.Name }}/powergate/7000/"
+          value: "/{{ .Release.Name }}/powergate/7000"
         volumeMounts:
           - name: vol-powergate
             mountPath: /root/powergate
@@ -107,6 +108,30 @@ spec:
             mountPath: /root/.lotus
         resources:
 {{ toYaml .Values.resources.powergate | indent 10 }}
+{{- end }}
+{{- if .Values.StateDiff.enabled }}
+      - name: {{ .Chart.Name }}-statediff
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        image: filecoin/stateexplorer:latest
+        args:
+          - explore
+          - --bind 
+          - 0.0.0.0:33333
+          - --api
+          - :/ip4/127.0.0.1/tcp/1234/http
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 33333
+          initialDelaySeconds: 200
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 6
+        ports:
+        - containerPort: 33333
+          name: rpc
+        resources:
+{{ toYaml .Values.resources.statediff | indent 10 }}
 {{- end }}
 {{- if .Values.IPFS.enabled }}
       - name: {{ .Chart.Name }}-ipfs
@@ -135,8 +160,8 @@ spec:
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-d"]
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-{{- if .Values.IPFS.enabled }}
         env:
+{{- if .Values.IPFS.enabled }}
         - name: LOTUS_CLIENT_USEIPFS
           value: "true"
         - name: LOTUS_CLIENT_IPFSUSEFORRETRIEVAL
@@ -144,7 +169,17 @@ spec:
         - name: LOTUS_CLIENT_IPFSMADDR
           value: "/dns4/127.0.0.1/tcp/5001"
 {{- end }}
+{{- if and .Values.IPFS.enabled (eq .Values.persistence.snapshots.uploadToIpfs.export "cold") }}
+        - name: SHEDEXPORT
+          value: "true"
+        - name: SHEDEXPORTPATH
+          value: "/data/ipfs/lotus-new.car"
+        - name: SHEDEXPORTPERIOD
+          value: "{{ .Values.persistence.snapshots.uploadToIpfs.shedPeriod }}" 
+{{- end }}
+{{- if ne .Values.persistence.snapshots.uploadToIpfs.export "cold" }}
         livenessProbe:
+<<<<<<< HEAD
           exec:
             command:
               - /bin/bash
@@ -154,6 +189,16 @@ spec:
           periodSeconds: 120
           successThreshold: 1
           timeoutSeconds: 30
+=======
+          httpGet:
+            path: /debug/metrics
+            port: api
+          initialDelaySeconds: 200
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 6
+{{- end }}
+>>>>>>> master
         readinessProbe:
           httpGet:
             path: /debug/metrics

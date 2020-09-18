@@ -1,3 +1,5 @@
+image:
+  repository: openworklabs/lotus:latest
 ingress:
   lotus:
     annotations: 
@@ -9,8 +11,10 @@ ingress:
 persistence:
   snapshots:
     uploadToIpfs:
-      cron: "0 0 * * *" 
+      cron: "0 */6 * * *" 
       enabled: true
+      export: cold
+      shedPeriod: 6h
       shareToGist: 
         enabled: true
         address: git@gist.github.com:d03393d1f6e70e089e9e8d18922474f6.git
@@ -22,6 +26,6 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space03-trslw 
+      name: space05-5bv6d
 IPFS:
   enabled: true

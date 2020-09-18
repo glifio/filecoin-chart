@@ -1,18 +1,30 @@
-ingress:
+resources:
   lotus:
-    annotations: 
-      nginx.ingress.kubernetes.io/configuration-snippet: |
-        proxy_set_header Authorization $space07_jwt;
-        proxy_cache_bypass      $http_upgrade;
-      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
-      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    requests:
+      cpu: 2500m
+      memory: 16Gi
+    limits:
+      cpu: 7500m
+      memory: 30Gi
+  statediff:
+    requests:
+      cpu: 100m
+      memory: 200Mi
+    limits:
+      cpu: 250m
+      memory: 400Mi   
+StateDiff:
+  enabled: true
+ingress:
+  statediff:
+    enabled: true
 persistence:
   snapshots:
     automation:
       creation:
-        cron: "0 21 * * *"
+        cron: "0 17 * * *"
       deletion:
-        cron: "0 22 * * *"
+        cron: "0 18 * * *"
     restore:
       enabled: true
-      name: space06-bnxbk 
+      name: space05-5bv6d

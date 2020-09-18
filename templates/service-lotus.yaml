@@ -6,15 +6,15 @@ metadata:
     app: lotus-node-app
   annotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "{{ .Values.service.targetPort }}"
+    prometheus.io/port: "1234"
     prometheus.io/path: /debug/metrics
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   selector:
     app: lotus-node-app
     release: {{ .Release.Name }}
   ports:
     - protocol: TCP
-      port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.targetPort }}
+      port: 1234
+      targetPort: 1234
       name: tcp-api

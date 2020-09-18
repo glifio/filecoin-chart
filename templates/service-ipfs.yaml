@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-ipfs-service
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP 
   selector:
     app: lotus-node-app
     release: {{ .Release.Name }}

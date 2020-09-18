@@ -15,4 +15,4 @@ persistence:
         cron: "0 13 * * *"
     restore:
       enabled: true
-      name: space06-2ktfv
+      name: space05-5bv6d

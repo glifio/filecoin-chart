@@ -8,9 +8,3 @@ persistence:
     restore:
       enabled: true
       name: space05-5bv6d
-resources:
-  lotus:
-    requests:
-      memory: 9Gi
-    limits:
-      memory: 16Gi
