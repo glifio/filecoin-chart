@@ -9,6 +9,7 @@ spec:
   schedule: {{ .Values.persistence.snapshots.uploadToIpfs.cron | default "0 0 * * *" }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
+  concurrencyPolicy: "Forbid"
   jobTemplate:
     spec:
       template:
