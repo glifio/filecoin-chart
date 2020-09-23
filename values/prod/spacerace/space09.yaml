@@ -59,4 +59,8 @@ IPFS:
 Powergate:
   enabled: true
 StateDiff:
-  enabled: true  
+  enabled: true
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot
