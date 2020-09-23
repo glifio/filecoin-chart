@@ -1,0 +1,10 @@
+persistence:
+  snapshots:
+    automation:
+      creation:
+        cron: "0 12 * * *"
+      deletion:
+        cron: "0 13 * * *"
+    restore:
+      enabled: true
+      name: space04-dev-8w2x7

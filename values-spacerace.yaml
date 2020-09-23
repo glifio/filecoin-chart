@@ -31,7 +31,7 @@ securityContext:
 
 ingress:
   enabled: true
-  host: node.glif.io
+  host: dev.node.glif.io
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -45,10 +45,10 @@ ingress:
   lotus:
     enabled: true
     annotations:
-# Uncomment following annotations to change access mode from JWT-based to Firewall-based. Also replace <JWT> with admin JWT token of the node and 1.2.3.4/32 to your IP address.
-      # nginx.ingress.kubernetes.io/whitelist-source-range: 1.2.3.4/32
-      # nginx.ingress.kubernetes.io/configuration-snippet: |
-      #       proxy_set_header Authorization "Bearer <JWT>";
+    # Uncomment following annotations to change access mode from JWT-based to Firewall-based. Also replace <JWT> with admin JWT token of the node and 1.2.3.4/32 to your IP address.
+    # nginx.ingress.kubernetes.io/whitelist-source-range: 1.2.3.4/32
+    # nginx.ingress.kubernetes.io/configuration-snippet: |
+    #       proxy_set_header Authorization "Bearer <JWT>";
   ipfs:
     enabled: false
   powergate:
@@ -68,7 +68,7 @@ init:
       #    claimName: efs-claim
 
 secretVolume:
-  enabled: true
+  enabled: false
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -77,33 +77,32 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   lotus:
     requests:
-      cpu: 3000m
-
-      memory: 16Gi
+      cpu: 1500m
+      memory: 8Gi
     limits:
-      cpu: 7500m
-      memory: 30Gi
+      cpu: 3500m
+      memory: 15Gi
   ipfs:
     requests:
-      cpu: 1500m
-      memory: 2Gi
+      cpu: 500m
+      memory: 1Gi
     limits:
-      cpu: 3000m
-      memory: 4Gi
+      cpu: 1000m
+      memory: 2Gi
   powergate:
     requests:
-      cpu: 1500m
-      memory: 2Gi
+      cpu: 500m
+      memory: 1Gi
     limits:
-      cpu: 3000m
-      memory: 4Gi
+      cpu: 1000m
+      memory: 2Gi
   statediff:
     requests:
       cpu: 100m
       memory: 200Mi
     limits:
       cpu: 250m
-      memory: 400Mi   
+      memory: 400Mi
 
 persistence:
 # If persistence is set to false no persistent volumes will be created
@@ -118,13 +117,13 @@ persistence:
         enabled: false
         cron: "0 0 * * *"
         #address: https://gist.github.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6
-        #authorEmail: 
+        #authorEmail:
         #authorName: Protofire Bot
 # If snapshots are enabled - the PV will be deployed with ebs-sc class unless custom class is specified
     enabled: true
 # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
     automation:
-      deletion: 
+      deletion:
         cron: "0 1 * * *"
         enabled: true
         retention:
@@ -138,7 +137,7 @@ persistence:
       #name: snapshot-blah
 # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "250Gi"
+    size: "300Gi"
     accessModes:
       - ReadWriteOnce
   ipfs:
@@ -172,4 +171,3 @@ affinity: {}
 
 healthcheck:
   enabled: true
-  

@@ -1,5 +1,5 @@
 all: lint package
-NODE = space05
+NODE = space01-dev
 
 ## lotus nodes management
 nodedelete:
@@ -7,11 +7,11 @@ nodedelete:
 	kubectl -n spacerace delete pvc vol-lotus-$(NODE)-lotus-0
 nodereinstall:
 	helm -n spacerace delete $(NODE)
-	helm upgrade --install -f values-spacerace.yaml -f values/prod/spacerace/$(NODE).yaml $(NODE) -n spacerace .
+	helm upgrade --install -f values-spacerace.yaml -f values/dev/spacerace/$(NODE).yaml $(NODE) -n spacerace .
 nodeinstall:
-	helm upgrade --install -f values-spacerace.yaml -f values/prod/spacerace/$(NODE).yaml $(NODE) -n spacerace .
+	helm upgrade --install -f values-spacerace.yaml -f values/dev/spacerace/$(NODE).yaml $(NODE) -n spacerace .
 nodedry:
-	helm upgrade --install -f values-spacerace.yaml -f values/prod/spacerace/$(NODE).yaml $(NODE) -n spacerace --dry-run .
+	helm upgrade --install -f values-spacerace.yaml -f values/dev/spacerace/$(NODE).yaml $(NODE) -n spacerace --dry-run .
 
 lint:
 	helm lint .
