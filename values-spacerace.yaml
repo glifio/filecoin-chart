@@ -142,7 +142,7 @@ persistence:
     accessModes:
       - ReadWriteOnce
   ipfs:
-    size: "150Gi"
+    size: "200Gi"
     accessModes:
       - ReadWriteOnce
   powergate:
