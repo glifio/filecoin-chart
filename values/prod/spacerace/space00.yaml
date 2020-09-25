@@ -29,3 +29,7 @@ persistence:
       name: space02-bxp7w
 IPFS:
   enabled: true
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot
