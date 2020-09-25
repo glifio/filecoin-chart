@@ -1,0 +1,16 @@
+persistence:
+  snapshots:
+    automation:
+      creation:
+        cron: "0 22 * * *"
+      deletion:
+        cron: "0 23 * * *"
+    restore:
+      enabled: true
+      name: space05-ps9bs
+resources:
+  lotus:
+    requests:
+      memory: 9Gi
+    limits:
+      memory: 16Gi
