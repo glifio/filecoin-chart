@@ -29,3 +29,7 @@ persistence:
       name: space05-5bv6d
 IPFS:
   enabled: true
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot
