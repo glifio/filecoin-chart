@@ -8,3 +8,7 @@ persistence:
     restore:
       enabled: true
       name: space04-dev-8w2x7
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot
