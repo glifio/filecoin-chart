@@ -10,7 +10,7 @@ persistence:
       enabled: true
       name: space01-dev-xw64k
   lotus:
-    size: "310Gi"
+    size: "320Gi"
     accessModes:
       - ReadWriteOnce
 nodeSelector:
