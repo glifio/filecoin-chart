@@ -8,8 +8,12 @@ persistence:
         cron: "0 6 * * *"
     restore:
       enabled: true
-      name: space01-dev-xvwjd
+      name: space01-dev-xw64k
   lotus:
     size: "310Gi"
     accessModes:
       - ReadWriteOnce
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot
