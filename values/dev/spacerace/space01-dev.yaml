@@ -1,3 +1,4 @@
+replicaCount: 2
 persistence:
   snapshots:
     automation:
@@ -7,4 +8,8 @@ persistence:
         cron: "0 6 * * *"
     restore:
       enabled: true
-      name: space04-dev-8w2x7
+      name: space01-dev-xvwjd
+  lotus:
+    size: "310Gi"
+    accessModes:
+      - ReadWriteOnce
