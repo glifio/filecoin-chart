@@ -2,12 +2,12 @@ persistence:
   snapshots:
     automation:
       creation:
-        cron: "0 7 * * *"
+        cron: "0 10 * * *"
       deletion:
-        cron: "0 8 * * *"
+        cron: "0 11 * * *"
     restore:
       enabled: true
-      name: space01-dev-xw64k
+      name: space01-dev-2m2pp
 nodeSelector:
   enabled: true
   nodeLabel:
