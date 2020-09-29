@@ -7,11 +7,7 @@ persistence:
         cron: "0 6 * * *"
     restore:
       enabled: true
-      name: space01-dev-xw64k
-  lotus:
-    size: "320Gi"
-    accessModes:
-      - ReadWriteOnce
+      name: space01-dev-2m2pp
 nodeSelector:
   enabled: true
   nodeLabel:

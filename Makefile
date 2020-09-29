@@ -5,11 +5,19 @@ NAMESPACE = spacerace
 nodedelete:
 	helm -n spacerace delete $(NODE)
 	kubectl -n $(NAMESPACE) delete pvc vol-lotus-$(NODE)-lotus-0
-nodereinstall:
+
+nodereinit:
 	helm -n spacerace delete $(NODE)
 	helm upgrade --install -f values-spacerace.yaml -f values/dev/spacerace/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+
+nodereinstall:
+	helm -n spacerace delete $(NODE)
+	kubectl -n $(NAMESPACE) delete pvc vol-lotus-$(NODE)-lotus-0
+	helm upgrade --install -f values-spacerace.yaml -f values/dev/spacerace/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+
 nodeinstall:
 	helm upgrade --install -f values-spacerace.yaml -f values/dev/spacerace/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+
 nodedry:
 	helm upgrade --install -f values-spacerace.yaml -f values/dev/spacerace/$(NODE).yaml $(NODE) -n $(NAMESPACE) --dry-run .
 
