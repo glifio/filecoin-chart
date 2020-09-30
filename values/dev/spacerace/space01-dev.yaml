@@ -12,3 +12,8 @@ nodeSelector:
   enabled: true
   nodeLabel:
     lifecycle: Ec2Spot
+ingress:
+  statediff:
+    enabled: true
+StateDiff:
+  enabled: true
