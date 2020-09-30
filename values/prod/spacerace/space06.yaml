@@ -14,3 +14,8 @@ resources:
       memory: 9Gi
     limits:
       memory: 16Gi
+ingress:
+  statediff:
+    enabled: true
+StateDiff:
+  enabled: true
