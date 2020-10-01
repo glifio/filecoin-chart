@@ -129,3 +129,28 @@ spec:
             - export ITEMS=$(kubectl get --sort-by .metadata.creationTimestamp -n {{ .Release.Namespace }} --no-headers volumesnapshots | awk '/{{ .Release.Name }}-/{print $1}' | head -n -{{ add .Values.persistence.snapshots.automation.deletion.retention.count }}) && ([ ! -z "$ITEMS" ] && kubectl delete volumesnapshots $ITEMS || true)
 {{- end }}
 {{- end }}
+
+{{- if .Values.persistence.autoResizer.enabled }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-disk-autoResizer
+spec:
+  schedule: {{ .Values.persistence.autoResizer.cron | default "0 0 * * *" }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: "Never"
+          serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
+          containers:
+          - name: resizer
+            image: bitnami/kubectl
+            command:
+            - bash
+            - -c
+            - export REPLICAS=$(kubectl get pvc -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-lotus); for ((i=0;i<$REPLICAS;i++)); do export USE=$(kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /root/.lotus | tr -dc '0-9'); if [[ "$USE" -gt "{{ .Values.persistence.autoResizer.increaseThreshold }}" ]]; then export VALUE=$(kubectl get pvc -o=jsonpath='{.spec.resources.requests.storage}' vol-lotus-{{ .Release.Name }}-lotus-${i}); export OLD_SIZE=$(echo $VALUE | tr -dc '0-9'); export NEW_SIZE=$(($OLD_SIZE+$OLD_SIZE*{{ .Values.persistence.autoResizer.increaseStep }}/100)); export DIMENSION=$(echo $VALUE | tr -dc 'A-z'); kubectl patch pvc -p='[{"op": "replace", "path": "/spec/resources/requests/storage", "value":"'${NEW_SIZE}${DIMENSION}'"}]'  vol-lotus-{{ .Release.Name }}-lotus-${i} --type='json'; else echo "Disk is only ${USE}% used, not yet ready to expand. Current threshold is {{ .Values.persistence.autoResizer.increaseThreshold }}%"; done 
+{{- end }}
