@@ -1,3 +1,4 @@
+{{- if .Values.Lotus.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -18,3 +19,4 @@ spec:
       port: 1234
       targetPort: 1234
       name: tcp-api
+{{- end }}

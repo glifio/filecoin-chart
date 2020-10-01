@@ -33,7 +33,7 @@ spec:
             defaultMode: 384 # permission 0600
 {{- end }}
       initContainers:
-{{- if .Values.secretVolume.enabled }}
+{{- if and (eq .Values.secretVolume.enabled true) ( or (eq .Values.Lotus.enabled true) (eq .Values.Powergate.enabled true)) }}
       - name: api-keys
         image: busybox
         command: ["/bin/sh","-c"]
@@ -44,7 +44,7 @@ spec:
           - name: vol-lotus
             mountPath: /lotus
 {{- end }}
-{{- if .Values.init.import.enabled }}
+{{- if and .Values.init.import.enabled .Values.Lotus.enabled }}
       - name: import-wait
         image: debian:stable
         command: ["/bin/sh","-c"]
@@ -53,7 +53,7 @@ spec:
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
 {{- end }}
-{{- if .Values.init.import.enabled }}
+{{- if and .Values.init.import.enabled .Values.Lotus.enabled }}
       - name: import-start
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-i"]
@@ -63,7 +63,7 @@ spec:
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
 {{- end }}
-{{- if .Values.init.sync.enabled }}
+{{- if and .Values.init.sync.enabled .Values.Lotus.enabled }}
       - name: sync-wait
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-s"]
@@ -92,9 +92,9 @@ spec:
         - containerPort: 6002
         env:
         - name: POWD_LOTUSHOST
-          value: "/dns4/127.0.0.1/tcp/1234"
+          value: "/dns4/{{ .Release.Name }}-lotus-service/tcp/1234"
         - name: POWD_IPFSAPIADDR
-          value: "/dns4/127.0.0.1/tcp/5001"
+          value: "/dns4/{{ .Values.apiservice }}/tcp/5001"
         - name: POWD_LOTUSTOKENFILE
           value: "/root/.lotus/token"
         - name: POWD_REPOPATH
@@ -115,10 +115,10 @@ spec:
         image: filecoin/stateexplorer:latest
         args:
           - explore
-          - --bind 
+          - --bind
           - 0.0.0.0:33333
           - --api
-          - :/ip4/127.0.0.1/tcp/1234/http
+          - :/dns4/{{ .Values.apiservice }}/tcp/1234/http
         livenessProbe:
           httpGet:
             path: /
@@ -156,6 +156,7 @@ spec:
         resources:
 {{ toYaml .Values.resources.ipfs | indent 10 }}
 {{- end }}
+{{- if .Values.Lotus.enabled }}
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-d"]
@@ -225,12 +226,14 @@ spec:
 {{- end }}
         resources:
 {{ toYaml .Values.resources.lotus | indent 10 }}
+{{- end }}
 {{- if .Values.nodeSelector.enabled }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector.nodeLabel | indent 8 }}
 {{- end }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
+{{- if .Values.Lotus.enabled }}
     - metadata:
         name: vol-lotus
         {{- range $key, $value := .Values.persistence.lotus.annotations }}
@@ -259,6 +262,7 @@ spec:
           kind: VolumeSnapshot
           apiGroup: snapshot.storage.k8s.io
         {{- end }}
+{{- end }}
 {{- if .Values.IPFS.enabled }}
     - metadata:
         name: vol-ipfs

@@ -1,0 +1,24 @@
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot
+ingress:
+  lotus:
+    enabled: false
+  ipfs:
+    enabled: false
+  powergate:
+    enabled: false
+  statediff:
+    enabled: true
+
+Lotus:
+  enabled: false
+Powergate:
+  enabled: false
+IPFS:
+  enabled: false
+StateDiff:
+  enabled: true
+
+apiservice: api-read-dev-lotus-service

@@ -1,5 +1,7 @@
 1. Get the application URL by running these commands:
 {{- if .Values.ingress.enabled }}
   http://{{ .Values.ingress.host }}
-IPFS, Powergate and Lotus node will be available by /ipfs, /powergate, and /lotus paths accordingly if enabled.
+non-actual: IPFS, Powergate and Lotus node will be available by /ipfs, /powergate, and /lotus paths accordingly if enabled.
 {{- end }}
+lotus api serice has link: {{- if .Values.Lotus.enabled }} {{ .Release.Name }}-lotus-service {{- end }}
+Use it during deployment service in variable "apiservice" ( --set .Values.apisevice={{ .Release.Name }}-lotus-service or in file service.yaml )
