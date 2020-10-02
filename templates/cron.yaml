@@ -153,13 +153,13 @@ spec:
             - bash
             - -c
             args:
-            - export REPLICAS=$(kubectl get pvc -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-lotus); 
+            - export REPLICAS=$(kubectl get sts -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-lotus); 
               for ((i=0;i<$REPLICAS;i++)); 
               do 
                 until kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /root/.lotus | tr -dc '0-9'; do
                   echo "Can't access Lotus node. Sleeping..." && sleep 60s;
-                done
-                export USE=$(kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /root/.lotus | tr -dc '0-9')
+                done;
+                export USE=$(kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /root/.lotus | tr -dc '0-9');
                 if [[ "$USE" -gt "{{ .Values.persistence.autoResizer.increaseThreshold }}" ]]; 
                 then
                   export VALUE=$(kubectl get pvc -o=jsonpath='{.spec.resources.requests.storage}' vol-lotus-{{ .Release.Name }}-lotus-${i}); 
