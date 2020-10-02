@@ -135,7 +135,7 @@ spec:
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-disk-autoresizer
+  name: {{ .Release.Name }}-disk-autoresizer-lotus
 spec:
   schedule: {{ .Values.persistence.autoResizer.cron | default "0 0 * * *" }}
   successfulJobsHistoryLimit: 1
@@ -156,7 +156,7 @@ spec:
             - export REPLICAS=$(kubectl get sts -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-lotus); 
               for ((i=0;i<$REPLICAS;i++)); 
               do 
-                until kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /root/.lotus | tr -dc '0-9'; do
+                until kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /root/.lotus; do
                   echo "Can't access Lotus node. Sleeping..." && sleep 60s;
                 done;
                 export USE=$(kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /root/.lotus | tr -dc '0-9');
@@ -175,4 +175,98 @@ spec:
                 else echo "Disk is only ${USE}% used, not yet ready to expand. Current threshold is {{ .Values.persistence.autoResizer.increaseThreshold }}%"; 
                 fi;
               done;
+
+{{- if .Values.IPFS.enabled }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-disk-autoresizer-ipfs
+spec:
+  schedule: {{ .Values.persistence.autoResizer.cron | default "0 0 * * *" }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: "Never"
+          serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
+          containers:
+          - name: resizer
+            image: bitnami/kubectl
+            command:
+            - bash
+            - -c
+            args:
+            - export REPLICAS=$(kubectl get sts -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-lotus); 
+              for ((i=0;i<$REPLICAS;i++)); 
+              do 
+                until kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin-ipfs --  df /data/ipfs; do
+                  echo "Can't access IPFS node. Sleeping..." && sleep 60s;
+                done;
+                export USE=$(kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin-ipfs -- df /data/ipfs | awk 'FNR==2{ print $5 }' | tr -dc '0-9');
+                if [[ -z "$USE" ]];
+                then
+                  echo "Error! Cannot get current disk size for some reason.";
+                  false;
+                fi;
+                if [[ "$USE" -gt "{{ .Values.persistence.autoResizer.increaseThreshold }}" ]]; 
+                then
+                  export VALUE=$(kubectl get pvc -o=jsonpath='{.spec.resources.requests.storage}' vol-ipfs-{{ .Release.Name }}-lotus-${i}); 
+                  export OLD_SIZE=$(echo $VALUE | tr -dc '0-9');
+                  export NEW_SIZE=$(($OLD_SIZE+$OLD_SIZE*{{ .Values.persistence.autoResizer.increaseStep }}/100)); 
+                  export DIMENSION=$(echo $VALUE | tr -dc 'A-z'); 
+                  kubectl patch pvc -p='[{"op":"replace","path":"/spec/resources/requests/storage","value":"'${NEW_SIZE}${DIMENSION}'"}]' vol-ipfs-{{ .Release.Name }}-lotus-${i} --type='json';
+                else echo "Disk is only ${USE}% used, not yet ready to expand. Current threshold is {{ .Values.persistence.autoResizer.increaseThreshold }}%"; 
+                fi;
+              done;
+{{- end }}
+
+{{- if .Values.Powergate.enabled }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-disk-autoresizer-powergate
+spec:
+  schedule: {{ .Values.persistence.autoResizer.cron | default "0 0 * * *" }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: "Never"
+          serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
+          containers:
+          - name: resizer
+            image: bitnami/kubectl
+            command:
+            - bash
+            - -c
+            args:
+            - export REPLICAS=$(kubectl get sts -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-lotus); 
+              for ((i=0;i<$REPLICAS;i++)); 
+              do 
+                until kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin-powergate --  df /data/ipfs; do
+                  echo "Can't access IPFS node. Sleeping..." && sleep 60s;
+                done;
+                export USE=$(kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin-powergate -- df /root/powergate | awk 'FNR==2{ print $5 }' | tr -dc '0-9');
+                if [[ -z "$USE" ]];
+                then
+                  echo "Error! Cannot get current disk size for some reason.";
+                  false;
+                fi;
+                if [[ "$USE" -gt "{{ .Values.persistence.autoResizer.increaseThreshold }}" ]]; 
+                then
+                  export VALUE=$(kubectl get pvc -o=jsonpath='{.spec.resources.requests.storage}' vol-powergate-{{ .Release.Name }}-lotus-${i}); 
+                  export OLD_SIZE=$(echo $VALUE | tr -dc '0-9');
+                  export NEW_SIZE=$(($OLD_SIZE+$OLD_SIZE*{{ .Values.persistence.autoResizer.increaseStep }}/100)); 
+                  export DIMENSION=$(echo $VALUE | tr -dc 'A-z'); 
+                  kubectl patch pvc -p='[{"op":"replace","path":"/spec/resources/requests/storage","value":"'${NEW_SIZE}${DIMENSION}'"}]' vol-powergate-{{ .Release.Name }}-lotus-${i} --type='json';
+                else echo "Disk is only ${USE}% used, not yet ready to expand. Current threshold is {{ .Values.persistence.autoResizer.increaseThreshold }}%"; 
+                fi;
+              done;
+{{- end }}
 {{- end }}
