@@ -1,0 +1,9 @@
+persistence:
+  snapshots:
+    restore:
+      enabled: true
+      name: space02-dev-grzjk
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot

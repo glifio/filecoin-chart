@@ -135,7 +135,7 @@ spec:
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-disk-autoResizer
+  name: {{ .Release.Name }}-disk-autoresizer
 spec:
   schedule: {{ .Values.persistence.autoResizer.cron | default "0 0 * * *" }}
   successfulJobsHistoryLimit: 1
