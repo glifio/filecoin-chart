@@ -53,7 +53,7 @@ persistence:
         cron: "0 21 * * *"
     restore:
       enabled: true
-      name: space00-wj4wr
+      name: space03-lnnkk
 IPFS:
   enabled: true
 Powergate:
