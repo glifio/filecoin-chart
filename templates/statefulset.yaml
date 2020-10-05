@@ -45,23 +45,15 @@ spec:
             mountPath: /lotus
 {{- end }}
 {{- if .Values.init.import.enabled }}
-      - name: import-wait
-        image: debian:stable
-        command: ["/bin/sh","-c"]
-        args: ["until [ -f /chain/chain.car ] && [ ! -f /chain/chain.car.lock ]; do sleep 5; done"]
-        volumeMounts:
-          - name: {{ (index .Values.init.import.volume 0).name }}
-            mountPath: /chain
-{{- end }}
-{{- if .Values.init.import.enabled }}
       - name: import-start
         image: {{ .Values.image.repository }}
-        command: ["/bin/entrypoint","-i"]
+        command: 
+          - /bin/bash
+          - -c 
+          - mkdir -p /chain && curl -sL {{ .Values.init.import.gist }} -o /tmp/url && curl -sLo /chain/chain.car https://gateway.ipfs.io/ipfs/$(cat /tmp/url | cut -d ' ' -f2) && /bin/entrypoint -i && rm -R /chain
         volumeMounts:
           - name: vol-lotus
             mountPath: /root/.lotus
-          - name: {{ (index .Values.init.import.volume 0).name }}
-            mountPath: /chain
 {{- end }}
 {{- if .Values.init.sync.enabled }}
       - name: sync-wait

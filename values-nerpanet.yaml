@@ -61,11 +61,7 @@ init:
     enabled: true
   import:
     enabled: false
-    # ideally a shared volume containing chain dump
-    volume: {}
-      #- name: filecoin-chain-vol
-      #  persistentVolumeClaim:
-      #    claimName: efs-claim
+    gist: https://gist.githubusercontent.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6/raw/ba3798585ae34a85d860f682f4bedad93b2d4619/snapshot.log
 
 secretVolume:
   enabled: true
