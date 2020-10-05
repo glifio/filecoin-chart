@@ -7,10 +7,14 @@ persistence:
         cron: "0 23 * * *"
     restore:
       enabled: true
-      name: space02-4rrz8
+      name: space02-8lwgg
 resources:
   lotus:
     requests:
       memory: 9Gi
     limits:
       memory: 16Gi
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot

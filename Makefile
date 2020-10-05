@@ -1,5 +1,5 @@
 all: lint package
-NODE = space01
+NODE = space05
 NAMESPACE = spacerace
 ## lotus nodes management
 nodedelete:

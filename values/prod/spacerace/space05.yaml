@@ -15,4 +15,8 @@ persistence:
         cron: "0 16 * * *"
     restore:
       enabled: true
-      name: space02-4rrz8
+      name: space02-8lwgg
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot
