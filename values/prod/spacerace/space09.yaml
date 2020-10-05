@@ -64,3 +64,5 @@ nodeSelector:
   enabled: true
   nodeLabel:
     lifecycle: Ec2Spot
+secretVolume:
+  persistNodeID: true

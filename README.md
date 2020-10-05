@@ -108,7 +108,8 @@ These are our emphasized config options. For a full list, see the [values files]
 | `persistence.<service>.storageClassName` | Storage provisioner (per service). | `gp2` |
 | `persistence.<service>.accessModes` | Persistent volume storage size (per service). | `"200Gi"` |
 | `persistence.snapshots.*` | Described at [Snapshots](#snapshots) section |                                |
-| `secretVolume.enabled` | If you want to reuse token across installations. See [here](https://github.com/openworklabs/filecoin-chart/blob/master/README.md#Lotus-JWT) for more details. | `false` |
+| `secretVolume.enabled` | If you want to reuse token across installations. See [here](#Lotus-JWT) for more details. | `false` |
+| `secretVolume.persistNodeID` | If you want to persist nodeID - append the `nodeid` key to the secret created for the [JWT token](#Lotus-JWT). Used only if secretVolume is enabled. | `false` |
 
 ## Snapshots
 
