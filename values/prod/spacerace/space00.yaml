@@ -4,8 +4,6 @@ ingress:
       nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
   ipfs:
     enabled: true
-    annotations: 
-      nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
 persistence:
   snapshots:
     uploadToIpfs:
@@ -24,7 +22,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space02-bxp7w
+      name: space10-ss6hz
 IPFS:
   enabled: true
 nodeSelector:
