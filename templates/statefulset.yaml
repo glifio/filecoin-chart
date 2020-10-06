@@ -75,8 +75,8 @@ spec:
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
 {{- end }}
-{{- if .Values.init.importSnapshot.enabled }}
-      - name: import-start
+{{- if and .Values.init.importSnapshot.enabled .Values.Lotus.enabled }}
+      - name: import-snapshot
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-n"]
         volumeMounts:
@@ -408,7 +408,7 @@ spec:
             mountPath: /chain
 {{- end }}
 {{- if .Values.init.importSnapshot.enabled }}
-      - name: import-start
+      - name: import-snapshot
         image: {{ .Values.image.repository }}
         command: ["/bin/entrypoint","-n"]
         volumeMounts:
