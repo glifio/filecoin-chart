@@ -4,14 +4,12 @@ ingress:
       nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
   ipfs:
     enabled: true
-    annotations: 
-      nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
 persistence:
   snapshots:
     uploadToIpfs:
       cron: "0 */6 * * *" 
       enabled: true
-      export: cold
+      export: hot
       shedPeriod: 6h
       shareToGist: 
         enabled: true
@@ -24,7 +22,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space02-bxp7w
+      name: space03-t4lpg
 IPFS:
   enabled: true
 nodeSelector:
