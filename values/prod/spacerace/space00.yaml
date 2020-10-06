@@ -22,10 +22,12 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space03-t4lpg
+      name: space09-xq46n 
 IPFS:
   enabled: true
 nodeSelector:
   enabled: true
   nodeLabel:
     lifecycle: Ec2Spot
+secretVolume:
+  persistNodeID: true
