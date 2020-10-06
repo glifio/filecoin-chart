@@ -49,12 +49,12 @@ spec:
       - name: api-keys
         image: busybox
         command: ["/bin/sh","-c"]
-        args: ["cp /secret/token /root/powergate/token"]
+        args: ["cp /secret/token $HOME/powergate/token"]
         volumeMounts:
           - name: lotus-secret-vol
             mountPath: "/secret"
           - name: vol-powergate
-            mountPath: /root/powergate
+            mountPath: $HOME/powergate
  {{- end }}
 {{- if and .Values.init.import.enabled .Values.Lotus.enabled }}
       - name: import-wait
@@ -71,9 +71,20 @@ spec:
         command: ["/bin/entrypoint","-i"]
         volumeMounts:
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: $HOME/.lotus
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
+{{- end }}
+{{- if .Values.init.importSnapshot.enabled }}
+      - name: import-start
+        image: {{ .Values.image.repository }}
+        command: ["/bin/entrypoint","-n"]
+        volumeMounts:
+          - name: vol-lotus
+            mountPath: $HOME/.lotus
+        env:
+          - name: SNAPSHOTURL
+            value: "{{ .Values.init.importSnapshot.SNAPSHOTURL }}"
 {{- end }}
 {{- if and .Values.init.sync.enabled .Values.Lotus.enabled }}
       - name: sync-wait
@@ -81,7 +92,7 @@ spec:
         command: ["/bin/entrypoint","-s"]
         volumeMounts:
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: $HOME/.lotus
 {{- end }}
       containers:
 {{- if .Values.Powergate.enabled }}
@@ -108,16 +119,16 @@ spec:
         - name: POWD_IPFSAPIADDR
           value: "/dns4/{{ .Values.apiDNS }}/tcp/5001"
         - name: POWD_LOTUSTOKENFILE
-          value: "/root/powergate/token"
+          value: "$HOME/powergate/token"
         - name: POWD_REPOPATH
-          value: "/root/powergate/.powergate"
+          value: "$HOME/powergate/.powergate"
         - name: POWD_GATEWAYBASEPATH
           value: "/{{ .Release.Name }}/powergate/7000"
         volumeMounts:
           - name: vol-powergate
-            mountPath: /root/powergate
+            mountPath: $HOME/powergate
 #          - name: vol-lotus
-#            mountPath: /root/.lotus
+#            mountPath: $HOME/.lotus
         resources:
 {{ toYaml .Values.resources.powergate | indent 10 }}
 {{- end }}
@@ -227,7 +238,7 @@ spec:
           name: p2p
         volumeMounts:
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: $HOME/.lotus
         {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
@@ -392,9 +403,20 @@ spec:
         command: ["/bin/entrypoint","-i"]
         volumeMounts:
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: $HOME/.lotus
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
+{{- end }}
+{{- if .Values.init.importSnapshot.enabled }}
+      - name: import-start
+        image: {{ .Values.image.repository }}
+        command: ["/bin/entrypoint","-n"]
+        volumeMounts:
+          - name: vol-lotus
+            mountPath: $HOME/.lotus
+        env:
+        - name: SNAPSHOTURL
+          value: {{ .Values.init.importSnapshot.SNAPSHOTURL }}
 {{- end }}
 {{- if .Values.init.sync.enabled }}
       - name: sync-wait
@@ -402,7 +424,7 @@ spec:
         command: ["/bin/entrypoint","-s"]
         volumeMounts:
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: $HOME/.lotus
 {{- end }}
       containers:
 {{- if .Values.Powergate.enabled }}
@@ -429,16 +451,16 @@ spec:
         - name: POWD_IPFSAPIADDR
           value: "/dns4/127.0.0.1/tcp/5001"
         - name: POWD_LOTUSTOKENFILE
-          value: "/root/.lotus/token"
+          value: "$HOME/.lotus/token"
         - name: POWD_REPOPATH
-          value: "/root/powergate/.powergate"
+          value: "$HOME/powergate/.powergate"
         - name: POWD_GATEWAYBASEPATH
           value: "/{{ .Release.Name }}/powergate/7000"
         volumeMounts:
           - name: vol-powergate
-            mountPath: /root/powergate
+            mountPath: $HOME/powergate
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: $HOME/.lotus
         resources:
 {{ toYaml .Values.resources.powergate | indent 10 }}
 {{- end }}
@@ -547,7 +569,7 @@ spec:
           name: p2p
         volumeMounts:
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: $HOME/.lotus
         {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain

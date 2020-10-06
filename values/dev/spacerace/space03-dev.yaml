@@ -1,0 +1,15 @@
+init:
+  sync:
+    enabled: true
+  importSnapshot:
+    enabled: true
+    SNAPSHOTURL: "https://very-temporary-spacerace-chain-snapshot.s3.amazonaws.com/Spacerace_pruned_stateroots_snapshot_latest.car"
+persistence:
+  lotus:
+    storageClassName: "local-storage"
+  snapshots:
+    enabled: false
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot-i3

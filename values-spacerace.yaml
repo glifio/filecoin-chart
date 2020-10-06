@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:v0.8.1-dev
+  repository: glif/lotus:v0.8.1-dev
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -59,6 +59,8 @@ ingress:
 init:
   sync:
     enabled: true
+  importSnapshot:
+    enabled: false
   import:
     enabled: false
     # ideally a shared volume containing chain dump
@@ -137,7 +139,7 @@ persistence:
       #name: snapshot-blah
 # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "430Gi"
+    size: "200Gi"
     accessModes:
       - ReadWriteOnce
   ipfs:
@@ -174,5 +176,6 @@ affinity: {}
 healthcheck:
   enabled: true
 
+# Defines whether api-service option uses.
 ApiService:
   enabled: false
