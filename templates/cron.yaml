@@ -249,8 +249,8 @@ spec:
             - export REPLICAS=$(kubectl get sts -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-lotus); 
               for ((i=0;i<$REPLICAS;i++)); 
               do 
-                until kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin-powergate --  df /data/ipfs; do
-                  echo "Can't access IPFS node. Sleeping..." && sleep 60s;
+                until kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin-powergate --  df /root/powergate; do
+                  echo "Can't access Powergate node. Sleeping..." && sleep 60s;
                 done;
                 export USE=$(kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin-powergate -- df /root/powergate | awk 'FNR==2{ print $5 }' | tr -dc '0-9');
                 if [[ -z "$USE" ]];
