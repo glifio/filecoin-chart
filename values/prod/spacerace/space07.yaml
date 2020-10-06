@@ -27,4 +27,4 @@ persistence:
         cron: "0 18 * * *"
     restore:
       enabled: true
-      name: space10-ss6hz
+      name: space02-lp986

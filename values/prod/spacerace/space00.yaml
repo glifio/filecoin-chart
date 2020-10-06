@@ -22,7 +22,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space10-ss6hz
+      name: space03-t4lpg
 IPFS:
   enabled: true
 nodeSelector:
