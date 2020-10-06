@@ -1,7 +1,10 @@
+ApiService:
+  enabled: true
 nodeSelector:
   enabled: true
   nodeLabel:
     lifecycle: Ec2Spot
+# powergate, ipfs in api-service mode don't work now. don't enable it.
 ingress:
   lotus:
     enabled: false
@@ -21,4 +24,4 @@ IPFS:
 StateDiff:
   enabled: true
 
-apiservice: api-read-dev-lotus-service
+apiDNS: api-read-dev-lotus-service
