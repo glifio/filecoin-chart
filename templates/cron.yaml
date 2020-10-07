@@ -23,7 +23,7 @@ spec:
             command:
             - bash
             - -c
-            - until kubectl exec {{ .Release.Name }}-lotus-0 -c {{ .Chart.Name }} -- lotus chain export --tipset @$( lotus chain list --count 50 --format "<height>" | head -n1 ) --recent-stateroots 900 --skip-old-msgs /data/ipfs/lotus-hot.car; do echo "Command executed with error, retrying in 60s..." && sleep 60s; done; mv /data/ipfs/lotus-hot.car /data/ipfs/lotus-new.car
+            - until kubectl exec {{ .Release.Name }}-lotus-0 -c {{ .Chart.Name }} -- bash -c 'lotus chain export --tipset @$( lotus chain list --count 50 --format "<height>" | head -n1 ) --recent-stateroots 900 --skip-old-msgs /data/ipfs/lotus-hot.car'; do echo "Command executed with error, retrying in 60s..." && sleep 60s; done; mv /data/ipfs/lotus-hot.car /data/ipfs/lotus-new.car
 {{- end }}
           - name: sharer
             image: bitnami/kubectl
