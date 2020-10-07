@@ -22,7 +22,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space09-xq46n 
+      name: space03-jgvh4 
 IPFS:
   enabled: true
 nodeSelector:
