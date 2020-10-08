@@ -1,0 +1,34 @@
+apiservice:
+  enabled: true
+secretVolume:
+  enabled: true
+persistence:
+  snapshots:
+    automation:
+      creation:
+        cron: "0 10 * * *"
+      deletion:
+        cron: "0 11 * * *"
+    restore:
+      enabled: true
+      name: space02-dev-tzq4x
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot
+ingress:
+  statediff:
+    enabled: false
+  ipfs:
+    enabled: false
+  powergate:
+    enabled: false
+  statediff:
+    enabled: false
+
+Powergate:
+  enabled: false
+IPFS:
+  enabled: false
+StateDiff:
+  enabled: false
