@@ -7,7 +7,7 @@ persistence:
         cron: "0 23 * * *"
     restore:
       enabled: true
-      name: space05-ps9bs
+      name: space02-4rrz8
 resources:
   lotus:
     requests:

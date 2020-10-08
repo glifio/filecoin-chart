@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v0.8.1-custom
+  repository: glif/lotus:v0.8.1-dev
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -31,13 +31,13 @@ securityContext:
 
 ingress:
   enabled: true
-  host: dev.node.glif.io
+  host: node.glif.io
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range"
     nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
-  # nginx.ingress.kubernetes.io/server-alias: "_"
+    # nginx.ingress.kubernetes.io/server-alias: "_"
     nginx.ingress.kubernetes.io/enable-modsecurity: "true"
     nginx.ingress.kubernetes.io/modsecurity-snippet: |
       SecRuleEngine On
@@ -67,10 +67,10 @@ init:
     volume: {}
       #- name: filecoin-chain-vol
       #  persistentVolumeClaim:
-      #    claimName: efs-claim
+    #    claimName: efs-claim
 
 secretVolume:
-  enabled: false
+  enabled: true
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -79,25 +79,25 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   lotus:
     requests:
-      cpu: 1500m
-      memory: 8Gi
+      cpu: 3000m
+      memory: 16Gi
     limits:
-      cpu: 3500m
-      memory: 25Gi
+      cpu: 7500m
+      memory: 30Gi
   ipfs:
     requests:
-      cpu: 500m
-      memory: 1Gi
-    limits:
-      cpu: 1000m
+      cpu: 1500m
       memory: 2Gi
+    limits:
+      cpu: 3000m
+      memory: 4Gi
   powergate:
     requests:
-      cpu: 500m
-      memory: 1Gi
-    limits:
-      cpu: 1000m
+      cpu: 1500m
       memory: 2Gi
+    limits:
+      cpu: 3000m
+      memory: 4Gi
   statediff:
     requests:
       cpu: 100m
@@ -107,10 +107,15 @@ resources:
       memory: 400Mi
 
 persistence:
-# If persistence is set to false no persistent volumes will be created
+  # If persistence is set to false no persistent volumes will be created
   enabled: true
+  autoResizer:
+    enabled: true
+    increaseThreshold: 90 # in %
+    increaseStep: 10 # in %
+    cron: "0 0 * * *"
   snapshots:
-# If uploadToIpfs is set to true the internal Lotus snapshot will be created and uploaded to the IPFS system. Note that IPFS must be nenabled in that case
+    # If uploadToIpfs is set to true the internal Lotus snapshot will be created and uploaded to the IPFS system. Note that IPFS must be nenabled in that case
     uploadToIpfs:
       enabled: false
       export: hot
@@ -121,9 +126,9 @@ persistence:
         #address: https://gist.github.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6
         #authorEmail:
         #authorName: Protofire Bot
-# If snapshots are enabled - the PV will be deployed with ebs-sc class unless custom class is specified
+    # If snapshots are enabled - the PV will be deployed with ebs-sc class unless custom class is specified
     enabled: true
-# If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
+    # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
     automation:
       deletion:
         cron: "0 1 * * *"
@@ -133,17 +138,17 @@ persistence:
       creation:
         cron: "0 0 * * *"
         enabled: true
-# If restore is enabled the snapshot name must be specified. Charts will attempt to find the existing snapshot with this name and create a PV from that snapshot.
-    restore: 
+    # If restore is enabled the snapshot name must be specified. Charts will attempt to find the existing snapshot with this name and create a PV from that snapshot.
+    restore:
       enabled: false
       #name: snapshot-blah
-# For each of the deployed services one can specify the disk size, custom disk type and access mode.
+  # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "200Gi"
+    size: "450Gi"
     accessModes:
       - ReadWriteOnce
   ipfs:
-    size: "150Gi"
+    size: "350Gi"
     accessModes:
       - ReadWriteOnce
   powergate:
@@ -151,12 +156,13 @@ persistence:
     accessModes:
       - ReadWriteOnce
 
+# Defines whether should be deployed Lotus node.
 Lotus:
   enabled: true
-
 # Defines whether Powergate should be deployed with Lotus node. Note that IPFS must be enabled if Powergate is enabled.
 Powergate:
   enabled: false
+
 # Defines whether IPFS should be deployed with Lotus node.
 IPFS:
   enabled: false

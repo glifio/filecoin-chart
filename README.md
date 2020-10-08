@@ -109,6 +109,7 @@ These are our emphasized config options. For a full list, see the [values files]
 | `persistence.<service>.accessModes` | Persistent volume storage size (per service). | `"200Gi"` |
 | `persistence.snapshots.*` | Described at [Snapshots](#snapshots) section |                                |
 | `secretVolume.enabled` | If you want to reuse token across installations. See [here](https://github.com/openworklabs/filecoin-chart/blob/master/README.md#Lotus-JWT) for more details. | `false` |
+| `ApiService.enabled` | If you want to use api-service schema. See [here](#apiservice) for more details. | `false` |
 
 ## Snapshots
 
@@ -149,6 +150,13 @@ More information on generating a JWT for authenticating requests [here](https://
 ### SSH
 
 You can also include your private `ssh` key into the installed persistent secret to allow Charts to authorize and push update about exported snapshot to the Gist when `persistence.snapshots.uploadToIpfs.shareToGist` is set. Use `ssh` as key in `<release_name>-lotus-secret` and base64 encoded private SSH key as value. 
+
+### ApiService option
+
+There is option, if you plan to split lotus node functionality and service like StateDiff, Powergate e.t.c to different instances(compute resources) 
+    
+    1 - deploy api service(api*.yaml)
+    2 - use variable apiDNS from console output of 1 step, deploy services(service.yaml)
 
 ## License
 

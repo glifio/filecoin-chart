@@ -3,6 +3,8 @@
   http://{{ .Values.ingress.host }}
 IPFS, StateDiff, Powergate and Lotus node will be available by /ipfs, /StateDiff /powergate, and /lotus paths accordingly if enabled.
 {{- end }}
+{{- if .Values.ApiService.enabled }}
 If you use api-service schema, then IPFS, StateDiff, Powergate will be available by /service/ipfs,StateDiff,powergate paths accordingly if enabled.
 Lotus apiDNS service has link: {{- if .Values.Lotus.enabled }} {{ .Release.Name }}-lotus-service {{- end }}.
 Use this variable during deployment service in "apiDNS" ( --set .Values.apiDNS={{ .Release.Name }}-lotus-service or in file service.yaml )
+{{- end }}

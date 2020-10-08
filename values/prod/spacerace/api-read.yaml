@@ -1,0 +1,46 @@
+ApiService:
+  enabled: true
+secretVolume:
+  enabled: true
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  lotus:
+    requests:
+      cpu: 25
+      memory: 200Gi
+    limits:
+      cpu: 31
+      memory: 250Gi
+persistence:
+  snapshots:
+    automation:
+      creation:
+        cron: "0 10 * * *"
+      deletion:
+        cron: "0 11 * * *"
+    restore:
+      enabled: false
+      name: space02-98b5p
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot-r5-8x
+ingress:
+  statediff:
+    enabled: false
+  ipfs:
+    enabled: false
+  powergate:
+    enabled: false
+  statediff:
+    enabled: false
+
+Powergate:
+  enabled: false
+IPFS:
+  enabled: false
+StateDiff:
+  enabled: false
