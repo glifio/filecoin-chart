@@ -1,0 +1,44 @@
+image:
+  repository: glif/lotus:v0.8.1-dev
+init:
+  importSnapshot:
+    SNAPSHOTURL: https://very-temporary-spacerace-chain-snapshot.s3.amazonaws.com/Spacerace_pruned_stateroots_snapshot_latest.car
+    enabled: true
+  sync:
+    enabled: true
+nameOverride: ""
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    aws.amazon.com/eks-local-ssd: "true"
+    lifecycle: OnDemand-nvme-a
+    role: worker
+persistence:
+  enabled: true
+  autoResizer:
+    enabled: false
+  lotus:
+    accessModes:
+    - ReadWriteOnce
+    size: 3482Gi
+    storageClassName: local-storage
+  snapshots:
+    automation:
+      creation:
+        enabled: false
+      deletion:
+        enabled: false
+    enabled: false
+    restore:
+      enabled: false
+resources:
+  lotus:
+    limits:
+      cpu: 15
+      memory: 120Gi
+    requests:
+      cpu: 12
+      memory: 64Gi
+secretVolume:
+  enabled: true
+  persistNodeID: false
