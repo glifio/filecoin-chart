@@ -1,9 +1,26 @@
+image:
+  repository: openworklabs/lotus:v0.9.0-r5
 ingress:
   lotus:
     annotations: 
       nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
   ipfs:
     enabled: true
+resources:
+  lotus:
+    requests:
+      cpu: 23
+      memory: 160Gi
+    limits:
+      cpu: 29
+      memory: 220Gi
+  ipfs:
+    requests:
+      cpu: 2
+      memory: 30Gi
+    limits:
+      cpu: 8
+      memory: 90Gi
 persistence:
   snapshots:
     uploadToIpfs:
@@ -28,6 +45,6 @@ IPFS:
 nodeSelector:
   enabled: true
   nodeLabel:
-    lifecycle: Ec2Spot
+    lifecycle: OnDemand-r5-8x 
 secretVolume:
   persistNodeID: true
