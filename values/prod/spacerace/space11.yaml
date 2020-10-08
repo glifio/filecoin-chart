@@ -19,7 +19,7 @@ persistence:
     enabled: false
   lotus:
     accessModes:
-      - ReadWriteOnce
+    - ReadWriteOnce
     size: 3482Gi
     storageClassName: local-storage
   snapshots:

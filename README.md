@@ -110,6 +110,8 @@ These are our emphasized config options. For a full list, see the [values files]
 | `persistence.snapshots.*` | Described at [Snapshots](#snapshots) section |                                |
 | `secretVolume.enabled` | If you want to reuse token across installations. See [here](https://github.com/openworklabs/filecoin-chart/blob/master/README.md#Lotus-JWT) for more details. | `false` |
 | `ApiService.enabled` | If you want to use api-service schema. See [here](#apiservice) for more details. | `false` |
+| `secretVolume.enabled` | If you want to reuse token across installations. See [here](#Lotus-JWT) for more details. | `false` |
+| `secretVolume.persistNodeID` | If you want to persist nodeID - append the `nodeid` key to the secret created for the [JWT token](#Lotus-JWT). Used only if secretVolume is enabled. | `false` |
 
 ## Snapshots
 
@@ -156,7 +158,7 @@ You can also include your private `ssh` key into the installed persistent secret
 There is option, if you plan to split lotus node functionality and service like StateDiff, Powergate e.t.c to different instances(compute resources) 
     
     1 - deploy api service(api*.yaml)
-    2 - use variable apiDNS from console output of 1 step, deploy services(service.yaml)
+    2 - use variable apiDNS from console output of 1 step in service.yaml, deploy services(service.yaml)
 
 ## License
 

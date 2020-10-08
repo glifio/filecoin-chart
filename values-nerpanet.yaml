@@ -109,6 +109,11 @@ resources:
 persistence:
 # If persistence is set to false no persistent volumes will be created
   enabled: true
+  autoResizer:
+    enabled: true
+    increaseThreshold: 90 # in %
+    increaseStep: 10 # in %
+    cron: "0 0 * * *"
   snapshots:
 # If uploadToIpfs is set to true the internal Lotus snapshot will be created and uploaded to the IPFS system. Note that IPFS must be nenabled in that case
     uploadToIpfs:
