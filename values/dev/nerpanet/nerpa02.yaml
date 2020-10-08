@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-
-=======
 nodeSelector:
   enabled: true
   nodeLabel:
     lifecycle: Ec2Spot
->>>>>>> origin/dev
