@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:v0.8.1
+  repository: openworklabs/lotus:v0.9.0
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -78,11 +78,11 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   lotus:
     requests:
-      cpu: 3000m
-      memory: 16Gi
+      cpu: 25
+      memory: 200Gi
     limits:
-      cpu: 7500m
-      memory: 30Gi
+      cpu: 31
+      memory: 250Gi
   ipfs:
     requests:
       cpu: 1500m

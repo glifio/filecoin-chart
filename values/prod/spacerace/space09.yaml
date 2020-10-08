@@ -1,24 +1,24 @@
 resources:
   lotus:
     requests:
-      cpu: 2000m
-      memory: 16Gi
+      cpu: 20
+      memory: 160Gi
     limits:
-      cpu: 7500m
-      memory: 30Gi
+      cpu: 31
+      memory: 210Gi
   ipfs:
     requests:
-      cpu: 800m
+      cpu: 5
       memory: 2Gi
     limits:
-      cpu: 3000m
+      cpu: 11
       memory: 4Gi
   powergate:
     requests:
-      cpu: 800m
+      cpu: 5
       memory: 2Gi
     limits:
-      cpu: 3000m
+      cpu: 11
       memory: 4Gi
   statediff:
     requests:
@@ -26,7 +26,7 @@ resources:
       memory: 200Mi
     limits:
       cpu: 250m
-      memory: 400Mi   
+      memory: 400Mi
 ingress:
   lotus:
     enabled: true
@@ -63,6 +63,6 @@ StateDiff:
 nodeSelector:
   enabled: true
   nodeLabel:
-    lifecycle: Ec2Spot
+    lifecycle: OnDemand-r5-8x
 secretVolume:
   persistNodeID: true

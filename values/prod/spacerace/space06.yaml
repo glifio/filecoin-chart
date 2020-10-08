@@ -22,4 +22,4 @@ StateDiff:
 nodeSelector:
   enabled: true
   nodeLabel:
-    lifecycle: Ec2Spot
+    lifecycle: OnDemand-r5-8x
