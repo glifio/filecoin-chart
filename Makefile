@@ -23,7 +23,7 @@ nodedry:
 	helm upgrade --install -f values-spacerace.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) --dry-run .
 
 cascadests:
-	kubectl -n $(NAMESPACE) delete sts $(NODE)-lotus --cascade false
+	kubectl -n $(NAMESPACE) delete sts $(NODE)-lotus --cascade=false
 
 ## command to change snapshot in statefulset
 ## change persistence.snapshots.name before runing
