@@ -24,4 +24,8 @@ resources:
     limits:
       cpu: 7
       memory: 15Gi
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: Ec2Spot
 
