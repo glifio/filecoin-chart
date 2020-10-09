@@ -1,3 +1,11 @@
+resources:
+  lotus:
+    requests:
+      cpu: 3
+      memory: 10Gi
+    limits:
+      cpu: 7
+      memory: 15Gi
 persistence:
   snapshots:
     automation:
@@ -8,13 +16,8 @@ persistence:
     restore:
       enabled: true
       name: space03-lnnkk
-resources:
-  lotus:
-    requests:
-      memory: 9Gi
-    limits:
-      memory: 16Gi
 nodeSelector:
   enabled: true
   nodeLabel:
     lifecycle: Ec2Spot
+

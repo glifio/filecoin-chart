@@ -8,12 +8,6 @@ persistence:
     restore:
       enabled: true
       name: space02-lp986
-resources:
-  lotus:
-    requests:
-      memory: 9Gi
-    limits:
-      memory: 16Gi
 ingress:
   statediff:
     enabled: true
@@ -23,3 +17,11 @@ nodeSelector:
   enabled: true
   nodeLabel:
     lifecycle: OnDemand-r5-8x
+resources:
+  lotus:
+    requests:
+      cpu: 3
+      memory: 10Gi
+    limits:
+      cpu: 7
+      memory: 15Gi 

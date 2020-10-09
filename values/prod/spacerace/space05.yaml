@@ -20,3 +20,11 @@ nodeSelector:
   enabled: true
   nodeLabel:
     lifecycle: Ec2Spot
+resources:
+  lotus:
+    requests:
+      cpu: 3
+      memory: 10Gi
+    limits:
+      cpu: 7
+      memory: 15Gi

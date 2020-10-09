@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: openworklabs/lotus:v0.9.0
+  repository: glif/lotus:v0.9.0-r5
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -145,7 +145,7 @@ persistence:
       #name: snapshot-blah
   # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "450Gi"
+    size: "500Gi"
     accessModes:
       - ReadWriteOnce
   ipfs:

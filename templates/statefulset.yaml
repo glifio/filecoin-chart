@@ -399,17 +399,6 @@ spec:
             mountPath: /lotus
 {{- end }}
 {{- end }}
-{{- if .Values.secretVolume.persistNodeID }}
-      - name: node-id
-        image: busybox
-        command: ["/bin/sh","-c"]
-        args: ["mkdir -p /lotus/keystore; cp /secret/nodeid /lotus/keystore/NRUWE4BSOAWWQ33TOQ"]
-        volumeMounts:
-          - name: lotus-secret-vol
-            mountPath: "/secret"
-          - name: vol-lotus
-            mountPath: /lotus
-{{- end }}
 {{- if .Values.init.import.enabled }}
       - name: import-wait
         image: debian:stable

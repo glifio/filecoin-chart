@@ -1,3 +1,11 @@
+resources:
+  lotus:
+    requests:
+      cpu: 3
+      memory: 10Gi
+    limits:
+      cpu: 7
+      memory: 15Gi
 persistence:
   snapshots:
     automation:
@@ -7,4 +15,4 @@ persistence:
         cron: "0 19 * * *"
     restore:
       enabled: true
-      name: space05-5bv6d
+      name: space09-87q2x

@@ -1,5 +1,3 @@
-image:
-  repository: openworklabs/lotus:v0.9.0-r5
 ingress:
   lotus:
     annotations: 
@@ -39,7 +37,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space03-jgvh4 
+      name: space07-6tv5t 
 IPFS:
   enabled: true
 nodeSelector:
