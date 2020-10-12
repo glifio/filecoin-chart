@@ -15,3 +15,11 @@ StateDiff:
   enabled: true
 
 lotusDNS: api-read-lotus-service
+
+persistence:
+  snapshots:
+    automation:
+      deletion:
+        enabled: false
+      creation:
+        enabled: false

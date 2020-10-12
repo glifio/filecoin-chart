@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v0.9.0-r5
+  repository: glif/lotus:v0.10.0
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -145,7 +145,7 @@ persistence:
       #name: snapshot-blah
   # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "500Gi"
+    size: "550Gi"
     accessModes:
       - ReadWriteOnce
   ipfs:

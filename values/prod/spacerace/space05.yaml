@@ -15,7 +15,7 @@ persistence:
         cron: "0 16 * * *"
     restore:
       enabled: true
-      name: space10-ss6hz 
+      name: space09-f8mg4
 nodeSelector:
   enabled: true
   nodeLabel:

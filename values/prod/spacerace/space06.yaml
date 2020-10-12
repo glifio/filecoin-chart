@@ -7,7 +7,7 @@ persistence:
         cron: "0 19 * * *"
     restore:
       enabled: true
-      name: space02-bs972
+      name: space09-f8mg4
 ingress:
   statediff:
     enabled: true
