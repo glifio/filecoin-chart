@@ -1,3 +1,6 @@
+persistence:
+   enabled: false
+
 nodeSelector:
   enabled: true
   nodeLabel:

@@ -1,3 +1,4 @@
+{{- if .Values.persistence.enabled }}
 {{- if .Values.persistence.snapshots.enabled }}
 {{- if and .Values.IPFS.enabled .Values.persistence.snapshots.uploadToIpfs.enabled }}
 ---
@@ -268,5 +269,6 @@ spec:
                 else echo "Disk is only ${USE}% used, not yet ready to expand. Current threshold is {{ .Values.persistence.autoResizer.increaseThreshold }}%"; 
                 fi;
               done;
+{{- end }}
 {{- end }}
 {{- end }}

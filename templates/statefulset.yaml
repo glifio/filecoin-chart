@@ -41,25 +41,26 @@ spec:
           secret:
             secretName: {{ .Release.Name }}-lotus-secret
             defaultMode: 384 # permission 0600
-            items:
-            - key: token
-              path: token
-            - key: privatekey
-              path: MF2XI2BNNJ3XILLQOJUXMYLUMU
-{{- if .Values.secretVolume.persistNodeID }}
-            - key: nodeid
-              path: NRUWE4BSOAWWQ33TOQ
-{{- end }}
 {{- end }}
       initContainers:
-{{- if and .Values.secretVolume.enabled (not .Values.secretVolume.persistNodeID) }}
-      - name: node-id
+{{- if .Values.secretVolume.enabled }}
+      - name: keys-management
         image: busybox
         command: ["/bin/sh","-c"]
-        args: ["mkdir -p /lotus/keystore; rm -f /lotus/keystore/NRUWE4BSOAWWQ33TOQ"]
+        args: 
+          - mkdir -p /lotus/keystore;
+{{- if .Values.secretVolume.persistNodeID }} 
+            cp /keystore/nodeid /lotus/keystore/NRUWE4BSOAWWQ33TOQ;
+{{- else }}
+            rm -f /lotus/keystore/NRUWE4BSOAWWQ33TOQ;
+{{- end }}           
+            cp /keystore/token /lotus/token;
+            cp /keystore/privatekey /lotus/keystore/MF2XI2BNNJ3XILLQOJUXMYLUMU;
         volumeMounts:
           - name: vol-lotus
             mountPath: /lotus
+          - name: lotus-secret-vol
+            mountPath: /keystore            
 {{- end }}
 {{- if .Values.init.import.enabled }}
       - name: import-start
@@ -124,7 +125,7 @@ spec:
           value: "/ip4/127.0.0.1/tcp/5001"
 {{- end }}
         - name: POWD_LOTUSTOKENFILE
-          value: "/root/.lotus/secret/token"
+          value: "/root/powergate/secret/token"
         - name: POWD_REPOPATH
           value: "/root/powergate/.powergate"
         - name: POWD_GATEWAYBASEPATH
@@ -253,8 +254,6 @@ spec:
         - containerPort: 1235
           name: p2p
         volumeMounts:
-          - name: lotus-secret-vol
-            mountPath: /root/.lotus/keystore
           - name: vol-lotus
             mountPath: /root/.lotus
         {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
