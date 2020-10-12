@@ -184,5 +184,3 @@ healthcheck:
   enabled: true
 
 # Defines whether api-service option uses.
-ApiService:
-  enabled: false

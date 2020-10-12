@@ -1,5 +1,3 @@
-ApiService:
-  enabled: true
 nodeSelector:
   enabled: true
   nodeLabel:
@@ -8,20 +6,12 @@ nodeSelector:
 ingress:
   lotus:
     enabled: false
-  ipfs:
-    enabled: false
-  powergate:
-    enabled: false
   statediff:
     enabled: true
 
 Lotus:
   enabled: false
-Powergate:
-  enabled: false
-IPFS:
-  enabled: false
 StateDiff:
   enabled: true
 
-apiDNS: api-read-lotus-service
+lotusDNS: api-read-lotus-service
