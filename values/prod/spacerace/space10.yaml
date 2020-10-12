@@ -15,7 +15,7 @@ persistence:
         cron: "0 23 * * *"
     restore:
       enabled: true
-      name: space03-lnnkk
+      name: api-read-k8pkx
 nodeSelector:
   enabled: true
   nodeLabel:
