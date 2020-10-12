@@ -1,5 +1,5 @@
 all: lint package
-NODE = space02
+NODE = space08
 ENV = prod
 NAMESPACE = spacerace
 ## lotus nodes management
