@@ -54,7 +54,7 @@ spec:
 {{- else }}
             rm -f /lotus/keystore/NRUWE4BSOAWWQ33TOQ;
 {{- end }}           
-            cp /keystore/token /lotus/keystore/token;
+            cp /keystore/token /lotus/token;
             cp /keystore/privatekey /lotus/keystore/MF2XI2BNNJ3XILLQOJUXMYLUMU;
         volumeMounts:
           - name: vol-lotus
