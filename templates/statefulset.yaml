@@ -81,8 +81,15 @@ spec:
           - name: vol-lotus
             mountPath: /root/.lotus
         env:
+{{- if .Values.init.importSnapshot.SNAPSHOTURL }}
         - name: SNAPSHOTURL
           value: {{ .Values.init.importSnapshot.SNAPSHOTURL }}
+{{- else }}
+        - name: SNAPSHOT_CID
+          value: {{ .Values.init.importSnapshot.SNAPSHOT_CID }}
+        - name: IPFS_GW
+          value: {{ .Values.init.importSnapshot.IPFS_GW }} 
+{{- end }}
 {{- end }}
 {{- if .Values.init.sync.enabled }}
       - name: sync-wait
