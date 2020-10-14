@@ -2,7 +2,7 @@ ingress:
   lotus:
     annotations: 
       nginx.ingress.kubernetes.io/configuration-snippet: |
-        proxy_set_header Authorization $space05_jwt;
+        proxy_set_header Authorization $space04_jwt;
         proxy_cache_bypass      $http_upgrade;
       nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
       nginx.ingress.kubernetes.io/cors-allow-origin: "*"
@@ -10,9 +10,9 @@ persistence:
   snapshots:
     automation:
       creation:
-        cron: "0 15 * * *"
+        cron: "0 12 * * *"
       deletion:
-        cron: "0 16 * * *"
+        cron: "0 13 * * *"
     restore:
       enabled: true
       name: space07-48gqf
@@ -27,4 +27,4 @@ resources:
       memory: 10Gi
     limits:
       cpu: 7
-      memory: 15Gi
+      memory: 15Gi      
