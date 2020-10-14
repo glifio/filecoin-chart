@@ -1,3 +1,6 @@
+image:
+  repository: glif/lotus:v0.10.1-dev
+
 ingress:
   lotus:
     annotations: 

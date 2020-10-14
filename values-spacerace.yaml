@@ -182,5 +182,6 @@ affinity: {}
 
 healthcheck:
   enabled: true
+  gist: https://gist.githubusercontent.com/openworklabbot/7081f6a7680f566083438d21c8fe4a82/raw/list
 
 # Defines whether api-service option uses.
