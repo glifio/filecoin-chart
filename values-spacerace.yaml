@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v0.10.0
+  repository: glif/lotus:v0.10.1
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -157,9 +157,13 @@ persistence:
     accessModes:
       - ReadWriteOnce
 
-# Defines whether should be deployed Lotus node.
+# Defines whether should be deployed Lotus node with service or without service.
 Lotus:
   enabled: true
+  service:
+    enabled: true
+    slave: false
+    release: api-read # master node release name
 # Defines whether Powergate should be deployed with Lotus node. Note that IPFS must be enabled if Powergate is enabled.
 Powergate:
   enabled: false
@@ -182,5 +186,3 @@ affinity: {}
 
 healthcheck:
   enabled: true
-
-# Defines whether api-service option uses.

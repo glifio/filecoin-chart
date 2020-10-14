@@ -1,7 +1,7 @@
 init:
   importSnapshot:
     SNAPSHOTURL: "https://very-temporary-spacerace-chain-snapshot.s3.amazonaws.com/Spacerace_pruned_stateroots_snapshot_latest.car"
-    #    SNAPSHOTURL: "https://node.glif.io/space00/ipfs/8080/ipfs/QmYmL4R9XHyN7ezbi9LE3Z9CWrvomSNX7aZ5r9nQNvKnJX"
+#    SNAPSHOTURL: "https://node.glif.io/space00/ipfs/8080/ipfs/QmYmL4R9XHyN7ezbi9LE3Z9CWrvomSNX7aZ5r9nQNvKnJX"
     enabled: true
 resources:
   lotus:
@@ -18,7 +18,7 @@ persistence:
   lotus:
     accessModes:
       - ReadWriteOnce
-#    size: 3482Gi
+    size: 3482Gi
     storageClassName: local-storage
   snapshots:
     automation:
@@ -53,16 +53,11 @@ StateDiff:
 Lotus:
   enabled: true
   service:
-    enabled: true
+    enabled: false
+    slave: true
+
 ingress:
   lotus:
-    annotations:
-      nginx.ingress.kubernetes.io/configuration-snippet: |
-        proxy_set_header Authorization $apiread_jwt;
-        proxy_cache_bypass      $http_upgrade;
-      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
-      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    enabled: false
 
 replicaCount: 1
-
-

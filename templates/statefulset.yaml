@@ -6,7 +6,11 @@ metadata:
     app: lotus-node-app
 spec:
   replicas: {{ .Values.replicaCount }}
+{{- if .Values.Lotus.service.slave }}
+  serviceName: {{ .Values.Lotus.service.release }}-lotus-service
+{{- else}}
   serviceName: {{ .Release.Name }}-lotus-service
+{{- end}}
   selector:
     matchLabels:
       app: lotus-node-app
@@ -16,7 +20,11 @@ spec:
         app: lotus-node-app
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         heritage: {{ .Release.Service }}
+{{- if .Values.Lotus.service.slave }}
+        release: {{ .Values.Lotus.service.release }}
+{{- else }}
         release: {{ .Release.Name }}
+{{- end }}
     spec:
 {{- if .Values.securityContext.runAsNonRoot }}
       securityContext:
