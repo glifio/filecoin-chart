@@ -1,8 +1,8 @@
 init:
   importSnapshot:
     SNAPSHOTURL: "https://very-temporary-spacerace-chain-snapshot.s3.amazonaws.com/Spacerace_pruned_stateroots_snapshot_latest.car"
-    #    SNAPSHOTURL: "https://node.glif.io/space00/ipfs/8080/ipfs/QmYmL4R9XHyN7ezbi9LE3Z9CWrvomSNX7aZ5r9nQNvKnJX"
-    enabled: true
+#    SNAPSHOTURL: "https://node.glif.io/space00/ipfs/8080/ipfs/QmYmL4R9XHyN7ezbi9LE3Z9CWrvomSNX7aZ5r9nQNvKnJX"
+#    enabled: true
 resources:
   lotus:
     limits:
