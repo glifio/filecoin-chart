@@ -76,7 +76,13 @@ spec:
 {{- if .Values.init.importSnapshot.enabled }}
       - name: import-snapshot
         image: {{ .Values.image.repository }}
-        command: ["/bin/entrypoint","-n"]
+        command:
+          - /bin/entrypoint
+{{- if .Values.init.importSnapshot.SNAPSHOTURL }}
+          - -n
+{{- else }}
+          - -f
+{{- end }}
         volumeMounts:
           - name: vol-lotus
             mountPath: /root/.lotus
