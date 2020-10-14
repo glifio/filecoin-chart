@@ -210,6 +210,10 @@ spec:
         command: ["/bin/entrypoint","-d"]
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
+{{- if .Values.healthcheck.enabled }}
+        - name: HEALTH_CHECK_GIST
+          value: {{ .Values.healthcheck.gist }}
+{{- end }}
 {{- if .Values.IPFS.enabled }}
         - name: LOTUS_CLIENT_USEIPFS
           value: "true"
