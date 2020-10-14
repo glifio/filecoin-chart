@@ -19,7 +19,7 @@ persistence:
         cron: "0 12 * * *"
     restore:
       enabled: true
-      name: space08-wxnfg
+      name: space07-zkgzv
 nodeSelector:
   enabled: true
   nodeLabel:
@@ -50,4 +50,4 @@ ingress:
       nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
       nginx.ingress.kubernetes.io/cors-allow-origin: "*"
 
-replicaCount: 3
+replicaCount: 2
