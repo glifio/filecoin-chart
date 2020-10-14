@@ -1,0 +1,43 @@
+init:
+  importSnapshot:
+          #SNAPSHOTURL: "https://very-temporary-spacerace-chain-snapshot.s3.amazonaws.com/Spacerace_pruned_stateroots_snapshot_latest.car"
+    IPFS_GW: https://node.glif.io/space00/ipfs/8080/ipfs
+    SNAPSHOT_CID: https://gist.githubusercontent.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6/raw/snapshot.log
+    enabled: true
+  sync:
+    enabled: true
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    aws.amazon.com/eks-local-ssd: "true"
+    lifecycle: Ec2Spot-i3
+    role: worker
+persistence:
+  enabled: true
+  autoResizer:
+    enabled: false
+  lotus:
+    accessModes:
+    - ReadWriteOnce
+    size: 869Gi
+    storageClassName: local-storage
+  snapshots:
+    automation:
+      creation:
+        enabled: false
+      deletion:
+        enabled: false
+    enabled: false
+    restore:
+      enabled: false
+resources:
+  lotus:
+    limits:
+      cpu: 4
+      memory: 30Gi
+    requests:
+      cpu: 3
+      memory: 25Gi
+secretVolume:
+  enabled: false
+  persistNodeID: false
