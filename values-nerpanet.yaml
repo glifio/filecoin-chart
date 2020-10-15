@@ -178,4 +178,5 @@ tolerations: []
 affinity: {}
 
 healthcheck:
-  enabled: false
+  enabled: true
+  network: nerpa
