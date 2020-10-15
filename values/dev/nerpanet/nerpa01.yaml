@@ -1,1 +1,5 @@
-
+persistence:
+  snapshots:
+    restore:
+      enabled: true
+      name: nerpa01-lzf7b       

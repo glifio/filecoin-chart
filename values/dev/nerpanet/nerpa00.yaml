@@ -11,6 +11,9 @@ persistence:
        authorEmail: openworklabbot@gmail.com
        authorName: Protofire Bot 
     enabled: true 
+    restore:
+      enabled: true
+      name: nerpa01-lzf7b
     automation:
       creation:
         enabled: true
@@ -22,5 +25,3 @@ IPFS:
   enabled: true 
 nodeSelector:
   enabled: true
-  nodeLabel:
-    lifecycle: Ec2Spot

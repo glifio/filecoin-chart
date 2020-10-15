@@ -57,6 +57,8 @@ ingress:
     enabled: false
 
 init:
+  importSnapshot:
+    enabled: false
   sync:
     enabled: true
   import:
@@ -156,6 +158,9 @@ persistence:
     size: "10Gi"
     accessModes:
       - ReadWriteOnce
+
+Lotus:
+  enabled: true
 
 # Defines whether Powergate should be deployed with Lotus node. Note that IPFS must be enabled if Powergate is enabled.
 Powergate:
