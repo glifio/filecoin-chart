@@ -46,6 +46,7 @@ spec:
 {{- if .Values.secretVolume.enabled }}
       - name: keys-management
         image: busybox
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/bin/sh","-c"]
         args: 
           - mkdir -p /lotus/keystore;
@@ -65,6 +66,7 @@ spec:
 {{- if .Values.init.import.enabled }}
       - name: import-start
         image: {{ .Values.image.repository }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/bin/sh", "-c"]
         args: ["until [ -f /chain/chain.car ] && [ ! -f /chain/chain.car.lock ]; do echo "Waiting for snapshot files to appear before import; Sleeping 60s"; sleep 60s; done && /bin/entrypoint -i"]
         volumeMounts:
@@ -76,21 +78,37 @@ spec:
 {{- if .Values.init.importSnapshot.enabled }}
       - name: import-snapshot
         image: {{ .Values.image.repository }}
-        command: ["/bin/entrypoint","-n"]
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command:
+          - /bin/entrypoint
+{{- if .Values.init.importSnapshot.SNAPSHOTURL }}
+          - -n
+{{- else }}
+          - -f
+{{- end }}
         volumeMounts:
           - name: vol-lotus
             mountPath: /root/.lotus
         env:
+{{- if .Values.init.importSnapshot.SNAPSHOTURL }}
         - name: SNAPSHOTURL
           value: {{ .Values.init.importSnapshot.SNAPSHOTURL }}
+{{- else }}
+        - name: SNAPSHOT_CID
+          value: {{ .Values.init.importSnapshot.SNAPSHOT_CID }}
+        - name: IPFS_GW
+          value: {{ .Values.init.importSnapshot.IPFS_GW }} 
+{{- end }}
 {{- end }}
 {{- if .Values.init.sync.enabled }}
       - name: sync-wait
         image: {{ .Values.image.repository }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/bin/entrypoint","-s"]
         volumeMounts:
           - name: vol-lotus
             mountPath: /root/.lotus
+                    
 {{- end }}
 {{- end }}
       containers:
@@ -194,9 +212,13 @@ spec:
 {{- if .Values.Lotus.enabled }}
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}
-        command: ["/bin/entrypoint","-d"]
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["/bin/entrypoint","-d"]
         env:
+{{- if .Values.healthcheck.enabled }}
+        - name: NETWORK
+          value: {{ .Values.healthcheck.network }}
+{{- end }}
 {{- if .Values.IPFS.enabled }}
         - name: LOTUS_CLIENT_USEIPFS
           value: "true"

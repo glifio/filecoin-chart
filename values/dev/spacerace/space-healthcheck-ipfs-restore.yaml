@@ -1,3 +1,5 @@
+image:
+  repository: glif/lotus:v0.10.0-dev
 init:
   importSnapshot:
           #SNAPSHOTURL: "https://very-temporary-spacerace-chain-snapshot.s3.amazonaws.com/Spacerace_pruned_stateroots_snapshot_latest.car"

@@ -182,5 +182,5 @@ affinity: {}
 
 healthcheck:
   enabled: true
-
+  network: testnet
 # Defines whether api-service option uses.
