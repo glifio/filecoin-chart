@@ -1,7 +1,6 @@
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
-#    SNAPSHOTURL: "https://node.glif.io/space00/ipfs/8080/ipfs/QmdVjL3QbfV2GqZ8ZLMJrXU3Hs3q1fExpoP6mBiyXWHmAm"
     enabled: true
 resources:
   lotus:
