@@ -157,9 +157,14 @@ persistence:
     accessModes:
       - ReadWriteOnce
 
-# Defines whether should be deployed Lotus node.
+# Defines whether should be deployed Lotus node with service or without service.
 Lotus:
   enabled: true
+  service:
+    enabled: true
+    release: api-read
+    slave: false
+
 # Defines whether Powergate should be deployed with Lotus node. Note that IPFS must be enabled if Powergate is enabled.
 Powergate:
   enabled: false
@@ -183,4 +188,3 @@ affinity: {}
 healthcheck:
   enabled: true
   network: mainnet
-# Defines whether api-service option uses.

@@ -11,6 +11,8 @@ ingress:
 
 Lotus:
   enabled: false
+  service:
+    enabled: false
 StateDiff:
   enabled: true
 

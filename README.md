@@ -87,18 +87,21 @@ These are our emphasized config options. For a full list, see the [values files]
 
 | Parameter | Description | Default |
 |-----------|-----------------------------------------|---------|
-| `replicaCount` | The number of Lotus replicas to run. | 1 |
-| `image.repository` | Lotus Docker Image. | `openworklabs/lotus` |
 | `IPFS.enabled` | Enable IPFS on the pod. | `false` |
-| `Powergate.enabled` | Enable Powergate on the pod. | `false` |
-| `serviceAccount.create` | Create service account. Must be enabled when enabling snapshot automation. | `false` |
-| `serviceAccount.name` | Must be set when `serviceAccount.create` is `true`. Will be prefixed with release name. | `acc` |
+| `ipfsDNS` | Overrides the IPFS endpoint when using services in separate pods | `` |
+| `image.repository` | Lotus Docker Image. | `openworklabs/lotus` |
 | `ingress.enabled` | Enables ingress for this particular release | `true` |
 | `ingress.host` | Defines DNS name that is used by NGINX to recognize valid requests | `node.glif.io` |
 | `ingress.annotations` | Defines annotations for general ingress | See [values.yaml](values.yaml) |
 | `ingress.<service>.enabled` | Enables ingress for particular service. | `true` |
 | `ingress.<service>.annotations` | Defines annotations for particular service. Please read comments in `values.yaml` file to check the annotations that should be set to enable firewall-based access instead of JWT-based. | `<unset>` |
 | `healthcheck.enabled` | If you want to use custom lotus storage node healthcheck. | `<true>` |
+| `healthcheck.network` | Defines healthcheck network. | `mainnet` |
+| `Lotus.service.release` | Defines master endpoint in lotusAPI schema | `api-read` |
+| `Lotus.service.slave` | Defines slave endpoint(s) in lotusAPI schema | `false` |
+| `lotusDNS` | Overrides the lotus endpoint when using services in separate pods | `` |
+| `Powergate.enabled` | Enable Powergate on the pod. | `false` |
+| `replicaCount` | The number of Lotus replicas to run. | 1 |
 | `resources.<service>.requests.cpu` | The amount of vCPU (per service). | `<unset>` |
 | `resources.<service>.requests.memory` | The amount of memory (per service). | `<unset>` |
 | `resources.<service>.limit.cpu` | The ceiling amount of vCPU (per service). | `<unset>` |
@@ -106,13 +109,12 @@ These are our emphasized config options. For a full list, see the [values files]
 | `persistence.enabled` | Enable persistent volume.  | `true` |
 | `persistence.<service>.size` | Persistent volume storage size (per service). | `"200Gi"` |
 | `persistence.<service>.storageClassName` | Storage provisioner (per service). | `gp2` |
-| `persistence.<service>.accessModes` | Persistent volume storage size (per service). | `"200Gi"` |
+| `persistence.<service>.accessModes` | Persistent volume access mode (per service). | `"ReadWriteOnce"` |
 | `persistence.snapshots.*` | Described at [Snapshots](#snapshots) section |                                |
-| `secretVolume.enabled` | If you want to reuse token across installations. See [here](https://github.com/openworklabs/filecoin-chart/blob/master/README.md#Lotus-JWT) for more details. | `false` |
 | `secretVolume.enabled` | If you want to reuse token across installations. See [here](#Lotus-JWT) for more details. | `false` |
 | `secretVolume.persistNodeID` | If you want to persist nodeID - append the `nodeid` key to the secret created for the [JWT token](#Lotus-JWT). Used only if secretVolume is enabled. | `false` |
-| `lotusDNS` | Overrides the lotus endpoint when using services in separate pods | `` |
-| `ipfsDNS` | Overrides the IPFS endpoint when using services in separate pods | `` |
+| `serviceAccount.create` | Create service account. Must be enabled when enabling snapshot automation. | `false` |
+| `serviceAccount.name` | Must be set when `serviceAccount.create` is `true`. Will be prefixed with release name. | `acc` |
 
 ## Snapshots
 
