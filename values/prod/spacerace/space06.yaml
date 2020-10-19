@@ -1,6 +1,7 @@
 init:
   importSnapshot:
-    SNAPSHOTURL: "https://very-temporary-spacerace-chain-snapshot.s3.amazonaws.com/Spacerace_pruned_stateroots_snapshot_latest.car"
+    IPFS_GW: "https://node.glif.io/space00/ipfs/8080/ipfs"
+    SNAPSHOT_CID: "https://gist.githubusercontent.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6/raw/snapshot.log"
     enabled: true
   sync:
     enabled: true
@@ -9,7 +10,8 @@ nodeSelector:
   enabled: true
   nodeLabel:
     aws.amazon.com/eks-local-ssd: "true"
-    lifecycle: OnDemand-nvme-b
+    lifecycle: OnDemand
+    assignedPod: space06
     role: worker
 persistence:
   enabled: true
@@ -40,3 +42,8 @@ resources:
 secretVolume:
   enabled: true
   persistNodeID: false
+StateDiff:
+  enabled: true
+ingress:
+  statediff:
+    enabled: true

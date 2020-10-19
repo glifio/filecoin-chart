@@ -1,30 +1,37 @@
+replicaCount: 2
 resources:
   lotus:
     requests:
-      cpu: 25
-      memory: 200Gi
+      cpu: 23
+      memory: 160Gi
     limits:
-      cpu: 31
-      memory: 250Gi
+      cpu: 29
+      memory: 240Gi
   statediff:
     requests:
       cpu: 100m
       memory: 200Mi
     limits:
       cpu: 250m
-      memory: 400Mi   
-StateDiff:
-  enabled: true
+      memory: 400Mi
 ingress:
+  lotus:
+    enabled: true
   statediff:
     enabled: true
 persistence:
   snapshots:
     automation:
       creation:
-        cron: "0 17 * * *"
+        cron: "0 20 * * *"
       deletion:
-        cron: "0 18 * * *"
+        cron: "0 21 * * *"
     restore:
       enabled: true
-      name: space02-lp986
+      name: space09-447hk 
+StateDiff:
+  enabled: true
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: OnDemand-r5-8x
