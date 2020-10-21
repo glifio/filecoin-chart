@@ -1,7 +1,7 @@
 persistence:
   autoResizer:
     cron: "0 */6 * * *"
-replicaCount: 2
+replicaCount: 1
 ingress:
   lotus:
     annotations: 
