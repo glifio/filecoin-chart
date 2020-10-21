@@ -1,7 +1,7 @@
 persistence:
   autoResizer:
     cron: "0 */6 * * *"
-
+replicaCount: 2
 ingress:
   lotus:
     annotations: 
@@ -41,7 +41,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space07-6tv5t 
+      name: space09-vxx7s 
 IPFS:
   enabled: true
 nodeSelector:

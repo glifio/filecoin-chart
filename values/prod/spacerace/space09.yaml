@@ -1,3 +1,6 @@
+replicaCount: 2
+image:
+  repository: glif/lotus:api-request-metrics-wrapper 
 resources:
   lotus:
     requests:
@@ -53,7 +56,7 @@ persistence:
         cron: "0 21 * * *"
     restore:
       enabled: true
-      name: space07-w48md
+      name: space09-vxx7s 
 IPFS:
   enabled: true
 Powergate:
