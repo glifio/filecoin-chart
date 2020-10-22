@@ -33,18 +33,18 @@ ingress:
   lotus:
     enabled: true
     annotations:
-      nginx.ingress.kubernetes.io/whitelist-source-range: 82.209.244.50/32
+      nginx.ingress.kubernetes.io/whitelist-source-range: '82.209.244.50/32,91.149.128.236/32'
   ipfs:
     annotations:
-      nginx.ingress.kubernetes.io/whitelist-source-range: 82.209.244.50/32
+      nginx.ingress.kubernetes.io/whitelist-source-range: '82.209.244.50/32,91.149.128.236/32'
     enabled: true
   powergate:
     annotations:
-      nginx.ingress.kubernetes.io/whitelist-source-range: 82.209.244.50/32
+      nginx.ingress.kubernetes.io/whitelist-source-range: '82.209.244.50/32,91.149.128.236/32'
     enabled: true
   statediff:
     annotations:
-      nginx.ingress.kubernetes.io/whitelist-source-range: 82.209.244.50/32
+      nginx.ingress.kubernetes.io/whitelist-source-range: '82.209.244.50/32,91.149.128.236/32'
     enabled: true
 persistence:
   snapshots:
