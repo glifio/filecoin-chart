@@ -24,6 +24,8 @@ resources:
       cpu: 8
       memory: 90Gi
 persistence:
+  autoResizer:
+    cron: "0 */3 * * *"
   snapshots:
     uploadToIpfs:
       cron: "0 */1 * * *" 

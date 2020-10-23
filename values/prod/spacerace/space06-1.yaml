@@ -1,7 +1,6 @@
 init:
   importSnapshot:
-    IPFS_GW: "https://node.glif.io/space00/ipfs/8080/ipfs"
-    SNAPSHOT_CID: "https://gist.githubusercontent.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6/raw/snapshot.log"
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
     enabled: true
   sync:
     enabled: true
@@ -10,8 +9,7 @@ nodeSelector:
   enabled: true
   nodeLabel:
     aws.amazon.com/eks-local-ssd: "true"
-    lifecycle: OnDemand
-    assignedPod: space06
+    lifecycle: Ec2Spot-i3-2x4x
     role: worker
 persistence:
   enabled: true
@@ -20,7 +18,6 @@ persistence:
   lotus:
     accessModes:
     - ReadWriteOnce
-    size: 3482Gi
     storageClassName: local-storage
   snapshots:
     automation:
@@ -37,7 +34,12 @@ resources:
       cpu: 15
       memory: 120Gi
     requests:
-      cpu: 12
-      memory: 64Gi
+      cpu: 7
+      memory: 60Gi
 secretVolume:
   enabled: true
+Lotus:
+  service:
+    enabled: false
+    release: space06
+    slave: true
