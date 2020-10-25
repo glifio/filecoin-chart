@@ -1,5 +1,3 @@
-image:
-  repository: glif/lotus:api-request-metrics-wrapper 
 resources:
   lotus:
     requests:
