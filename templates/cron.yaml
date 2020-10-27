@@ -82,6 +82,7 @@ spec:
   schedule: {{ .Values.persistence.snapshots.automation.creation.cron | default "0 0 * * *" }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
+  concurrencyPolicy: "Forbid"
   jobTemplate:
     spec:
       template:
@@ -115,6 +116,7 @@ spec:
   schedule: {{ .Values.persistence.snapshots.automation.deletion.cron | default "0 1 * * *" }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
+  concurrencyPolicy: "Forbid"
   jobTemplate:
     spec:
       template:
@@ -187,6 +189,7 @@ spec:
   schedule: {{ .Values.persistence.autoResizer.cron | default "0 0 * * *" }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
+  concurrencyPolicy: "Forbid"
   jobTemplate:
     spec:
       template:
@@ -234,6 +237,7 @@ spec:
   schedule: {{ .Values.persistence.autoResizer.cron | default "0 0 * * *" }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
+  concurrencyPolicy: "Forbid"
   jobTemplate:
     spec:
       template:

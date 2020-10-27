@@ -43,7 +43,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space00-rt2p6 
+      name: space07-x87dn
 IPFS:
   enabled: true
 nodeSelector:
