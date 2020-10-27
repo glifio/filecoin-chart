@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:ntwk-nerpa-9.15.0
+  repository: glif/lotus:ntwk-nerpa-10.27.0
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -111,6 +111,7 @@ resources:
 persistence:
 # If persistence is set to false no persistent volumes will be created
   enabled: true
+  hostPath: /nvme
   autoResizer:
     enabled: true
     increaseThreshold: 90 # in %
@@ -189,3 +190,4 @@ affinity: {}
 healthcheck:
   enabled: true
   network: nerpa
+  allowedDelay: 50
