@@ -8,25 +8,10 @@ resources:
       cpu: 15
       memory: 120Gi
     requests:
-      cpu: 12
-      memory: 80Gi
+      cpu: 7
+      memory: 50Gi
 persistence:
-  enabled: true
-  autoResizer:
-    enabled: false
-  lotus:
-    accessModes:
-      - ReadWriteOnce
-    storageClassName: local-storage
-  snapshots:
-    automation:
-      creation:
-        enabled: false
-      deletion:
-        enabled: false
-    enabled: false
-    restore:
-      enabled: false
+  enabled: false 
 nodeSelector:
   enabled: true
   nodeLabel:
@@ -57,5 +42,3 @@ Lotus:
 ingress:
   lotus:
     enabled: false
-
-replicaCount: 1

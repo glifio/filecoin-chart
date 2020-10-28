@@ -42,6 +42,18 @@ spec:
             items:
             - key: token
               path: token
+{{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+        - name: vol-powergate
+          hostPath:
+            path: {{ .Values.persistence.hostPath }}/powergate
+            type: DirectoryOrCreate
+{{- end }}
+{{- end }}
+{{- if and .Values.IPFS.enabled (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+        - name: vol-ipfs
+          hostPath:
+            path: {{ .Values.persistence.hostPath }}/ipfs
+            type: DirectoryOrCreate
 {{- end }}
 {{- if .Values.Lotus.enabled }}
 {{- if .Values.secretVolume.enabled }}
@@ -49,6 +61,12 @@ spec:
           secret:
             secretName: {{ .Release.Name }}-lotus-secret
             defaultMode: 384 # permission 0600
+{{- end }}
+{{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+        - name: vol-lotus
+          hostPath:
+            path: {{ .Values.persistence.hostPath }}/lotus
+            type: DirectoryOrCreate
 {{- end }}
       initContainers:
 {{- if .Values.secretVolume.enabled }}
@@ -225,7 +243,11 @@ spec:
         env:
 {{- if .Values.healthcheck.enabled }}
         - name: NETWORK
-          value: {{ .Values.healthcheck.network }}
+          value: "{{ .Values.healthcheck.network }}"
+{{- if .Values.healthcheck.allowedDelay }}
+        - name: ALLOWED_DELAY
+          value: "{{ .Values.healthcheck.allowedDelay }}"
+{{- end }}
 {{- end }}
 {{- if .Values.IPFS.enabled }}
         - name: LOTUS_CLIENT_USEIPFS
@@ -301,7 +323,7 @@ spec:
       nodeSelector:
 {{ toYaml .Values.nodeSelector.nodeLabel | indent 8 }}
 {{- end }}
-  {{- if .Values.persistence.enabled }}
+{{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
 {{- if .Values.Lotus.enabled }}          
     - metadata:

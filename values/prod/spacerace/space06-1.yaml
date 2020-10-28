@@ -12,22 +12,7 @@ nodeSelector:
     lifecycle: Ec2Spot-i3-2x4x
     role: worker
 persistence:
-  enabled: true
-  autoResizer:
-    enabled: false
-  lotus:
-    accessModes:
-    - ReadWriteOnce
-    storageClassName: local-storage
-  snapshots:
-    automation:
-      creation:
-        enabled: false
-      deletion:
-        enabled: false
-    enabled: false
-    restore:
-      enabled: false
+  enabled: false
 resources:
   lotus:
     limits:
