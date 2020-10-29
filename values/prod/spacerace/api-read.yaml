@@ -30,7 +30,7 @@ persistence:
 nodeSelector:
   enabled: true
   nodeLabel:
-    role: api-read
+    role: api-read-ondemand
 ingress:
   statediff:
     enabled: false
