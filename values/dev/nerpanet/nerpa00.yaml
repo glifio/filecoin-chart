@@ -7,7 +7,7 @@ persistence:
       enabled: true
       shareToGist:
        enabled: true
-       address: https://gist.github.com/openworklabbot/d32543d42ed318f6dfde516c3d8668a0
+       address: git@gist.github.com:d32543d42ed318f6dfde516c3d8668a0.git 
        authorEmail: openworklabbot@gmail.com
        authorName: Protofire Bot 
     enabled: true 
