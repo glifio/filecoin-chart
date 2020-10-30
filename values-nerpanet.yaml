@@ -14,7 +14,7 @@ fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: false
+  create: true
   # The name of the service account to use. Will be prefixed with release name
   name: acc
 
