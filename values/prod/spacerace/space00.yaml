@@ -5,7 +5,7 @@ persistence:
 ingress:
   lotus:
     annotations: 
-      nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32"
+      nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32,"
   ipfs:
     enabled: true
 resources:

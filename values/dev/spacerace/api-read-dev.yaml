@@ -1,21 +1,39 @@
-apiservice:
-  enabled: true
-secretVolume:
-  enabled: true
+#secretVolume:
+#  enabled: false
+init:
+  importSnapshot:
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+    enabled: true
+resources:
+  lotus:
+    limits:
+      cpu: 3800m
+      memory: 29Gi
+    requests:
+      cpu: 3
+      memory: 25Gi
 persistence:
+  enabled: true
+  autoResizer:
+    enabled: false
+  lotus:
+    accessModes:
+      - ReadWriteOnce
+    size: "100Gi"
+    storageClassName: local-storage
   snapshots:
     automation:
       creation:
-        cron: "0 10 * * *"
+        enabled: false
       deletion:
-        cron: "0 11 * * *"
+        enabled: false
+    enabled: false
     restore:
-      enabled: true
-      name: space02-dev-tzq4x
+      enabled: false
 nodeSelector:
   enabled: true
   nodeLabel:
-    lifecycle: Ec2Spot
+    lifecycle: Ec2Spot-i3
 ingress:
   statediff:
     enabled: false
@@ -32,3 +50,18 @@ IPFS:
   enabled: false
 StateDiff:
   enabled: false
+
+Lotus:
+  enabled: true
+  service:
+    enabled: true
+ingress:
+  lotus:
+    annotations:
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        proxy_set_header Authorization $apiread_dev_jwt;
+        proxy_cache_bypass      $http_upgrade;
+      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
+      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+
+replicaCount: 1

@@ -1,19 +1,69 @@
+secretVolume:
+  enabled: false
+init:
+  importSnapshot:
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+    enabled: true
+resources:
+  lotus:
+    requests:
+      cpu: 1
+      memory: 15Gi
+    limits:
+      cpu: 3
+      memory: 29Gi
+  ipfs:
+    requests:
+      cpu: 1
+      memory: 2Gi
+    limits:
+      cpu: 4
+      memory: 4Gi
+  powergate:
+    requests:
+      cpu: 1
+      memory: 2Gi
+    limits:
+      cpu: 4
+      memory: 4Gi
+  statediff:
+    requests:
+      cpu: 100m
+      memory: 200Mi
+    limits:
+      cpu: 250m
+      memory: 400Mi
 persistence:
   snapshots:
     automation:
       creation:
-        cron: "0 10 * * *"
+        enabled: false
       deletion:
-        cron: "0 11 * * *"
+        enabled: false
+    enabled: true
     restore:
-      enabled: true
-      name: space02-dev-grzjk
+      enabled: false
+      name: space02-dev-d2btt
 nodeSelector:
   enabled: true
   nodeLabel:
-    lifecycle: Ec2Spot
+    lifecycle: Ec2Spot-i3
 ingress:
+  lotus:
+    enabled: true
+  ipfs:
+    enabled: true
+  powergate:
+    enabled: true
   statediff:
     enabled: true
+Lotus:
+  enabled: true
+  service:
+    enabled: true
+IPFS:
+  enabled: true
+Powergate:
+  enabled: true
 StateDiff:
   enabled: true
