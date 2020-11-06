@@ -26,8 +26,7 @@ SecurityContext:
 
 ingress:
   enabled: true
-  host: dev.node.glif.io
-###  host: node.glif.io
+  host: node.glif.io
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -142,7 +141,7 @@ persistence:
       #name: snapshot-blah
   # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "700Gi"
+    size: "900Gi"
     accessModes:
       - ReadWriteOnce
   ipfs:
@@ -159,8 +158,7 @@ Lotus:
   enabled: true
   service:
     enabled: true
-    release: api-read-dev
-###    release: api-read
+    release: api-read
     slave: false
 
 # Defines whether Powergate should be deployed with Lotus node. Note that IPFS must be enabled if Powergate is enabled.

@@ -1,6 +1,6 @@
 all: lint package
-NODE = space02-dev
-ENV = dev
+NODE = space06
+ENV = prod
 NAMESPACE = spacerace
 ## lotus nodes management
 nodedelete:

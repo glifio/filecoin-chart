@@ -28,7 +28,6 @@ spec:
     spec:
 {{- if .Values.SecurityContext.runAsNonRoot }}
       securityContext:
-#        runAsNonRoot: {{ .Values.SecurityContext.runAsNonRoot }}
         runAsGroup: {{ .Values.SecurityContext.runAsGroup }}
         runAsUser: {{ .Values.SecurityContext.runAsUser }}
         fsGroup: {{ .Values.SecurityContext.fsGroup }}
@@ -68,7 +67,6 @@ spec:
             path: {{ .Values.persistence.hostPath }}/lotus
             type: DirectoryOrCreate
 {{- end }}
-
       initContainers:
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
       - name: hostpath-permission

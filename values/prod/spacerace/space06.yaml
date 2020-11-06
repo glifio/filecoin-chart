@@ -41,9 +41,3 @@ resources:
       memory: 64Gi
 secretVolume:
   enabled: true
-  persistNodeID: false
-StateDiff:
-  enabled: true
-ingress:
-  statediff:
-    enabled: true

@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:ntwk-nerpa-11.04.0
+  repository: glif/lotus:ntwk-calibration-10.22.0
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -162,7 +162,7 @@ persistence:
 
 Lotus:
   enabled: true
-  service:
+  service:            
     enabled: true
     release: api-read
     slave: false
@@ -189,5 +189,4 @@ affinity: {}
 
 healthcheck:
   enabled: true
-  network: nerpa
-  allowedDelay: 50
+  network: calibration

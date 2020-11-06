@@ -17,7 +17,6 @@ persistence:
   lotus:
     accessModes:
       - ReadWriteOnce
-    size: 3482Gi
     storageClassName: local-storage
   snapshots:
     automation:
@@ -31,7 +30,7 @@ persistence:
 nodeSelector:
   enabled: true
   nodeLabel:
-    role: api-read
+    role: api-read-ondemand
 ingress:
   statediff:
     enabled: false

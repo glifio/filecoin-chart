@@ -96,7 +96,7 @@ These are our emphasized config options. For a full list, see the [values files]
 | `ingress.<service>.enabled` | Enables ingress for particular service. | `true` |
 | `ingress.<service>.annotations` | Defines annotations for particular service. Please read comments in `values.yaml` file to check the annotations that should be set to enable firewall-based access instead of JWT-based. | `<unset>` |
 | `healthcheck.enabled` | If you want to use custom lotus storage node healthcheck. | `<true>` |
-| `healthcheck.network` | Defines healthcheck network. | `mainnet` |
+| `healthcheck.network` | Defines Filecoin network. Should be listed in [network specification repo](https://raw.githubusercontent.com/filecoin-project/network-info/master/static/networks) | `mainnet` |
 | `Lotus.service.release` | Defines master endpoint in lotusAPI schema | `api-read` |
 | `Lotus.service.slave` | Defines slave endpoint(s) in lotusAPI schema | `false` |
 | `lotusDNS` | Overrides the lotus endpoint when using services in separate pods | `` |
@@ -106,14 +106,15 @@ These are our emphasized config options. For a full list, see the [values files]
 | `resources.<service>.requests.memory` | The amount of memory (per service). | `<unset>` |
 | `resources.<service>.limit.cpu` | The ceiling amount of vCPU (per service). | `<unset>` |
 | `resources.<service>.limit.memory` | The ceiling amount of memory (per service). | `<unset>` |
-| `persistence.enabled` | Enable persistent volume.  | `true` |
+| `persistence.enabled` | Enable PVC instead of using hostPath.  | `true` |
+| `persistence.hostPath` | Set the hostPath where data will be stored. Chart will store data of the each server in the dedicated subfolders under `hostPath` path.  | `` |
 | `persistence.<service>.size` | Persistent volume storage size (per service). | `"200Gi"` |
 | `persistence.<service>.storageClassName` | Storage provisioner (per service). | `gp2` |
 | `persistence.<service>.accessModes` | Persistent volume access mode (per service). | `"ReadWriteOnce"` |
 | `persistence.snapshots.*` | Described at [Snapshots](#snapshots) section |                                |
 | `secretVolume.enabled` | If you want to reuse token across installations. See [here](#Lotus-JWT) for more details. | `false` |
 | `secretVolume.persistNodeID` | If you want to persist nodeID - append the `nodeid` key to the secret created for the [JWT token](#Lotus-JWT). Used only if secretVolume is enabled. | `false` |
-| `serviceAccount.create` | Create service account. Must be enabled when enabling snapshot automation. | `false` |
+| `serviceAccount.create` | Create service account. Must be enabled when enabling snapshot automation. | `true` |
 | `serviceAccount.name` | Must be set when `serviceAccount.create` is `true`. Will be prefixed with release name. | `acc` |
 
 ## Snapshots
