@@ -43,5 +43,3 @@ Lotus:
 ingress:
   lotus:
     enabled: false
-
-replicaCount: 1

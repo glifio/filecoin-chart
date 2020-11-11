@@ -42,12 +42,10 @@ spec:
             env:
             - name: GIT_SSH_COMMAND
               value: ssh -i /secret/ssh -o IdentitiesOnly=yes
-            securityContext:
-             runAsUser: 0
             command:
             - sh
             - -c 
-            - echo "Job started. Waiting for log file to be available..." && kubectl exec -t {{ .Release.Name }}-lotus-0 -c filecoin -- bash -c 'while true; do if [ -f "/data/ipfs/snapshots/snapshot.log" ]; then cat /data/ipfs/snapshots/snapshot.log && break; else sleep 5s; fi; done' > /tmp/snapshot.log && echo "Log exported. Check if it is not empty..." && if [ -s /tmp/snapshot.log ]; then echo "Not empty. Installing git on machine..." && apt update -y && apt install git -y && echo "Installed. Fetching gist.github.com SSH keys..." && mkdir -p /root/.ssh && ssh-keyscan -t rsa gist.github.com >> /root/.ssh/known_hosts && echo "Fetched. Cloning repo..." && git clone {{ .Values.persistence.snapshots.uploadToIpfs.shareToGist.address }} /tmp/snapshots && echo "Cloned. Updating data..." && cp /tmp/snapshot.log /tmp/snapshots/snapshot.log && cd /tmp/snapshots && echo "Updated. Configuring git..." && git config user.name "{{ .Values.persistence.snapshots.uploadToIpfs.shareToGist.authorName }}" && git config user.email "{{ .Values.persistence.snapshots.uploadToIpfs.shareToGist.authorEmail }}" && echo "Configured. Commiting data..." && git commit --allow-empty -a -m "new export" && echo "Commited. Pushing data..." && git push && echo "Pushed. Removing log file..." && kubectl exec {{ .Release.Name }}-lotus-0 -c filecoin -- sh -c "rm /data/ipfs/snapshots/snapshot.log" && echo "Removed log file. Exiting container..."; else echo "Error! Log file is empty for some reason..."; false; fi
+            - echo "Job started. Waiting for log file to be available..." && kubectl exec -t {{ .Release.Name }}-lotus-0 -c filecoin -- bash -c 'while true; do if [ -f "/data/ipfs/snapshots/snapshot.log" ]; then cat /data/ipfs/snapshots/snapshot.log && break; else sleep 5s; fi; done' > /tmp/snapshot.log && echo "Log exported. Check if it is not empty..." && if [ -s /tmp/snapshot.log ]; then echo "Not empty." && echo "Fetching gist.github.com SSH keys..." && mkdir -p /home/lotus_user/.ssh && ssh-keyscan -t rsa gist.github.com >> /home/lotus_user/.ssh/known_hosts && echo "Fetched. Cloning repo..." && git clone {{ .Values.persistence.snapshots.uploadToIpfs.shareToGist.address }} /tmp/snapshots && echo "Cloned. Updating data..." && cp /tmp/snapshot.log /tmp/snapshots/snapshot.log && cd /tmp/snapshots && echo "Updated. Configuring git..." && git config user.name "{{ .Values.persistence.snapshots.uploadToIpfs.shareToGist.authorName }}" && git config user.email "{{ .Values.persistence.snapshots.uploadToIpfs.shareToGist.authorEmail }}" && echo "Configured. Commiting data..." && git commit --allow-empty -a -m "new export" && echo "Commited. Pushing data..." && git push && echo "Pushed. Removing log file..." && kubectl exec {{ .Release.Name }}-lotus-0 -c filecoin-ipfs -- sh -c "rm /data/ipfs/snapshots/snapshot.log" && echo "Removed log file. Exiting container..."; else echo "Error! Log file is empty for some reason..."; false; fi
           volumes:
           - name: lotus-secret-vol
             secret:
@@ -159,10 +157,10 @@ spec:
             - export REPLICAS=$(kubectl get sts -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-lotus); 
               for ((i=0;i<$REPLICAS;i++)); 
               do 
-                until kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /root/.lotus; do
+                until kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /home/lotus_user/.lotus; do
                   echo "Can't access Lotus node. Sleeping..." && sleep 60s;
                 done;
-                export USE=$(kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /root/.lotus | tr -dc '0-9');
+                export USE=$(kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /home/lotus_user/.lotus | tr -dc '0-9');
                 if [[ -z "$USE" ]];
                 then
                   echo "Error! Cannot get current disk size for some reason.";
