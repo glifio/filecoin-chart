@@ -1,4 +1,4 @@
-replicaCount: 2
+replicaCount: 1
 resources:
   lotus:
     requests:
@@ -28,7 +28,7 @@ persistence:
         cron: "0 21 * * *"
     restore:
       enabled: true
-      name: space00-9cm5g
+      name: space09-447hk
 StateDiff:
   enabled: true
 nodeSelector:
