@@ -43,7 +43,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space07-jlfmk
+      name: space07-97lw7
 IPFS:
   enabled: true
 nodeSelector:

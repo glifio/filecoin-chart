@@ -26,12 +26,11 @@ spec:
         release: {{ .Release.Name }}
 {{- end }}
     spec:
-{{- if .Values.securityContext.runAsNonRoot }}
+{{- if .Values.SecurityContext.runAsNonRoot }}
       securityContext:
-        # The image runs as uid 1000 by default, and needs to be able to write to
-        # the persistent volume to be able to start.
-        fsGroup: {{ .podSecurityContext.fsGroup }}
-        runAsUser: {{ .Values.securityContext.runAsUser }}
+        runAsGroup: {{ .Values.SecurityContext.runAsGroup }}
+        runAsUser: {{ .Values.SecurityContext.runAsUser }}
+        fsGroup: {{ .Values.SecurityContext.fsGroup }}
 {{- end }}
       volumes:
 {{- if .Values.Powergate.enabled }}
@@ -69,23 +68,36 @@ spec:
             type: DirectoryOrCreate
 {{- end }}
       initContainers:
+{{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+      - name: hostpath-permission
+        image: busybox
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["/bin/sh","-c"]
+        args:
+          - chown -R 2000:2000 /tmp;
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+          - name: vol-lotus
+            mountPath: /tmp
+{{- end }}
 {{- if .Values.secretVolume.enabled }}
       - name: keys-management
         image: busybox
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/bin/sh","-c"]
         args: 
-          - mkdir -p /lotus/keystore;
+          - mkdir -p /home/lotus_user/.lotus/keystore;
 {{- if .Values.secretVolume.persistNodeID }} 
-            cp /keystore/nodeid /lotus/keystore/NRUWE4BSOAWWQ33TOQ;
+            cp /keystore/nodeid /home/lotus_user/.lotus/keystore/NRUWE4BSOAWWQ33TOQ;
 {{- else }}
-            rm -f /lotus/keystore/NRUWE4BSOAWWQ33TOQ;
+            rm -f /home/lotus_user/.lotus/keystore/NRUWE4BSOAWWQ33TOQ;
 {{- end }}           
-            cp /keystore/token /lotus/token;
-            cp /keystore/privatekey /lotus/keystore/MF2XI2BNNJ3XILLQOJUXMYLUMU;
+            cp /keystore/token /home/lotus_user/.lotus/token;
+            cp /keystore/privatekey /home/lotus_user/.lotus/keystore/MF2XI2BNNJ3XILLQOJUXMYLUMU;
         volumeMounts:
           - name: vol-lotus
-            mountPath: /lotus
+            mountPath: /home/lotus_user/.lotus
           - name: lotus-secret-vol
             mountPath: /keystore            
 {{- end }}
@@ -97,7 +109,7 @@ spec:
         args: ["until [ -f /chain/chain.car ] && [ ! -f /chain/chain.car.lock ]; do echo "Waiting for snapshot files to appear before import; Sleeping 60s"; sleep 60s; done && /bin/entrypoint -i"]
         volumeMounts:
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: /home/lotus_user/.lotus
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
 {{- end }}
@@ -114,7 +126,7 @@ spec:
 {{- end }}
         volumeMounts:
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: /home/lotus_user/.lotus
         env:
 {{- if .Values.init.importSnapshot.SNAPSHOTURL }}
         - name: SNAPSHOTURL
@@ -133,7 +145,7 @@ spec:
         command: ["/bin/entrypoint","-s"]
         volumeMounts:
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: /home/lotus_user/.lotus
                     
 {{- end }}
 {{- end }}
@@ -169,18 +181,18 @@ spec:
           value: "/ip4/127.0.0.1/tcp/5001"
 {{- end }}
         - name: POWD_LOTUSTOKENFILE
-          value: "/root/powergate/secret/token"
+          value: "/home/lotus_user/powergate/secret/token"
         - name: POWD_REPOPATH
-          value: "/root/powergate/.powergate"
+          value: "/home/lotus_user/powergate/.powergate"
         - name: POWD_GATEWAYBASEPATH
           value: "/{{ .Release.Name }}/powergate/7000"
         volumeMounts:
           - name: vol-powergate
-            mountPath: /root/powergate
+            mountPath: /home/lotus_user/powergate
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: /home/lotus_user/.lotus
           - name: powergate-secret-vol
-            mountPath: /root/powergate/secret
+            mountPath: /home/lotus_user/powergate/secret
         resources:
 {{ toYaml .Values.resources.powergate | indent 10 }}
 {{- end }}
@@ -224,6 +236,8 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 6
+        securityContext:
+          runAsUser: 0
         ports:
         - containerPort: 4001
         - containerPort: 5001
@@ -307,7 +321,7 @@ spec:
           name: p2p
         volumeMounts:
           - name: vol-lotus
-            mountPath: /root/.lotus
+            mountPath: /home/lotus_user/.lotus
         {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain

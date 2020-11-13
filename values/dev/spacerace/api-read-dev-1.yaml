@@ -1,22 +1,25 @@
 init:
   importSnapshot:
-    IPFS_GW: "https://node.glif.io/space00/ipfs/8080/ipfs"
-    SNAPSHOT_CID: "https://gist.githubusercontent.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6/raw/snapshot.log"
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
     enabled: true
+
 resources:
   lotus:
     limits:
-      cpu: 15
-      memory: 120Gi
+      cpu: 3800m
+      memory: 29Gi
     requests:
-      cpu: 7
-      memory: 50Gi
+      cpu: 3
+      memory: 25Gi
+
 persistence:
   enabled: false
+
 nodeSelector:
   enabled: true
   nodeLabel:
-    role: api-read
+    lifecycle: Ec2Spot-i3
+
 ingress:
   statediff:
     enabled: false
@@ -27,10 +30,15 @@ ingress:
   statediff:
     enabled: false
 
+secretVolume:
+  enabled: false
+
 Powergate:
   enabled: false
+
 IPFS:
   enabled: false
+
 StateDiff:
   enabled: false
 
@@ -43,3 +51,5 @@ Lotus:
 ingress:
   lotus:
     enabled: false
+
+replicaCount: 1

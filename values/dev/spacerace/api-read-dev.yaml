@@ -1,3 +1,5 @@
+#secretVolume:
+#  enabled: false
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
@@ -5,11 +7,11 @@ init:
 resources:
   lotus:
     limits:
-      cpu: 15
-      memory: 120Gi
+      cpu: 3800m
+      memory: 29Gi
     requests:
-      cpu: 12
-      memory: 80Gi
+      cpu: 3
+      memory: 25Gi
 persistence:
   enabled: true
   autoResizer:
@@ -17,6 +19,7 @@ persistence:
   lotus:
     accessModes:
       - ReadWriteOnce
+    size: "100Gi"
     storageClassName: local-storage
   snapshots:
     automation:
@@ -30,7 +33,7 @@ persistence:
 nodeSelector:
   enabled: true
   nodeLabel:
-    role: api-read-ondemand
+    lifecycle: Ec2Spot-i3
 ingress:
   statediff:
     enabled: false
@@ -56,7 +59,9 @@ ingress:
   lotus:
     annotations:
       nginx.ingress.kubernetes.io/configuration-snippet: |
-        proxy_set_header Authorization $apiread_jwt;
+        proxy_set_header Authorization $apiread_dev_jwt;
         proxy_cache_bypass      $http_upgrade;
       nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
       nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+
+replicaCount: 1
