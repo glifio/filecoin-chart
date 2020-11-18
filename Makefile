@@ -1,5 +1,5 @@
 all: lint package
-NODE = api-read
+NODE = space06
 ENV = prod
 NAMESPACE = spacerace
 ## lotus nodes management
