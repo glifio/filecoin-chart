@@ -1,5 +1,5 @@
 all: lint package
-NODE = space06
+NODE = space00
 ENV = prod
 NAMESPACE = spacerace
 ## lotus nodes management
@@ -19,8 +19,8 @@ nodereinstall:
 nodeinstall:
 	helm upgrade --install -f values-spacerace.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
-nodedry:
-	helm upgrade --install -f values-spacerace.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) --dry-run .
+diff:
+	helm diff upgrade --install -f values-spacerace.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
 cascadests:
 	kubectl -n $(NAMESPACE) delete sts $(NODE)-lotus --cascade=false
