@@ -28,3 +28,6 @@ Lotus:
     enabled: false
     release: space06
     slave: true
+ingress:
+  lotus:
+    enabled: false
