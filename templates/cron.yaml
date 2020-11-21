@@ -31,7 +31,7 @@ spec:
             command:
             - bash
             - -c
-            - until kubectl exec {{ .Release.Name }}-lotus-0 -c filecoin -- bash -c 'while true; do echo "Checking if file is ready..." && if ! [[ `pgrep -x "lotus-shed"` ]] && [ -s "/data/ipfs/lotus-new.car" ]; then echo "File is ready. Exporting..." && break; else echo "File is not ready, sleeping for 60s..." && sleep 60s; fi; done'; do echo "First command executed with error, retrying in 60s..." && sleep 60s; done && kubectl exec {{ .Release.Name }}-lotus-0 -c filecoin-ipfs -- sh -c 'mkdir -p /data/ipfs/snapshots && mv /data/ipfs/lotus-new.car /data/ipfs/snapshots/lotus.car && ipfs repo gc && ipfs add /data/ipfs/snapshots/lotus.car | cut -d " " -f2 > /data/ipfs/snapshots/snapshot.log && echo "Exported. Exiting..."'
+            - until kubectl exec {{ .Release.Name }}-lotus-0 -c filecoin -- bash -c 'while true; do echo "Checking if file is ready..." && if ! [[ `pgrep -x "lotus-shed"` ]] && [ -s "/data/ipfs/lotus-new.car" ]; then echo "File is ready. Exporting..." && break; else echo "File is not ready, sleeping for 60s..." && sleep 60s; fi; done'; do echo "First command executed with error, retrying in 60s..." && sleep 60s; done && kubectl exec {{ .Release.Name }}-lotus-0 -c filecoin-ipfs -- sh -c 'mkdir -p /data/ipfs/snapshots && mv /data/ipfs/lotus-new.car /data/ipfs/snapshots/lotus.car && ipfs pin ls -q --type recursive | xargs ipfs pin rm && ipfs repo gc && ipfs add /data/ipfs/snapshots/lotus.car | cut -d " " -f2 > /data/ipfs/snapshots/snapshot.log && echo "Exported. Exiting..."'
 {{- if .Values.persistence.snapshots.uploadToIpfs.shareToGist.enabled }}
           containers:
           - name: gitter
