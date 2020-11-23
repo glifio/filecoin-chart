@@ -15,8 +15,6 @@ persistence:
   autoResizer:
     enabled: false
   lotus:
-    accessModes:
-      - ReadWriteOnce
     storageClassName: local-storage
   snapshots:
     automation:
@@ -28,30 +26,9 @@ persistence:
     restore:
       enabled: false
 nodeSelector:
-  enabled: true
   nodeLabel:
     role: api-read-ondemand
-ingress:
-  statediff:
-    enabled: false
-  ipfs:
-    enabled: false
-  powergate:
-    enabled: false
-  statediff:
-    enabled: false
 
-Powergate:
-  enabled: false
-IPFS:
-  enabled: false
-StateDiff:
-  enabled: false
-
-Lotus:
-  enabled: true
-  service:
-    enabled: true
 ingress:
   lotus:
     annotations:

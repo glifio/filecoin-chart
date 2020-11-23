@@ -1,0 +1,24 @@
+resources:
+  lotus:
+    limits:
+      cpu: 1500m
+      memory: 4Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+ingress:
+  lotus:
+    enabled: false
+
+Powergate:
+  enabled: false
+IPFS:
+  enabled: false
+StateDiff:
+  enabled: false
+
+Lotus:
+  service:
+    enabled: false
+    release: calibrationapi
+    slave: true
