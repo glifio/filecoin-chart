@@ -1,0 +1,11 @@
+ingress:
+  lotus:
+    enabled: false
+Lotus:
+  service:
+    enabled: false
+    release: calibrationapi
+    slave: true
+nodeSelector:
+  nodeLabel:
+    lifecycle: OnDemand

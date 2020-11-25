@@ -1,8 +1,11 @@
 init:
   importSnapshot:
-    IPFS_GW: "https://node.glif.io/space00/ipfs/8080/ipfs"
-    SNAPSHOT_CID: "https://gist.githubusercontent.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6/raw/snapshot.log"
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
     enabled: true
+#  importSnapshot:
+#    IPFS_GW: "https://node.glif.io/space00/ipfs/8080/ipfs"
+#    SNAPSHOT_CID: "https://gist.githubusercontent.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6/raw/snapshot.log"
+#    enabled: true
 resources:
   lotus:
     limits:
@@ -14,28 +17,10 @@ resources:
 persistence:
   enabled: false
 nodeSelector:
-  enabled: true
   nodeLabel:
     role: api-read
-ingress:
-  statediff:
-    enabled: false
-  ipfs:
-    enabled: false
-  powergate:
-    enabled: false
-  statediff:
-    enabled: false
-
-Powergate:
-  enabled: false
-IPFS:
-  enabled: false
-StateDiff:
-  enabled: false
 
 Lotus:
-  enabled: true
   service:
     enabled: false
     slave: true

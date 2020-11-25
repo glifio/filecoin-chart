@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:ntwk-calibration-10.22.0
+  repository: glif/lotus:ntwk-calibration
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -18,16 +18,11 @@ serviceAccount:
   # The name of the service account to use. Will be prefixed with release name
   name: acc
 
-podSecurityContext:
+SecurityContext:
+  runAsNonRoot: true
+  runAsUser: 2000
+  runAsGroup: 2000
   fsGroup: 2000
-
-securityContext:
-  # capabilities:
-  #   drop:
-  #   - ALL
-  readOnlyRootFilesystem: true
-  runAsNonRoot: false
-  runAsUser: 1000
 
 ingress:
   enabled: true
@@ -80,7 +75,7 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   lotus:
     requests:
-      cpu: 1000m
+      cpu: 500m
       memory: 3Gi
     limits:
       cpu: 1900m

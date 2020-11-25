@@ -30,7 +30,7 @@ cache:
   container:
     image: protofire/filecoin-rpc-proxy:0.0.1-dev
     proxyurl: http://api-read-dev-lotus-service:1234/rpc/v0
-    jwtsecret: V9/tfDU9ekpeUskjFbkUOik61ytGaqlozSf2SbtzrMg=
+    jwtsecret: x
 
 ingress:
   enabled: true
