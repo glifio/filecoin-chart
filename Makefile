@@ -1,6 +1,6 @@
 all: lint package
-NODE = space06
-ENV = prod
+NODE = api-read-dev
+ENV = dev
 NAMESPACE = spacerace
 ## lotus nodes management
 nodedelete:
@@ -8,19 +8,19 @@ nodedelete:
 	kubectl -n $(NAMESPACE) delete pvc vol-lotus-$(NODE)-lotus-0
 
 nodereinit:
-	helm -n spacerace delete $(NODE)
-	helm upgrade --install -f values-spacerace.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+	helm -n $(NAMESPACE) delete $(NODE)
+	helm upgrade --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
 nodereinstall:
-	helm -n spacerace delete $(NODE)
+	helm -n $(NAMESPACE) delete $(NODE)
 	kubectl -n $(NAMESPACE) delete pvc vol-lotus-$(NODE)-lotus-0
-	helm upgrade --install -f values-spacerace.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+	helm upgrade --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
 nodeinstall:
-	helm upgrade --install -f values-spacerace.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+	helm upgrade --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
 diff:
-	helm diff upgrade --install -f values-spacerace.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+	helm diff upgrade --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
 cascadests:
 	kubectl -n $(NAMESPACE) delete sts $(NODE)-lotus --cascade=false

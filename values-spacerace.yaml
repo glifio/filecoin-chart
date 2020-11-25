@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v1.2.0
+  repository: glif/lotus:v1.2.1
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -24,9 +24,17 @@ SecurityContext:
   runAsGroup: 2000
   fsGroup: 2000
 
+## cashe service settings
+cache:
+  enabled: true
+  container:
+    image: protofire/filecoin-rpc-proxy:0.0.1-dev
+    proxyurl: http://api-read-dev-lotus-service:1234/rpc/v0
+    jwtsecret: V9/tfDU9ekpeUskjFbkUOik61ytGaqlozSf2SbtzrMg=
+
 ingress:
   enabled: true
-  host: node.glif.io
+  host: dev.node.glif.io
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -158,7 +166,7 @@ Lotus:
   enabled: true
   service:
     enabled: true
-    release: api-read
+    release: api-read-dev
     slave: false
 
 # Defines whether Powergate should be deployed with Lotus node. Note that IPFS must be enabled if Powergate is enabled.

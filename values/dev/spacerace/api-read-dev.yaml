@@ -8,10 +8,10 @@ resources:
   lotus:
     limits:
       cpu: 3800m
-      memory: 29Gi
-    requests:
-      cpu: 3
       memory: 25Gi
+    requests:
+      cpu: 1500m
+      memory: 15Gi
 persistence:
   enabled: true
   autoResizer:
@@ -34,22 +34,6 @@ nodeSelector:
   enabled: true
   nodeLabel:
     lifecycle: Ec2Spot-i3
-ingress:
-  statediff:
-    enabled: false
-  ipfs:
-    enabled: false
-  powergate:
-    enabled: false
-  statediff:
-    enabled: false
-
-Powergate:
-  enabled: false
-IPFS:
-  enabled: false
-StateDiff:
-  enabled: false
 
 Lotus:
   enabled: true

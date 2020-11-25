@@ -13,11 +13,17 @@ metadata:
 {{- end }}
 spec:
   rules:
-  - host: {{ .Values.ingress.host }}
-    http:    
-      paths:
-        - backend:
-            serviceName: {{ .Release.Name }}-lotus-service
-            servicePort: 1234
-          path: /{{ .Release.Name }}/lotus(/|$)(.*)
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - backend:
+{{- if .Values.cache.enabled }}
+              serviceName: {{ .Release.Name }}-cache-service
+              servicePort: 8080
+            path: /cache(/|$)(.*)
+{{- else }}
+              serviceName: {{ .Release.Name }}-lotus-service
+              servicePort: 1234
+            path: /{{ .Release.Name }}/lotus(/|$)(.*)
+{{- end }}
 {{- end }}
