@@ -80,7 +80,7 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   lotus:
     requests:
-      cpu: 1000m
+      cpu: 500m
       memory: 3Gi
     limits:
       cpu: 1900m

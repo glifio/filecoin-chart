@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:ntwk-calibration-1.2.1
+  repository: glif/lotus:ntwk-calibration
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -75,7 +75,7 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   lotus:
     requests:
-      cpu: 1000m
+      cpu: 500m
       memory: 3Gi
     limits:
       cpu: 1900m

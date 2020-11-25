@@ -9,3 +9,6 @@ ingress:
 Lotus:
   service:
     release: calibrationapi
+nodeSelector:
+  nodeLabel:
+    lifecycle: OnDemand
