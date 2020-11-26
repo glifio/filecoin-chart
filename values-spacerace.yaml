@@ -179,7 +179,8 @@ nodeSelector:
 
 tolerations: []
 
-affinity: {}
+affinity:
+  enabled: false
 
 healthcheck:
   enabled: true

@@ -18,9 +18,6 @@ serviceAccount:
   # The name of the service account to use. Will be prefixed with release name
   name: acc
 
-podSecurityContext:
-  fsGroup: 2000
-
 SecurityContext:
   runAsNonRoot: true
   runAsUser: 2000

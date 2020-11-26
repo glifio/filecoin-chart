@@ -3,53 +3,28 @@ init:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
     enabled: true
 
+secretVolume:
+  enabled: false
+
 resources:
   lotus:
     limits:
-      cpu: 3800m
-      memory: 29Gi
-    requests:
-      cpu: 3
+      cpu: 1500m
       memory: 25Gi
+    requests:
+      cpu: 1
+      memory: 10Gi
 
 persistence:
   enabled: false
 
 nodeSelector:
-  enabled: true
   nodeLabel:
     lifecycle: Ec2Spot-i3
-
-ingress:
-  statediff:
-    enabled: false
-  ipfs:
-    enabled: false
-  powergate:
-    enabled: false
-  statediff:
-    enabled: false
-
-secretVolume:
-  enabled: false
-
-Powergate:
-  enabled: false
-
-IPFS:
-  enabled: false
-
-StateDiff:
-  enabled: false
-
-Lotus:
-  enabled: true
-  service:
-    enabled: false
-    slave: true
 
 ingress:
   lotus:
     enabled: false
 
-replicaCount: 1
+affinity:
+  enabled: true

@@ -35,6 +35,18 @@ spec:
         release: {{ .Release.Name }}
 {{- end }}
     spec:
+{{- if .Values.affinity.enabled }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - lotus-node-app
+              topologyKey: "kubernetes.io/hostname"
+{{- end }}
 {{- if .Values.SecurityContext.runAsNonRoot }}
       securityContext:
         runAsGroup: {{ .Values.SecurityContext.runAsGroup }}
