@@ -6,6 +6,7 @@ init:
 #    IPFS_GW: "https://node.glif.io/space00/ipfs/8080/ipfs"
 #    SNAPSHOT_CID: "https://gist.githubusercontent.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6/raw/snapshot.log"
 #    enabled: true
+
 resources:
   lotus:
     limits:
@@ -14,8 +15,10 @@ resources:
     requests:
       cpu: 7
       memory: 50Gi
+
 persistence:
   enabled: false
+
 nodeSelector:
   nodeLabel:
     role: api-read
@@ -28,3 +31,6 @@ Lotus:
 ingress:
   lotus:
     enabled: false
+
+podAntiAffinity:
+  enabled: true

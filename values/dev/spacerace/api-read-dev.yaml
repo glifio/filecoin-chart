@@ -4,6 +4,7 @@ init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
     enabled: true
+
 resources:
   lotus:
     limits:
@@ -12,13 +13,12 @@ resources:
     requests:
       cpu: 1500m
       memory: 15Gi
+
 persistence:
   enabled: true
   autoResizer:
     enabled: false
   lotus:
-    accessModes:
-      - ReadWriteOnce
     size: "100Gi"
     storageClassName: local-storage
   snapshots:
@@ -30,15 +30,11 @@ persistence:
     enabled: false
     restore:
       enabled: false
+
 nodeSelector:
-  enabled: true
   nodeLabel:
     lifecycle: Ec2Spot-i3
 
-Lotus:
-  enabled: true
-  service:
-    enabled: true
 ingress:
   lotus:
     annotations:
@@ -47,5 +43,3 @@ ingress:
         proxy_cache_bypass      $http_upgrade;
       nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
       nginx.ingress.kubernetes.io/cors-allow-origin: "*"
-
-replicaCount: 1
