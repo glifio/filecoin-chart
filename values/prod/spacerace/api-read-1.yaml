@@ -2,6 +2,7 @@ init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
     enabled: true
+
 resources:
   lotus:
     limits:
@@ -10,8 +11,10 @@ resources:
     requests:
       cpu: 7
       memory: 50Gi
+
 persistence:
   enabled: false 
+
 nodeSelector:
   nodeLabel:
     role: api-read
@@ -24,3 +27,6 @@ Lotus:
 ingress:
   lotus:
     enabled: false
+
+podAntiAffinity:
+  enabled: true
