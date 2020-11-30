@@ -87,6 +87,8 @@ These are our emphasized config options. For a full list, see the [values files]
 
 | Parameter | Description | Default |
 |-----------|-----------------------------------------|---------|
+| `cache.enabled` | Enable cache service. | `false` |
+| `cache.image` | Cache service image. | `protofire/filecoin-rpc-proxy:0.0.1-dev` |
 | `IPFS.enabled` | Enable IPFS on the pod. | `false` |
 | `ipfsDNS` | Overrides the IPFS endpoint when using services in separate pods | `` |
 | `image.repository` | Lotus Docker Image. | `openworklabs/lotus` |
@@ -112,6 +114,7 @@ These are our emphasized config options. For a full list, see the [values files]
 | `persistence.<service>.storageClassName` | Storage provisioner (per service). | `gp2` |
 | `persistence.<service>.accessModes` | Persistent volume access mode (per service). | `"ReadWriteOnce"` |
 | `persistence.snapshots.*` | Described at [Snapshots](#snapshots) section |                                |
+| `podAntiAffinity.enabled` | Enable do not run lotus nodes on the same eks worker(instance) | `false` |
 | `secretVolume.enabled` | If you want to reuse token across installations. See [here](#Lotus-JWT) for more details. | `false` |
 | `secretVolume.persistNodeID` | If you want to persist nodeID - append the `nodeid` key to the secret created for the [JWT token](#Lotus-JWT). Used only if secretVolume is enabled. | `false` |
 | `serviceAccount.create` | Create service account. Must be enabled when enabling snapshot automation. | `true` |

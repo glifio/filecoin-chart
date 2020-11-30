@@ -26,11 +26,8 @@ SecurityContext:
 
 ## cashe service settings
 cache:
-  enabled: true
-  container:
-    image: protofire/filecoin-rpc-proxy:0.0.1-dev
-    proxyurl: http://api-read-dev-lotus-service:1234/rpc/v0
-    jwtsecret: x
+  enabled: false
+  image: protofire/filecoin-rpc-proxy:0.0.1-dev
 
 ingress:
   enabled: true

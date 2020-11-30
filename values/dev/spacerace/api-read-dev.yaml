@@ -1,5 +1,6 @@
-#secretVolume:
-#  enabled: false
+cache:
+  enabled: true
+
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
