@@ -179,7 +179,7 @@ nodeSelector:
 
 tolerations: []
 
-affinity:
+podAntiAffinity:
   enabled: false
 
 healthcheck:
