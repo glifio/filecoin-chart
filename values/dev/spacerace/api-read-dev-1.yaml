@@ -26,5 +26,5 @@ ingress:
   lotus:
     enabled: false
 
-affinity:
+podAntiAffinity:
   enabled: true
