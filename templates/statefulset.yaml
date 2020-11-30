@@ -35,7 +35,7 @@ spec:
         release: {{ .Release.Name }}
 {{- end }}
     spec:
-{{- if .Values.affinity.enabled }}
+{{- if .Values.podAntiAffinity.enabled }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
