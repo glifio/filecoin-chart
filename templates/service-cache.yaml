@@ -102,5 +102,5 @@ spec:
         configMap:
           name: {{ .Release.Name }}-cache-cm
       nodeSelector:
-        role: api-read-ondemand
+{{ toYaml .Values.nodeSelector.nodeLabel | indent 8 }}
 {{- end }}
