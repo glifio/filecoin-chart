@@ -6,12 +6,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: lotus-cache
+      app: {{ .Release.Name }}-lotus-cache
   replicas: 2
   template:
     metadata:
       labels:
-        app: lotus-cache
+        app: {{ .Release.Name }}-lotus-cache
     spec:
       containers:
         - name: lotus-cache
