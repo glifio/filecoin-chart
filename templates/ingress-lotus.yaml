@@ -17,7 +17,7 @@ spec:
       http:
         paths:
 {{- if .Values.cache.enabled }}
-          - path: /cache(/|$)(.*)
+          - path: /{{ .Release.Name }}/cache(/|$)(.*)
             backend:
               serviceName: {{ .Release.Name }}-cache-service
               servicePort: 8080
