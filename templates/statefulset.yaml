@@ -363,9 +363,6 @@ spec:
 {{- if .Values.Lotus.enabled }}          
     - metadata:
         name: vol-lotus
-        {{- range $key, $value := .Values.persistence.lotus.annotations }}
-            {{ $key }}: {{ $value }}
-        {{- end }}
       spec:
         accessModes:
             {{- range .Values.persistence.lotus.accessModes }}

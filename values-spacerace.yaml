@@ -24,6 +24,16 @@ SecurityContext:
   runAsGroup: 2000
   fsGroup: 2000
 
+## cashe service settings
+cache:
+  enabled: false
+  image: protofire/filecoin-rpc-proxy:0.0.1
+  proxyurl: http://servicename:1234/rpc/v0
+  jwtbase64: x
+  nodeSelector:
+    nodeLabel:
+      role: worker
+
 ingress:
   enabled: true
   host: node.glif.io

@@ -1,0 +1,15 @@
+{{- if .Values.cache.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-cache-service
+  labels:
+    app: lotus-cache
+spec:
+  selector:
+    app: lotus-cache
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+{{- end }}

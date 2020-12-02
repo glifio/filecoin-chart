@@ -1,0 +1,52 @@
+{{- if .Values.cache.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-cache-cm
+data:
+  proxy.yaml: |
+    proxy_url: {{ .Values.cache.proxyurl }}
+    jwt_secret:
+    jwt_secret_base64: {{ .Values.cache.jwtbase64 }}
+    jwt_alg: HS256
+    jwt_permissions:
+      - read
+    port: 8080
+    host: 0.0.0.0
+    update_user_cache_period: 3600
+    update_custom_cache_period: 600
+    log_level: INFO
+    requests_batch_size: 1
+    requests_concurrency: 5
+    debug_http_request: true
+    debug_http_response: false
+    shutdown_timeout: 15
+    cache_methods:
+      - name: Filecoin.ChainGetTipSetByHeight
+        kind: regular
+        enabled: true
+        cache_by_params: true
+        params_in_cache_by_id:
+          - 0
+      - name: Filecoin.ClientQueryAsk
+        kind: regular
+        enabled: true
+        cache_by_params: true
+        params_in_cache_by_id:
+          - 0
+          - 1
+      - name: Filecoin.StateCirculatingSupply
+        kind: custom
+        enabled: true
+        no_update_cache: true
+        cache_by_params: true
+        params_for_request:
+          - []
+      - name: Filecoin.StateMarketDeals
+        kind: custom
+        enabled: true
+        no_store_cache: true
+        cache_by_params: true
+        params_for_request:
+          - []
+{{- end }}
