@@ -75,7 +75,7 @@ spec:
   selector:
     matchLabels:
       app: lotus-cache
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -102,5 +102,5 @@ spec:
         configMap:
           name: {{ .Release.Name }}-cache-cm
       nodeSelector:
-{{ toYaml .Values.nodeSelector.nodeLabel | indent 8 }}
+{{ toYaml .Values.cache.nodeSelector.nodeLabel | indent 8 }}
 {{- end }}
