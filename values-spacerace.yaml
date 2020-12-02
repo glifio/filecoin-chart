@@ -27,11 +27,13 @@ SecurityContext:
 ## cashe service settings
 cache:
   enabled: false
-  image: protofire/filecoin-rpc-proxy:0.0.1-dev
+  image: protofire/filecoin-rpc-proxy:0.0.1
+  proxyurl: http://servicename:1234/rpc/v0
+  jwtbase64: x
 
 ingress:
   enabled: true
-  host: dev.node.glif.io
+  host: node.glif.io
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -163,7 +165,7 @@ Lotus:
   enabled: true
   service:
     enabled: true
-    release: api-read-dev
+    release: api-read
     slave: false
 
 # Defines whether Powergate should be deployed with Lotus node. Note that IPFS must be enabled if Powergate is enabled.

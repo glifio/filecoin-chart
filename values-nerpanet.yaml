@@ -27,7 +27,9 @@ SecurityContext:
 ## cashe service settings
 cache:
   enabled: false
-  image: protofire/filecoin-rpc-proxy:0.0.1-dev
+  image: protofire/filecoin-rpc-proxy:0.0.1
+  proxyurl: http://servicename:1234/rpc/v0
+  jwtbase64: x
 
 ingress:
   enabled: true

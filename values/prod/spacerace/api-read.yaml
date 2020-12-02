@@ -1,3 +1,8 @@
+cache:
+  enabled: true
+  proxyurl: http://servicename:1234/rpc/v0
+  jwtbase64: x
+
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
