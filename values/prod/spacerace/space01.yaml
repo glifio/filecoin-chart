@@ -1,0 +1,35 @@
+init:
+  importSnapshot:
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+#    enabled: true
+  sync:
+    enabled: true
+nameOverride: ""
+nodeSelector:
+  nodeLabel:
+    assignedPod: space01
+persistence:
+  enabled: true
+  autoResizer:
+    enabled: false
+  lotus:
+    storageClassName: local-storage
+  snapshots:
+    automation:
+      creation:
+        enabled: false
+      deletion:
+        enabled: false
+    enabled: false
+    restore:
+      enabled: false
+resources:
+  lotus:
+    limits:
+      cpu: 7500m
+      memory: 60Gi
+    requests:
+      cpu: 6
+      memory: 50Gi
+secretVolume:
+  enabled: true
