@@ -90,73 +90,6 @@ spec:
           - name: vol-lotus
             mountPath: /tmp
 {{- end }}
-{{- if .Values.secretVolume.enabled }}
-      - name: keys-management
-        image: busybox
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        command: ["/bin/sh","-c"]
-        args: 
-          - mkdir -p /home/lotus_user/.lotus/keystore;
-{{- if .Values.secretVolume.persistNodeID }} 
-            cp /keystore/nodeid /home/lotus_user/.lotus/keystore/NRUWE4BSOAWWQ33TOQ;
-{{- else }}
-            rm -f /home/lotus_user/.lotus/keystore/NRUWE4BSOAWWQ33TOQ;
-{{- end }}           
-            cp /keystore/token /home/lotus_user/.lotus/token;
-            cp /keystore/privatekey /home/lotus_user/.lotus/keystore/MF2XI2BNNJ3XILLQOJUXMYLUMU;
-        volumeMounts:
-          - name: vol-lotus
-            mountPath: /home/lotus_user/.lotus
-          - name: lotus-secret-vol
-            mountPath: /keystore            
-{{- end }}
-{{- if .Values.init.import.enabled }}
-      - name: import-start
-        image: {{ .Values.image.repository }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        command: ["/bin/sh", "-c"]
-        args: ["until [ -f /chain/chain.car ] && [ ! -f /chain/chain.car.lock ]; do echo "Waiting for snapshot files to appear before import; Sleeping 60s"; sleep 60s; done && /bin/entrypoint -i"]
-        volumeMounts:
-          - name: vol-lotus
-            mountPath: /home/lotus_user/.lotus
-          - name: {{ (index .Values.init.import.volume 0).name }}
-            mountPath: /chain
-{{- end }}
-{{- if .Values.init.importSnapshot.enabled }}
-      - name: import-snapshot
-        image: {{ .Values.image.repository }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        command:
-          - /bin/entrypoint
-{{- if .Values.init.importSnapshot.SNAPSHOTURL }}
-          - -n
-{{- else }}
-          - -f
-{{- end }}
-        volumeMounts:
-          - name: vol-lotus
-            mountPath: /home/lotus_user/.lotus
-        env:
-{{- if .Values.init.importSnapshot.SNAPSHOTURL }}
-        - name: SNAPSHOTURL
-          value: {{ .Values.init.importSnapshot.SNAPSHOTURL }}
-{{- else }}
-        - name: SNAPSHOT_CID
-          value: {{ .Values.init.importSnapshot.SNAPSHOT_CID }}
-        - name: IPFS_GW
-          value: {{ .Values.init.importSnapshot.IPFS_GW }} 
-{{- end }}
-{{- end }}
-{{- if .Values.init.sync.enabled }}
-      - name: sync-wait
-        image: {{ .Values.image.repository }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        command: ["/bin/entrypoint","-s"]
-        volumeMounts:
-          - name: vol-lotus
-            mountPath: /home/lotus_user/.lotus
-                    
-{{- end }}
 {{- end }}
       containers:
 {{- if .Values.Powergate.enabled }}
@@ -262,8 +195,48 @@ spec:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        command: ["/bin/entrypoint","-d"]
+        command: ["/etc/lotus/docker/run"]
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]
         env:
+        - name: INFRA_LOTUS_DAEMON
+          value: "true"
+        - name: INFRA_LOTUS_HOME
+          value: /home/lotus_user
+{{- if .Values.init.clearRestart.enabled }}
+        - name: INFRA_CLEAR_RESTART
+          value: "true"
+{{- end }}
+{{- if .Values.init.importSnapshot.enabled }}
+{{- if .Values.init.importSnapshot.SNAPSHOTURL }}
+        - name: INFRA_IMPORT_SNAPSHOT
+          value: "true"
+        - name: SNAPSHOTURL
+          value: {{ .Values.init.importSnapshot.SNAPSHOTURL }}
+{{- else }}
+        - name: INFRA_IMPORT_SNAPSHOT_FROM_IPFS
+          value: "true"
+        - name: SNAPSHOT_CID
+          value: {{ .Values.init.importSnapshot.SNAPSHOT_CID }}
+        - name: IPFS_GW
+          value: {{ .Values.init.importSnapshot.IPFS_GW }}
+{{- end }}
+{{- end }}
+{{- if .Values.init.sync.enabled }}
+        - name: INFRA_SYNC
+          value: "true"
+{{- end }}
+
+{{- if .Values.secretVolume.enabled }}
+        - name: INFRA_SECRETVOLUME
+          value: "true"
+{{- end }}
+{{- if .Values.secretVolume.persistNodeID }}
+        - name: INFRA_PERSISTNODEID
+          value: "true"
+{{- end }}
 {{- if .Values.healthcheck.enabled }}
         - name: NETWORK
           value: "{{ .Values.healthcheck.network }}"
@@ -286,7 +259,7 @@ spec:
 {{- end }}
 {{- end }}
 {{- if and .Values.IPFS.enabled (eq .Values.persistence.snapshots.uploadToIpfs.export "cold") }}
-        - name: SHEDEXPORT
+        - name: INFRA_SHEDEXPORT
           value: "true"
         - name: SHEDEXPORTPATH
           value: "/data/ipfs/lotus-new.car"
@@ -296,39 +269,41 @@ spec:
 {{- if ne .Values.persistence.snapshots.uploadToIpfs.export "cold" }}
         livenessProbe:
   {{- if .Values.healthcheck.enabled }}
-          exec:
-            command:
-              - /bin/bash
-              - -c
-              - /bin/healthcheck
-          initialDelaySeconds: 150
-          periodSeconds: 120
-          successThreshold: 1
-          timeoutSeconds: 30
-  {{- else }}
-          httpGet:
-            path: /debug/metrics
+          tcpSocket:
             port: api
-          initialDelaySeconds: 200
+          initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
-          timeoutSeconds: 6
+          timeoutSeconds: 10
   {{- end }}
 {{- end }}
         readinessProbe:
-          httpGet:
-            path: /debug/metrics
-            port: api
-          initialDelaySeconds: 200
+          exec:
+            command:
+            - healthcheck
+          initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 3
+        startupProbe:
+          exec:
+            command:
+            - cat
+            - /home/lotus_user/.lotus/import-complete
+          failureThreshold: 100
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
         ports:
         - containerPort: 1234
           name: api
         - containerPort: 1235
           name: p2p
         volumeMounts:
+{{- if .Values.secretVolume.enabled }}
+          - name: lotus-secret-vol
+            mountPath: /keystore
+{{- end }}
           - name: vol-lotus
             mountPath: /home/lotus_user/.lotus
         {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
