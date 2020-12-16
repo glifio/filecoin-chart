@@ -261,9 +261,9 @@ spec:
 {{- if and .Values.IPFS.enabled (eq .Values.persistence.snapshots.uploadToIpfs.export "cold") }}
         - name: INFRA_SHEDEXPORT
           value: "true"
-        - name: SHEDEXPORTPATH
+        - name: INFRA_SHEDEXPORTPATH
           value: "/data/ipfs/lotus-new.car"
-        - name: SHEDEXPORTPERIOD
+        - name: INFRA_SHEDEXPORTPERIOD
           value: "{{ .Values.persistence.snapshots.uploadToIpfs.shedPeriod }}"
 {{- end }}
 {{- if ne .Values.persistence.snapshots.uploadToIpfs.export "cold" }}
