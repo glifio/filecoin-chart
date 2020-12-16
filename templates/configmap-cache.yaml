@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-cache-cm
 data:
-  proxy.yaml: |
+  config.yaml: |
     proxy_url: {{ .Values.cache.proxyurl }}
     jwt_secret:
     jwt_secret_base64: {{ .Values.cache.jwtbase64 }}

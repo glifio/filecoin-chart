@@ -1,6 +1,6 @@
 cache:
   enabled: true
-  proxyurl: http://servicename:1234/rpc/v0
+  proxyurl: http://api-read-dev-lotus-service:1234/rpc/v0
   jwtbase64: x
 
 init:
@@ -15,7 +15,7 @@ resources:
       memory: 25Gi
     requests:
       cpu: 1500m
-      memory: 15Gi
+      memory: 10Gi
 
 persistence:
   enabled: true
