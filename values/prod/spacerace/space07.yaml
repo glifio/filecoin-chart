@@ -6,7 +6,7 @@ cache:
     nodeLabel:
       role: worker
 
-replicaCount: 1
+replicaCount: 2
 resources:
   lotus:
     requests:
@@ -36,7 +36,7 @@ persistence:
         cron: "0 21 * * *"
     restore:
       enabled: true
-      name: space00-9cm5g
+      name: space07-5fsxd 
 StateDiff:
   enabled: true
 nodeSelector:
