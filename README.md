@@ -89,9 +89,11 @@ These are our emphasized config options. For a full list, see the [values files]
 |-----------|-----------------------------------------|---------|
 | `cache.enabled` | Enable cache service. | `false` |
 | `cache.image` | Cache service image. | `protofire/filecoin-rpc-proxy:0.0.1` |
-| `cache.jwtbase64` | Lotus node jwt private key | `X` |
+| `cache.jwtSecret.value` | Lotus node jwt private key | `X` |
+| `cache.jwtSecret.secret.name` | Lotus node jwt private key secret name | `space02-lotus-secret` |
+| `cache.jwtSecret.secret.key` | Lotus node jwt private key secret key | `jwt_secret` |
 | `cache.nodeSelector.nodeLabel` | Run cache on node with nodeSelector | `role: worker` |
-| `cache.url` | Lotus service name  with port and path | `http://servicename:1234/rpc/v0` |
+| `cache.proxyurl` | Lotus service name with port and path | `http://servicename:1234/rpc/v0` |
 | `IPFS.enabled` | Enable IPFS on the pod. | `false` |
 | `ipfsDNS` | Overrides the IPFS endpoint when using services in separate pods | `` |
 | `image.repository` | Lotus Docker Image. | `openworklabs/lotus` |

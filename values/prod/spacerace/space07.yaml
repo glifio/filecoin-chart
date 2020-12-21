@@ -1,7 +1,11 @@
 cache:
   enabled: true
   proxyurl: http://space07-lotus-service:1234/rpc/v0
-  jwtbase64: x
+  jwtSecret:
+    secret:
+      name: space02-lotus-secret
+      key: jwt_secret
+    value: ""
   nodeSelector:
     nodeLabel:
       role: worker

@@ -1,7 +1,11 @@
 cache:
   enabled: true
   proxyurl: http://api-read-dev-lotus-service:1234/rpc/v0
-  jwtbase64: x
+  jwtSecret:
+    secret:
+      name: space02-dev-lotus-secret
+      key: jwt_secret
+    value: ""
 
 init:
   importSnapshot:

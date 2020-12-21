@@ -22,6 +22,14 @@ spec:
           mountPath: /home/proxy
         ports:
           - containerPort: 8080
+        env:
+          {{- if .Values.cache.jwtSecret.secret }}
+          - name: PROXY_JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: {{ .Values.cache.jwtSecret.secret.key }}
+                name: {{ .Values.cache.jwtSecret.secret.name }}
+          {{- end }}
         resources:
           limits:
             memory: 12Gi

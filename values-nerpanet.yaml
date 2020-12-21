@@ -24,12 +24,16 @@ SecurityContext:
   runAsGroup: 2000
   fsGroup: 2000
 
-## cashe service settings
+## cache service settings
 cache:
   enabled: false
-  image: protofire/filecoin-rpc-proxy:0.0.1
+  image: protofire/filecoin-rpc-proxy:0.0.3
   proxyurl: http://servicename:1234/rpc/v0
-  jwtbase64: x
+  jwtSecret:
+    secret:
+      name: nerpa02-lotus-secret
+      key: jwt_secret
+    value: ""
   nodeSelector:
     nodeLabel:
       role: worker
