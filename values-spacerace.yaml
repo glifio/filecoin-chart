@@ -107,10 +107,10 @@ resources:
   statediff:
     requests:
       cpu: 100m
-      memory: 200Mi
+      memory: 1Gi
     limits:
       cpu: 250m
-      memory: 400Mi
+      memory: 2Gi
 
 persistence:
   # If persistence is set to false no persistent volumes will be created
