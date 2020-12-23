@@ -3,7 +3,7 @@ cache:
   proxyurl: http://api-read-dev-lotus-service:1234/rpc/v0
   jwtSecret:
     secret:
-      name: space02-dev-lotus-secret
+      name: api-read-dev-lotus-secret
       key: jwt_secret
     value: ""
 
