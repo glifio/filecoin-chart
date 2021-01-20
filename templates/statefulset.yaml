@@ -220,6 +220,9 @@ spec:
 {{- if .Values.init.clearRestart.enabled }}
         - name: INFRA_CLEAR_RESTART
           value: "true"
+{{- else}}
+        - name: INFRA_CLEAR_RESTART
+          value: "false"
 {{- end }}
 {{- if .Values.init.importSnapshot.enabled }}
 {{- if .Values.init.importSnapshot.SNAPSHOTURL }}
@@ -262,7 +265,7 @@ spec:
           value: "true"
         - name: LOTUS_CLIENT_IPFSUSEFORRETRIEVAL
           value: "true"
-{{- if .Values.ipfsDNS }} 
+{{- if .Values.ipfsDNS }}
         - name: LOTUS_CLIENT_IPFSMADDR
           value: "/dns4/{{ .Values.ipfsDNS }}/tcp/5001"
 {{- else }}
@@ -335,7 +338,7 @@ spec:
 {{- end }}
 {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
-{{- if .Values.Lotus.enabled }}          
+{{- if .Values.Lotus.enabled }}
     - metadata:
         name: vol-lotus
       spec:
@@ -361,7 +364,7 @@ spec:
           kind: VolumeSnapshot
           apiGroup: snapshot.storage.k8s.io
         {{- end }}
-{{- end }}        
+{{- end }}
 {{- if .Values.IPFS.enabled }}
     - metadata:
         name: vol-ipfs
