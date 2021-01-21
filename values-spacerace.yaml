@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v1.4.0-custom
+  repository: glif/lotus:v1.4.1-custom
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -36,7 +36,7 @@ cache:
 
 ingress:
   enabled: true
-  host: dev.node.glif.io
+  host: node.glif.io
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
