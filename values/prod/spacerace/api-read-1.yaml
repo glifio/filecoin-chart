@@ -2,6 +2,10 @@ init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
     enabled: true
+  sync:
+    enabled: true
+  clearRestart:
+    enabled: true
 
 resources:
   lotus:
@@ -13,7 +17,7 @@ resources:
       memory: 50Gi
 
 persistence:
-  enabled: false 
+  enabled: false
 
 nodeSelector:
   nodeLabel:

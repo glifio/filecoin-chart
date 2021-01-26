@@ -1,8 +1,10 @@
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
-#    enabled: true
+    enabled: true
   sync:
+    enabled: true
+  clearRestart:
     enabled: true
 nameOverride: ""
 nodeSelector:
@@ -14,6 +16,7 @@ persistence:
     enabled: false
   lotus:
     storageClassName: local-storage
+    size: "1325Gi"
   snapshots:
     automation:
       creation:
