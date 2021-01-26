@@ -4,6 +4,8 @@ init:
     enabled: true
   sync:
     enabled: true
+  clearRestart:
+    enabled: true
 nameOverride: ""
 nodeSelector:
   enabled: true

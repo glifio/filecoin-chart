@@ -3,16 +3,24 @@ cache:
   proxyurl: http://api-read-dev-lotus-service:1234/rpc/v0
   jwtbase64: x
 
+# init:
+#   importSnapshot:
+#     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+#     enabled: true
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+    enabled: true
+  sync:
+    enabled: true
+  clearRestart:
     enabled: true
 
 resources:
   lotus:
     limits:
       cpu: 3800m
-      memory: 25Gi
+      memory: 20Gi
     requests:
       cpu: 1500m
       memory: 10Gi
@@ -36,7 +44,8 @@ persistence:
 
 nodeSelector:
   nodeLabel:
-    lifecycle: Ec2Spot-i3
+    role: api-read-ondemand
+    # lifecycle: Ec2Spot-i3
 
 ingress:
   lotus:

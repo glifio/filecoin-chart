@@ -1,3 +1,7 @@
+# init:
+#   importSnapshot:
+#     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+#     enabled: true
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
@@ -10,11 +14,11 @@ init:
 resources:
   lotus:
     limits:
-      cpu: 15
-      memory: 120Gi
+      cpu: 3800m
+      memory: 25Gi
     requests:
-      cpu: 7
-      memory: 50Gi
+      cpu: 1500m
+      memory: 10Gi
 
 persistence:
   enabled: false
