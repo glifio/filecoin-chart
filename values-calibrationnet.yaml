@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:ntwk-calibration
+  repository: glif/lotus:v1.5.0-pre3-calibnet
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -27,9 +27,8 @@ SecurityContext:
 ## cashe service settings
 cache:
   enabled: false
-  image: protofire/filecoin-rpc-proxy:0.0.1
-  proxyurl: http://servicename:1234/rpc/v0
-  jwtbase64: x
+  image: protofire/filecoin-rpc-proxy:0.0.3
+  replicas: 2
   nodeSelector:
     nodeLabel:
       role: worker
@@ -66,6 +65,8 @@ init:
     enabled: false
   sync:
     enabled: true
+  clearRestart:
+    enabled: false
   import:
     enabled: false
     # ideally a shared volume containing chain dump
@@ -153,7 +154,7 @@ persistence:
       #name: snapshot-blah
 # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "10Gi"
+    size: "33Gi"
     accessModes:
       - ReadWriteOnce
   ipfs:
@@ -169,7 +170,7 @@ Lotus:
   enabled: true
   service:            
     enabled: true
-    release: api-read
+    release: some-release
     slave: false
 
 # Defines whether Powergate should be deployed with Lotus node. Note that IPFS must be enabled if Powergate is enabled.

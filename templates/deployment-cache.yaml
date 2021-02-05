@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: {{ .Release.Name }}-lotus-cache
-  replicas: 2
+  replicas: {{ .Values.cache.replicas }}
   template:
     metadata:
       labels:
@@ -19,7 +19,9 @@ spec:
         imagePullPolicy: Always
         volumeMounts:
         - name: {{ .Release.Name }}-config-cache
-          mountPath: /home/proxy
+          mountPath: /home/proxy/config.yaml
+          subPath: config.yaml
+          readOnly: true
         ports:
           - containerPort: 8080
         resources:
@@ -31,8 +33,11 @@ spec:
             cpu: 500m
       volumes:
       - name: {{ .Release.Name }}-config-cache
-        configMap:
-          name: {{ .Release.Name }}-cache-cm
+        secret:
+          secretName: {{ .Release.Name }}-lotus-secret
+          items:
+          - key: config
+            path: config.yaml
       nodeSelector:
 {{ toYaml .Values.cache.nodeSelector.nodeLabel | indent 8 }}
 {{- end }}

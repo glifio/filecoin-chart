@@ -1,7 +1,5 @@
 cache:
   enabled: true
-  proxyurl: http://space06-lotus-service:1234/rpc/v0
-  jwtbase64: x
 
 init:
   importSnapshot:

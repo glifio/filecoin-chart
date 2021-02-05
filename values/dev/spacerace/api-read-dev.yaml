@@ -1,12 +1,6 @@
 cache:
   enabled: true
-  proxyurl: http://api-read-dev-lotus-service:1234/rpc/v0
-  jwtbase64: x
-
-# init:
-#   importSnapshot:
-#     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
-#     enabled: true
+  replicas: 1
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
@@ -44,10 +38,10 @@ persistence:
 
 nodeSelector:
   nodeLabel:
-    role: api-read-ondemand
-    # lifecycle: Ec2Spot-i3
+    lifecycle: Ec2Spot-i3
 
 ingress:
+  host: dev.node.glif.io
   lotus:
     annotations:
       nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -55,3 +49,7 @@ ingress:
         proxy_cache_bypass      $http_upgrade;
       nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
       nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+
+Lotus:
+  service:
+    release: api-read-dev

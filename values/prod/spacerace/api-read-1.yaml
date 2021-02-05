@@ -26,6 +26,7 @@ nodeSelector:
 Lotus:
   service:
     enabled: false
+    release: api-read
     slave: true
 
 ingress:

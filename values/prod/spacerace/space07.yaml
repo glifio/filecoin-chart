@@ -1,7 +1,5 @@
 cache:
   enabled: true
-  proxyurl: http://space07-lotus-service:1234/rpc/v0
-  jwtbase64: x
   nodeSelector:
     nodeLabel:
       role: worker
