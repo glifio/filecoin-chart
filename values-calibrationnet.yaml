@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v1.5.0-pre3-calibnet
+  repository: glif/lotus:v1.5.0-rc2-calibnet
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -154,7 +154,7 @@ persistence:
       #name: snapshot-blah
 # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "33Gi"
+    size: "10Gi"
     accessModes:
       - ReadWriteOnce
   ipfs:

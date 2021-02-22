@@ -1,9 +1,6 @@
 ingress:
   lotus:
     enabled: false
-persistence:
-  lotus:
-    size: "40Gi"
 Lotus:
   service:
     enabled: false
