@@ -14,7 +14,7 @@ resources:
   lotus:
     limits:
       cpu: 3800m
-      memory: 20Gi
+      memory: 28Gi
     requests:
       cpu: 1500m
       memory: 10Gi

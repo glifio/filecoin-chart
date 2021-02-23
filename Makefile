@@ -1,7 +1,7 @@
 all: lint package
-NODE = calibrationapi
-ENV = dev
-NAMESPACE = calibrationnet
+NODE = space00
+ENV = prod
+NAMESPACE = spacerace
 ## lotus nodes management
 nodedelete:
 	helm -n $(NAMESPACE) delete $(NODE)

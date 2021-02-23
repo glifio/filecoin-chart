@@ -3,9 +3,6 @@ init:
     enabled: true
   clearRestart:
     enabled: false
-persistence:
-  autoResizer:
-    cron: "0 */6 * * *"
 replicaCount: 1
 ingress:
   lotus:
@@ -30,10 +27,10 @@ resources:
       memory: 90Gi
 persistence:
   autoResizer:
-    cron: "0 */3 * * *"
+    cron: "0 */6 * * *"
   snapshots:
     uploadToIpfs:
-      cron: "0 */1 * * *"
+      cron: "10 */12 * * *"
       enabled: true
       export: hot
       shedPeriod: 6h
