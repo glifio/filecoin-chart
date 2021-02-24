@@ -1,13 +1,22 @@
 persistence:
    enabled: false
 
-nodeSelector:
-  enabled: true
+SecurityContext:
+  runAsNonRoot: false
 ingress:
   lotus:
     enabled: false
   statediff:
     enabled: true
+
+resources:
+  statediff:
+    requests:
+      cpu: 300m
+      memory: 1Gi
+    limits:
+      cpu: 7500m
+      memory: 6Gi
 
 Lotus:
   enabled: false
