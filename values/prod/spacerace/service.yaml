@@ -16,7 +16,7 @@ resources:
       memory: 1Gi
     limits:
       cpu: 7500m
-      memory: 6Gi
+      memory: 12Gi
 
 Lotus:
   enabled: false
