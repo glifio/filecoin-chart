@@ -4,12 +4,6 @@ cache:
     nodeLabel:
       role: worker
 
-init:
-  sync:
-    enabled: true
-  clearRestart:
-    enabled: false
-
 replicaCount: 1
 resources:
   lotus:

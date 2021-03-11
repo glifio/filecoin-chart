@@ -1,6 +1,4 @@
 init:
-  sync:
-    enabled: true
   clearRestart:
     enabled: false
 replicaCount: 1

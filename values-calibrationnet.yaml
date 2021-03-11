@@ -48,11 +48,11 @@ ingress:
       SecDebugLog /tmp/modsec_debug.log
   lotus:
     enabled: true
-    annotations:
-# Uncomment following annotations to change access mode from JWT-based to Firewall-based. Also replace <JWT> with admin JWT token of the node and 1.2.3.4/32 to your IP address.
-      # nginx.ingress.kubernetes.io/whitelist-source-range: 1.2.3.4/32
-      # nginx.ingress.kubernetes.io/configuration-snippet: |
-      #       proxy_set_header Authorization "Bearer <JWT>";
+    # Uncomment following annotations to change access mode from JWT-based to Firewall-based. Also replace <JWT> with admin JWT token of the node and 1.2.3.4/32 to your IP address.
+    #annotations:
+    # nginx.ingress.kubernetes.io/whitelist-source-range: 1.2.3.4/32
+    # nginx.ingress.kubernetes.io/configuration-snippet: |
+    #       proxy_set_header Authorization "Bearer <JWT>";
   ipfs:
     enabled: false
   powergate:
@@ -61,10 +61,10 @@ ingress:
     enabled: false
 
 init:
-  importSnapshot:
-    enabled: false
   sync:
     enabled: true
+  importSnapshot:
+    enabled: false
   clearRestart:
     enabled: false
   import:
@@ -72,8 +72,8 @@ init:
     # ideally a shared volume containing chain dump
     volume: {}
       #- name: filecoin-chain-vol
-      #  persistentVolumeClaim:
-      #    claimName: efs-claim
+    #  persistentVolumeClaim:
+    #    claimName: efs-claim
 
 secretVolume:
   enabled: true
