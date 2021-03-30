@@ -19,6 +19,4 @@ persistence:
         retention:
           count: 4
 IPFS:
-  enabled: true 
-nodeSelector:
   enabled: true

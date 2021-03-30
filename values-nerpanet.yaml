@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:ntwk-nerpa
+  repository: glif/lotus:v1.6.0-rc1-nerpanet
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -61,17 +61,20 @@ ingress:
     enabled: false
 
 init:
-  importSnapshot:
-    enabled: false
   sync:
     enabled: true
+  importSnapshot:
+    enabled: false
+  clearRestart:
+    enabled: false
   import:
     enabled: false
     # ideally a shared volume containing chain dump
     volume: {}
-      #- name: filecoin-chain-vol
-      #  persistentVolumeClaim:
-      #    claimName: efs-claim
+    #- name: filecoin-chain-vol
+    #  persistentVolumeClaim:
+    #    claimName: efs-claim
+
 
 secretVolume:
   enabled: true
