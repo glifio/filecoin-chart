@@ -1,7 +1,7 @@
 all: lint package
-NODE = nerpa00
-ENV = dev
-NAMESPACE = nerpanet
+NODE = api-read
+ENV = prod
+NAMESPACE = spacerace
 ## lotus nodes management
 nodedelete:
 	helm -n $(NAMESPACE) delete $(NODE)

@@ -1,6 +1,3 @@
-init:
-  clearRestart:
-    enabled: false
 replicaCount: 1
 ingress:
   lotus:
