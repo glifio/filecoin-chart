@@ -40,7 +40,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space00-hwwdr
+      name: space00-9kk7w
 IPFS:
   enabled: true
 nodeSelector:

@@ -34,7 +34,7 @@ persistence:
         cron: "0 21 * * *"
     restore:
       enabled: true
-      name: space07-tnt9q
+      name: space00-jrx9g
 StateDiff:
   enabled: true
 nodeSelector:
