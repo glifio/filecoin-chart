@@ -20,11 +20,13 @@ resources:
     limits:
       cpu: 250m
       memory: 400Mi
+
 ingress:
   lotus:
     enabled: true
   statediff:
     enabled: true
+
 persistence:
   snapshots:
     automation:
@@ -35,9 +37,14 @@ persistence:
     restore:
       enabled: true
       name: space00-jrx9g
+
 StateDiff:
   enabled: true
+
 nodeSelector:
   enabled: true
   nodeLabel:
     lifecycle: OnDemand-r5-8x
+
+healthcheck:
+  readinessProbe: false

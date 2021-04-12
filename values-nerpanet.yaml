@@ -197,5 +197,6 @@ podAntiAffinity:
 
 healthcheck:
   enabled: true
+  readinessProbe: true
   network: nerpa
   allowedDelay: 50
