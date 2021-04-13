@@ -51,3 +51,6 @@ ingress:
 Lotus:
   service:
     release: api-read-dev
+
+healthcheck:
+  readinessProbe: false

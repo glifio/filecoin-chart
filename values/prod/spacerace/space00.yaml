@@ -42,7 +42,11 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space07-d55vt
+      name: space07-szxhx
+  lotus:
+    size: "6050Gi"
+    accessModes:
+      - ReadWriteOnce
 
 IPFS:
   enabled: true
@@ -56,4 +60,5 @@ secretVolume:
   persistNodeID: true
 
 healthcheck:
+  enabled: true
   readinessProbe: false

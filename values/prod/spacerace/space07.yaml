@@ -47,4 +47,5 @@ nodeSelector:
     lifecycle: OnDemand-r5-8x
 
 healthcheck:
+  enabled: false
   readinessProbe: false
