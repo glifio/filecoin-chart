@@ -195,7 +195,7 @@ jobs:
 workflows:
   tests:
     jobs:
-      - install-helm-chart:
+      - install-helm-chart
       - test-1-is-up:
           requires:
             - install-helm-chart
