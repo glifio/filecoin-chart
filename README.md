@@ -1,6 +1,6 @@
 # filecoin-chart
 
-[![CircleCI](https://circleci.com/gh/glifio/filecoin-chart.svg?style=svg)](https://circleci.com/gh/openworklabs/filecoin-chart)
+[![CircleCI](https://circleci.com/gh/glifio/filecoin-chart.svg?style=svg)](https://circleci.com/gh/glifio/filecoin-chart)
 
 Filecoin chart is a helm chart for hosting Lotus Node clients. [Lotus](https://github.com/filecoin-project/lotus) is an implementation of the [Filecoin spec](https://filecoin-project.github.io/specs/).
 

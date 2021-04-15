@@ -28,11 +28,11 @@ persistence:
   snapshots:
     uploadToIpfs:
       cron: "10 */12 * * *"
-      enabled: true
+      enabled: false
       export: hot
       shedPeriod: 6h
       shareToGist:
-        enabled: true
+        enabled: false
         address: git@gist.github.com:d03393d1f6e70e089e9e8d18922474f6.git
         authorName: Protofire Bot
         authorEmail: openworklabbot@gmail.com
@@ -42,7 +42,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space07-szxhx
+      name: space07-nw69x
   lotus:
     size: "6050Gi"
     accessModes:
@@ -60,5 +60,4 @@ secretVolume:
   persistNodeID: true
 
 healthcheck:
-  enabled: true
   readinessProbe: false
