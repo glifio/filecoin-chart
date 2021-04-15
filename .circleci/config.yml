@@ -196,9 +196,6 @@ workflows:
   tests:
     jobs:
       - install-helm-chart:
-          filters:
-            branches:
-              only: ci
       - test-1-is-up:
           requires:
             - install-helm-chart
