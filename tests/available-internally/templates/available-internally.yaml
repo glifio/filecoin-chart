@@ -23,4 +23,4 @@ spec:
       - --data 
       - '{ "jsonrpc": "2.0", "method": "Filecoin.ChainHead", "params": [], "id": 1 }'
       - 'http://{{ .Release.Name }}-lotus-service:1234/rpc/v0'
-  restartPolicy: Never
+  restartPolicy: Always

@@ -50,3 +50,6 @@ ingress:
 Lotus:
   service:
     release: api-read
+
+healthcheck:
+  readinessProbe: false

@@ -42,7 +42,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space07-nw69x
+      name: space07-hlzw6
   lotus:
     size: "6050Gi"
     accessModes:
