@@ -111,7 +111,7 @@ jobs:
             STATUSCODE=$(kubectl logs ${RELEASE}-available-internally  -n << pipeline.parameters.namespace >>)
             echo "STATUS_CODE IS => $STATUSCODE"
             if [ "$STATUSCODE" != "200" ]; then
-              sleep 10s
+              sleep 20s
             else
               echo  "$STATUSCODE"
               if [ "$STATUSCODE" == "200" ]; then
