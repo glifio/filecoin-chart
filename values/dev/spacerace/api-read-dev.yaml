@@ -8,6 +8,9 @@ init:
   clearRestart:
     enabled: true
 
+image:
+  repository: glif/lotus:v1.7.0-rc1
+
 resources:
   lotus:
     limits:

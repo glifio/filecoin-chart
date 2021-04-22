@@ -28,11 +28,11 @@ persistence:
   snapshots:
     uploadToIpfs:
       cron: "10 */12 * * *"
-      enabled: false
+      enabled: true
       export: hot
       shedPeriod: 6h
       shareToGist:
-        enabled: false
+        enabled: true
         address: git@gist.github.com:d03393d1f6e70e089e9e8d18922474f6.git
         authorName: Protofire Bot
         authorEmail: openworklabbot@gmail.com
