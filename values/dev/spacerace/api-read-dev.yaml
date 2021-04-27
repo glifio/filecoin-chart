@@ -21,21 +21,21 @@ resources:
       memory: 10Gi
 
 persistence:
-  enabled: true
-  autoResizer:
-    enabled: false
-  lotus:
-    size: "100Gi"
-    storageClassName: local-storage
-  snapshots:
-    automation:
-      creation:
-        enabled: false
-      deletion:
-        enabled: false
-    enabled: false
-    restore:
-      enabled: false
+  enabled: false
+#  autoResizer:
+#    enabled: false
+#  lotus:
+#    size: "100Gi"
+#    storageClassName: local-storage
+#  snapshots:
+#    automation:
+#      creation:
+#        enabled: false
+#      deletion:
+#        enabled: false
+#    enabled: false
+#    restore:
+#      enabled: false
 
 nodeSelector:
   nodeLabel:

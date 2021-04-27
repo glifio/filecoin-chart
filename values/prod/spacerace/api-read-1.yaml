@@ -15,7 +15,14 @@ resources:
       memory: 50Gi
 
 persistence:
-  enabled: false
+  enabled: true
+  autoResizer:
+    enabled: false
+  lotus:
+    size: "1325Gi"
+    storageClassName: local-storage
+  snapshots:
+    enabled: false
 
 nodeSelector:
   nodeLabel:
@@ -33,3 +40,6 @@ ingress:
 
 podAntiAffinity:
   enabled: true
+
+healthcheck:
+  readinessProbe: false
