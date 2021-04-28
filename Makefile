@@ -1,6 +1,6 @@
 all: lint package
-NODE = api-read-dev
-ENV = dev
+NODE = api-read
+ENV = prod
 NAMESPACE = spacerace
 ## lotus nodes management
 nodedelete:
