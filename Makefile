@@ -1,7 +1,6 @@
 all: lint package
 
 ## Edit node and env
-
 #NODE = api-read-dev/space06
 #ENV = dev/prod
 NAMESPACE = spacerace

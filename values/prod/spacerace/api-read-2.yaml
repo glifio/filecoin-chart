@@ -15,14 +15,7 @@ resources:
       memory: 50Gi
 
 persistence:
-  enabled: true
-  autoResizer:
-    enabled: false
-  lotus:
-    size: "1325Gi"
-    storageClassName: local-storage
-  snapshots:
-    enabled: false
+  enabled: false
 
 nodeSelector:
   nodeLabel:
