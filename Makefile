@@ -1,7 +1,11 @@
 all: lint package
-NODE = api-read-dev
-ENV = dev
+
+## Edit node and env
+
+#NODE = api-read-dev/space06
+#ENV = dev/prod
 NAMESPACE = spacerace
+
 ## lotus nodes management
 nodedelete:
 	helm -n $(NAMESPACE) delete $(NODE)

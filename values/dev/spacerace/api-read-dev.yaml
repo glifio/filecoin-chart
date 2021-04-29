@@ -9,7 +9,7 @@ init:
     enabled: true
 
 image:
-  repository: glif/lotus:v1.7.0-rc1
+  repository: glif/lotus:v1.8.0
 
 resources:
   lotus:

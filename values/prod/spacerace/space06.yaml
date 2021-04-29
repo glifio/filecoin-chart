@@ -45,3 +45,5 @@ resources:
       memory: 64Gi
 secretVolume:
   enabled: true
+healthcheck:
+  readinessProbe: false
