@@ -1,6 +1,6 @@
 {{- if .Values.Powergate.enabled }}
 {{- if .Values.ingress.powergate.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-ingress-powergate
@@ -17,24 +17,39 @@ spec:
     http:    
       paths:
         - backend:
-            serviceName: {{ .Release.Name }}-powergate-service
-            servicePort: 5002
+            service:
+              name: {{ .Release.Name }}-powergate-service
+              port:
+                number: 5002
           path: /{{ .Release.Name }}/powergate/(grpc|5002)(/|$)(.*)
+          pathType: Prefix
         - backend:
-            serviceName: {{ .Release.Name }}-powergate-service
-            servicePort: 6002
+            service:
+              name: {{ .Release.Name }}-powergate-service
+              port:
+                number: 6002
           path: /{{ .Release.Name }}/powergate/(webproxy|6002)(/|$)(.*)
+          pathType: Prefix
         - backend:
-            serviceName: {{ .Release.Name }}-powergate-service
-            servicePort: 6060
+            service:
+              name: {{ .Release.Name }}-powergate-service
+              port:
+                number: 6060
           path: /{{ .Release.Name }}/powergate/(6060)(/|$)(.*)
+          pathType: Prefix
         - backend:
-            serviceName: {{ .Release.Name }}-powergate-service
-            servicePort: 7000
+            service:
+              name: {{ .Release.Name }}-powergate-service
+              port:
+                number: 7000
           path: /{{ .Release.Name }}/powergate/(web|7000)(/|$)
+          pathType: Prefix
         - backend:
-            serviceName: {{ .Release.Name }}-powergate-service
-            servicePort: 8889
-          path: /{{ .Release.Name }}/powergate/(8889)(/|$)(.*)          
+            service:
+              name: {{ .Release.Name }}-powergate-service
+              port:
+                number: 8889
+          path: /{{ .Release.Name }}/powergate/(8889)(/|$)(.*)
+          pathType: Prefix
 {{- end }}
 {{- end }}

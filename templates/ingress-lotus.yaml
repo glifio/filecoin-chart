@@ -1,5 +1,5 @@
 {{- if .Values.ingress.lotus.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-ingress-lotus
@@ -18,17 +18,26 @@ spec:
         paths:
 {{- if .Values.cache.enabled }}
           - path: /{{ .Release.Name }}/cache(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: {{ .Release.Name }}-cache-service
-              servicePort: 8080
+              service:
+                name: {{ .Release.Name }}-cache-service
+                port:
+                  number: 8080
           - path: /{{ .Release.Name }}/lotus(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: {{ .Release.Name }}-lotus-service
-              servicePort: 1234
+              service:
+                name: {{ .Release.Name }}-lotus-service
+                port:
+                  number: 1234
 {{- else }}
           - path: /{{ .Release.Name }}/lotus(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: {{ .Release.Name }}-lotus-service
-              servicePort: 1234
+              service:
+                name: {{ .Release.Name }}-lotus-service
+                port:
+                  number: 1234
 {{- end }}
 {{- end }}

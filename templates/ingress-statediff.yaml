@@ -1,6 +1,6 @@
 {{- if .Values.StateDiff.enabled }}
 {{- if .Values.ingress.statediff.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-ingress-statediff
@@ -18,8 +18,11 @@ spec:
     http:    
       paths:
         - backend:
-            serviceName: {{ .Release.Name }}-statediff-service
-            servicePort: 33333
+            service:
+              name: {{ .Release.Name }}-statediff-service
+              port:
+                number: 33333
           path: /{{ .Release.Name }}/statediff(/)?(33333|rpc)?(/|$)?(.*)
+          pathType: Prefix
 {{- end }}
 {{- end }}

@@ -1,6 +1,6 @@
 {{- if .Values.IPFS.enabled }}
 {{- if .Values.ingress.ipfs.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}-ingress-ipfs
@@ -18,16 +18,25 @@ spec:
     http:    
       paths:
         - backend:
-            serviceName: {{ .Release.Name }}-ipfs-service
-            servicePort: 4001
+            service:
+              name: {{ .Release.Name }}-ipfs-service
+              port:
+                number: 4001
           path: /{{ .Release.Name }}/ipfs/(4001)(/|$)(.*)
+          pathType: Prefix
         - backend:
-            serviceName: {{ .Release.Name }}-ipfs-service
-            servicePort: 5001
+            service:
+              name: {{ .Release.Name }}-ipfs-service
+              port:
+                number: 5001
           path: /{{ .Release.Name }}/ipfs/(5001|ipfs)(/|$)(.*)
+          pathType: Prefix
         - backend:
-            serviceName: {{ .Release.Name }}-ipfs-service
-            servicePort: 8080
+            service:
+              name: {{ .Release.Name }}-ipfs-service
+              port:
+                number: 8080
           path: /{{ .Release.Name }}/ipfs/(web|8080)(/|$)(.*)
+          pathType: Prefix
 {{- end }}
 {{- end }}
