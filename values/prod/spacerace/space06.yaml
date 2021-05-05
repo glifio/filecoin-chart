@@ -10,13 +10,13 @@ init:
   clearRestart:
     enabled: true
 nameOverride: ""
+
 nodeSelector:
-  enabled: true
   nodeLabel:
     aws.amazon.com/eks-local-ssd: "true"
     lifecycle: OnDemand
     assignedPod: space06
-    role: worker
+
 persistence:
   enabled: true
   autoResizer:
@@ -35,6 +35,7 @@ persistence:
     enabled: false
     restore:
       enabled: false
+
 resources:
   lotus:
     limits:
@@ -43,7 +44,9 @@ resources:
     requests:
       cpu: 12
       memory: 64Gi
+
 secretVolume:
   enabled: true
+
 healthcheck:
   readinessProbe: false

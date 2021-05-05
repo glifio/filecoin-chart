@@ -5,14 +5,16 @@ init:
   clearRestart:
     enabled: true
 nameOverride: ""
+
 nodeSelector:
-  enabled: true
   nodeLabel:
-    aws.amazon.com/eks-local-ssd: "true"
     lifecycle: Ec2Spot-i3-2x4x
-    role: worker
+    environment: prod
+    aws.amazon.com/eks-local-ssd: "true"
+
 persistence:
   enabled: false
+
 resources:
   lotus:
     limits:
@@ -20,16 +22,20 @@ resources:
       memory: 120Gi
     requests:
       cpu: 7
-      memory: 60Gi
+      memory: 50Gi
+
 secretVolume:
   enabled: true
+
 Lotus:
   service:
     enabled: false
     release: space06
     slave: true
+
 ingress:
   lotus:
     enabled: false
+
 healthcheck:
   readinessProbe: false
