@@ -24,4 +24,4 @@ IPFS:
 StateDiff:
   enabled: true
 
-apiDNS: api-read-dev-lotus-service
+lotusDNS: api-read-dev-lotus-service
