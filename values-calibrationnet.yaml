@@ -173,6 +173,9 @@ Lotus:
     release: some-release
     slave: false
 
+# Defines remote endpoint for services(StateDiff e.t.c.)
+#lotusDNS: some-service
+
 # Defines whether Powergate should be deployed with Lotus node. Note that IPFS must be enabled if Powergate is enabled.
 Powergate:
   enabled: false
