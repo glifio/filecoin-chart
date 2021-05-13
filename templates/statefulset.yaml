@@ -83,6 +83,10 @@ spec:
             defaultMode: 384 # permission 0600
 {{- end }}
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+        - name: vol-lotus-parent
+          hostPath:
+            path: /
+            type: Directory
         - name: vol-lotus
           hostPath:
             path: {{ .Values.persistence.hostPath }}/lotus
@@ -90,6 +94,17 @@ spec:
 {{- end }}
       initContainers:
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+      - name: hostpath-folder-allocation-waiting
+        image: busybox
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["/bin/sh","-c"]
+        args:
+          - while true; do [ -d "/tmp{{ .Values.persistence.hostPath }}" ] && echo "Directory /tmp/{{ .Values.persistence.hostPath }} exists." && break || echo "Error: Directory either does not exists or does not point to the NVMe disk."; sleep 10s; done
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+          - name: vol-lotus-parent
+            mountPath: /tmp
       - name: hostpath-permission
         image: busybox
         imagePullPolicy: {{ .Values.image.pullPolicy }}
