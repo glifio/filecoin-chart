@@ -65,15 +65,15 @@ spec:
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
         - name: vol-powergate
           hostPath:
-            path: {{ .Values.persistence.hostPath }}/powergate
-            type: DirectoryOrCreate
+            path: {{ .Values.persistence.hostPath }}
+            type: Directory
 {{- end }}
 {{- end }}
 {{- if and .Values.IPFS.enabled (not .Values.persistence.enabled) .Values.persistence.hostPath }}
         - name: vol-ipfs
           hostPath:
-            path: {{ .Values.persistence.hostPath }}/ipfs
-            type: DirectoryOrCreate
+            path: {{ .Values.persistence.hostPath }}
+            type: Directory
 {{- end }}
 {{- if .Values.Lotus.enabled }}
 {{- if .Values.secretVolume.enabled }}
@@ -83,33 +83,19 @@ spec:
             defaultMode: 384 # permission 0600
 {{- end }}
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
-        - name: vol-lotus-parent
-          hostPath:
-            path: /
-            type: Directory
         - name: vol-lotus
           hostPath:
-            path: {{ .Values.persistence.hostPath }}/lotus
-            type: DirectoryOrCreate
+            path: {{ .Values.persistence.hostPath }}
+            type: Directory
 {{- end }}
       initContainers:
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
-      - name: hostpath-folder-allocation-waiting
-        image: busybox
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        command: ["/bin/sh","-c"]
-        args: ["while true; do [ -d '/tmp{{ .Values.persistence.hostPath }}' ] && echo Directory /tmp{{ .Values.persistence.hostPath }} exists. && break || echo Error: Directory either does not exists or does not point to the NVMe disk.; sleep 10s; done"]
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-          - name: vol-lotus-parent
-            mountPath: /tmp
       - name: hostpath-permission
         image: busybox
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/bin/sh","-c"]
         args:
-          - chown -R 2000:2000 /tmp;
+          - mkdir -p /tmp/lotus /tmp/powergate /tmp/ipfs && chown -R 2000:2000 /tmp;
         securityContext:
           runAsUser: 0
         volumeMounts:
@@ -157,8 +143,10 @@ spec:
         volumeMounts:
           - name: vol-powergate
             mountPath: /home/lotus_user/powergate
+            subPath: powergate
           - name: vol-lotus
             mountPath: /home/lotus_user/.lotus
+            subPath: lotus
           - name: powergate-secret-vol
             mountPath: /home/lotus_user/powergate/secret
         resources:
@@ -214,6 +202,7 @@ spec:
         volumeMounts:
           - name: vol-ipfs
             mountPath: /data/ipfs
+            subPath: ipfs
         resources:
 {{ toYaml .Values.resources.ipfs | indent 10 }}
 {{- end }}
@@ -345,6 +334,7 @@ spec:
 {{- end }}
           - name: vol-lotus
             mountPath: /home/lotus_user/.lotus
+            subPath: lotus
         {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
@@ -352,6 +342,7 @@ spec:
 {{- if and .Values.IPFS.enabled .Values.persistence.snapshots.uploadToIpfs.enabled }}
           - name: vol-ipfs
             mountPath: /data/ipfs
+            subPath: ipfs
 {{- end }}
         resources:
 {{ toYaml .Values.resources.lotus | indent 10 }}
