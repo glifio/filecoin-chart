@@ -98,8 +98,7 @@ spec:
         image: busybox
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/bin/sh","-c"]
-        args:
-          - while true; do [ -d "/tmp{{ .Values.persistence.hostPath }}" ] && echo "Directory /tmp/{{ .Values.persistence.hostPath }} exists." && break || echo "Error: Directory either does not exists or does not point to the NVMe disk."; sleep 10s; done
+        args: ["while true; do [ -d '/tmp{{ .Values.persistence.hostPath }}' ] && echo Directory /tmp{{ .Values.persistence.hostPath }} exists. && break || echo Error: Directory either does not exists or does not point to the NVMe disk.; sleep 10s; done"]
         securityContext:
           runAsUser: 0
         volumeMounts:
