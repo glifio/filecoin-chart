@@ -65,15 +65,15 @@ spec:
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
         - name: vol-powergate
           hostPath:
-            path: {{ .Values.persistence.hostPath }}/powergate
-            type: DirectoryOrCreate
+            path: {{ .Values.persistence.hostPath }}
+            type: Directory
 {{- end }}
 {{- end }}
 {{- if and .Values.IPFS.enabled (not .Values.persistence.enabled) .Values.persistence.hostPath }}
         - name: vol-ipfs
           hostPath:
-            path: {{ .Values.persistence.hostPath }}/ipfs
-            type: DirectoryOrCreate
+            path: {{ .Values.persistence.hostPath }}
+            type: Directory
 {{- end }}
 {{- if .Values.Lotus.enabled }}
 {{- if .Values.secretVolume.enabled }}
@@ -85,8 +85,8 @@ spec:
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
         - name: vol-lotus
           hostPath:
-            path: {{ .Values.persistence.hostPath }}/lotus
-            type: DirectoryOrCreate
+            path: {{ .Values.persistence.hostPath }}
+            type: Directory
 {{- end }}
       initContainers:
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
@@ -95,7 +95,7 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/bin/sh","-c"]
         args:
-          - chown -R 2000:2000 /tmp;
+          - mkdir -p /tmp/lotus /tmp/powergate /tmp/ipfs && chown -R 2000:2000 /tmp;
         securityContext:
           runAsUser: 0
         volumeMounts:
@@ -143,8 +143,14 @@ spec:
         volumeMounts:
           - name: vol-powergate
             mountPath: /home/lotus_user/powergate
+            {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+            subPath: powergate
+            {{- end }}
           - name: vol-lotus
             mountPath: /home/lotus_user/.lotus
+            {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+            subPath: lotus
+            {{- end }}
           - name: powergate-secret-vol
             mountPath: /home/lotus_user/powergate/secret
         resources:
@@ -200,6 +206,9 @@ spec:
         volumeMounts:
           - name: vol-ipfs
             mountPath: /data/ipfs
+            {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+            subPath: ipfs
+            {{- end }}
         resources:
 {{ toYaml .Values.resources.ipfs | indent 10 }}
 {{- end }}
@@ -331,13 +340,19 @@ spec:
 {{- end }}
           - name: vol-lotus
             mountPath: /home/lotus_user/.lotus
-        {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
+            {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+            subPath: lotus
+            {{- end }}
+            {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain
-        {{- end }}
+            {{- end }}
 {{- if and .Values.IPFS.enabled .Values.persistence.snapshots.uploadToIpfs.enabled }}
           - name: vol-ipfs
             mountPath: /data/ipfs
+            {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+            subPath: ipfs
+            {{- end }}
 {{- end }}
         resources:
 {{ toYaml .Values.resources.lotus | indent 10 }}
