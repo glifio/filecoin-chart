@@ -33,6 +33,3 @@ ingress:
 
 podAntiAffinity:
   enabled: true
-
-healthcheck:
-  readinessProbe: false

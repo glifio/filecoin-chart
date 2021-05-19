@@ -58,6 +58,3 @@ nodeSelector:
 
 secretVolume:
   persistNodeID: true
-
-healthcheck:
-  readinessProbe: false

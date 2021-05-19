@@ -36,6 +36,3 @@ Lotus:
 ingress:
   lotus:
     enabled: false
-
-healthcheck:
-  readinessProbe: false

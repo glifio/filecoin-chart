@@ -47,6 +47,3 @@ resources:
 
 secretVolume:
   enabled: true
-
-healthcheck:
-  readinessProbe: false

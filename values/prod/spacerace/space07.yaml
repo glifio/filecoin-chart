@@ -45,6 +45,3 @@ nodeSelector:
   enabled: true
   nodeLabel:
     lifecycle: OnDemand-r5-8x
-
-healthcheck:
-  readinessProbe: false
