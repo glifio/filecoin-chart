@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v1.8.0-calibnet
+  repository: glif/lotus:v1.9.0-dev-calibnet
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -48,6 +48,7 @@ ingress:
       SecDebugLog /tmp/modsec_debug.log
   lotus:
     enabled: true
+    gateway: false
     # Uncomment following annotations to change access mode from JWT-based to Firewall-based. Also replace <JWT> with admin JWT token of the node and 1.2.3.4/32 to your IP address.
     #annotations:
     # nginx.ingress.kubernetes.io/whitelist-source-range: 1.2.3.4/32
@@ -172,6 +173,7 @@ Lotus:
     enabled: true
     release: some-release
     slave: false
+    gateway: false
 
 # Defines remote endpoint for services(StateDiff e.t.c.)
 #lotusDNS: some-service

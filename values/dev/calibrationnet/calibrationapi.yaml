@@ -1,5 +1,6 @@
 ingress:
   lotus:
+    gateway: true
     annotations:
       nginx.ingress.kubernetes.io/configuration-snippet: |
         proxy_set_header Authorization $calibrationapi_jwt;
@@ -9,6 +10,7 @@ ingress:
 Lotus:
   service:
     release: calibrationapi
+    gateway: true
 nodeSelector:
   nodeLabel:
     lifecycle: OnDemand
