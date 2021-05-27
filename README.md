@@ -93,16 +93,18 @@ These are our emphasized config options. For a full list, see the [values files]
 | `IPFS.enabled` | Enable IPFS on the pod. | `false` |
 | `ipfsDNS` | Overrides the IPFS endpoint when using services in separate pods | `` |
 | `image.repository` | Lotus Docker Image. | `openworklabs/lotus` |
+| `ingress.annotations` | Defines annotations for general ingress | See values-{namespace}.yaml |
 | `ingress.enabled` | Enables ingress for this particular release | `true` |
 | `ingress.host` | Defines DNS name that is used by NGINX to recognize valid requests | `node.glif.io` |
-| `ingress.annotations` | Defines annotations for general ingress | See [values.yaml](values.yaml) |
+| `ingress.lotus.gateway` | Enable ingress lotus-gateway | `false` |
 | `ingress.<service>.enabled` | Enables ingress for particular service. | `true` |
 | `ingress.<service>.annotations` | Defines annotations for particular service. Please read comments in `values.yaml` file to check the annotations that should be set to enable firewall-based access instead of JWT-based. | `<unset>` |
 | `healthcheck.enabled` | If you want to use custom lotus storage node healthcheck. | `<true>` |
 | `healthcheck.network` | Defines Filecoin network. Should be listed in [network specification repo](https://raw.githubusercontent.com/filecoin-project/network-info/master/static/networks) | `mainnet` |
+| `lotusDNS` | Overrides the lotus endpoint when using services in separate pods | `` |
+| `Lotus.service.gateway` | Enable lotus-gateway service | `false` |
 | `Lotus.service.release` | Defines master endpoint in lotusAPI schema | `api-read` |
 | `Lotus.service.slave` | Defines slave endpoint(s) in lotusAPI schema | `false` |
-| `lotusDNS` | Overrides the lotus endpoint when using services in separate pods | `` |
 | `Powergate.enabled` | Enable Powergate on the pod. | `false` |
 | `replicaCount` | The number of Lotus replicas to run. | 1 |
 | `resources.<service>.requests.cpu` | The amount of vCPU (per service). | `<unset>` |
