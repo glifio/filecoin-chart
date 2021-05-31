@@ -5,12 +5,12 @@ metadata:
   name: {{ .Release.Name }}-ingress-gateway-lotus
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-{{- with .Values.ingress.annotations }}
-    {{- toYaml . | nindent 4 }}
-{{- end }}
-{{- with .Values.ingress.lotus.annotations }}
-    {{- toYaml . | nindent 4 }}
-{{- end }}
+  {{- with .Values.ingress.annotations }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.ingress.lotus.annotations }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   rules:
     - host: {{ .Values.ingress.host }}
@@ -20,7 +20,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.Name }}-lotus-gateway-service
+                name: {{ .Release.Name }}-lotus-service
                 port:
                   number: 2346
-{{- end }}
+  {{- end }}

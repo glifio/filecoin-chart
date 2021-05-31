@@ -4,6 +4,18 @@ init:
     enabled: true
   clearRestart:
     enabled: true
+
+ingress:
+  lotus:
+    enabled: false
+
+Lotus:
+  service:
+    enabled: false
+    release: space06
+    slave: true
+    gateway: true
+
 nameOverride: ""
 
 nodeSelector:
@@ -26,13 +38,3 @@ resources:
 
 secretVolume:
   enabled: true
-
-Lotus:
-  service:
-    enabled: false
-    release: space06
-    slave: true
-
-ingress:
-  lotus:
-    enabled: false
