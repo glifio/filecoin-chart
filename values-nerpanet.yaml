@@ -41,18 +41,19 @@ ingress:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range"
     nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
-  # nginx.ingress.kubernetes.io/server-alias: "_"
+    # nginx.ingress.kubernetes.io/server-alias: "_"
     nginx.ingress.kubernetes.io/enable-modsecurity: "true"
     nginx.ingress.kubernetes.io/modsecurity-snippet: |
       SecRuleEngine On
       SecDebugLog /tmp/modsec_debug.log
   lotus:
     enabled: true
-    annotations:
-# Uncomment following annotations to change access mode from JWT-based to Firewall-based. Also replace <JWT> with admin JWT token of the node and 1.2.3.4/32 to your IP address.
-      # nginx.ingress.kubernetes.io/whitelist-source-range: 1.2.3.4/32
-      # nginx.ingress.kubernetes.io/configuration-snippet: |
-      #       proxy_set_header Authorization "Bearer <JWT>";
+    gateway: false
+    # Uncomment following annotations to change access mode from JWT-based to Firewall-based. Also replace <JWT> with admin JWT token of the node and 1.2.3.4/32 to your IP address.
+    #annotations:
+    # nginx.ingress.kubernetes.io/whitelist-source-range: 1.2.3.4/32
+    # nginx.ingress.kubernetes.io/configuration-snippet: |
+    #       proxy_set_header Authorization "Bearer <JWT>";
   ipfs:
     enabled: false
   powergate:
@@ -71,10 +72,9 @@ init:
     enabled: false
     # ideally a shared volume containing chain dump
     volume: {}
-    #- name: filecoin-chain-vol
-    #  persistentVolumeClaim:
-    #    claimName: efs-claim
-
+      #- name: filecoin-chain-vol
+      #  persistentVolumeClaim:
+      #    claimName: efs-claim
 
 secretVolume:
   enabled: true
@@ -116,7 +116,7 @@ resources:
 
 
 persistence:
-# If persistence is set to false no persistent volumes will be created
+  # If persistence is set to false no persistent volumes will be created
   enabled: true
   hostPath: /nvme/disk
   autoResizer:
@@ -125,23 +125,22 @@ persistence:
     increaseStep: 10 # in %
     cron: "0 0 * * *"
   snapshots:
-# If uploadToIpfs is set to true the internal Lotus snapshot will be created and uploaded to the IPFS system. Note that IPFS must be nenabled in that case
+    # If uploadToIpfs is set to true the internal Lotus snapshot will be created and uploaded to the IPFS system. Note that IPFS must be nenabled in that case
     uploadToIpfs:
       enabled: false
       export: hot
+      # shedPeriod: 6h
       shareToGist:
         enabled: false
-        # shedPeriod: 6h
-        export: true
         cron: "0 0 * * *"
         #address: https://gist.github.com/openworklabbot/d03393d1f6e70e089e9e8d18922474f6
-        #authorEmail: 
+        #authorEmail:
         #authorName: Protofire Bot
-# If snapshots are enabled - the PV will be deployed with ebs-sc class unless custom class is specified
+    # If snapshots are enabled - the PV will be deployed with ebs-sc class unless custom class is specified
     enabled: true
-# If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
+    # If automation is enabled - several CronJobs will be created to create snapshots and/or delete old snapshots automatically.
     automation:
-      deletion: 
+      deletion:
         cron: "0 1 * * *"
         enabled: true
         retention:
@@ -149,11 +148,11 @@ persistence:
       creation:
         cron: "0 0 * * *"
         enabled: true
-# If restore is enabled the snapshot name must be specified. Charts will attempt to find the existing snapshot with this name and create a PV from that snapshot.
-    restore: 
+    # If restore is enabled the snapshot name must be specified. Charts will attempt to find the existing snapshot with this name and create a PV from that snapshot.
+    restore:
       enabled: false
       #name: snapshot-blah
-# For each of the deployed services one can specify the disk size, custom disk type and access mode.
+  # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
     size: "10Gi"
     accessModes:
@@ -167,12 +166,14 @@ persistence:
     accessModes:
       - ReadWriteOnce
 
+# Defines whether should be deployed Lotus node with service, gateway or without.
 Lotus:
   enabled: true
   service:
     enabled: true
     release: some-release
     slave: false
+    gateway: false
 
 # Defines remote endpoint for services(StateDiff e.t.c.)
 #lotusDNS: some-service
@@ -187,7 +188,7 @@ IPFS:
 
 StateDiff:
   enabled: false
-  
+
 nodeSelector:
   enabled: true
   nodeLabel:

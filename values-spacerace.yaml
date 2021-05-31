@@ -74,7 +74,7 @@ init:
     volume: {}
       #- name: filecoin-chain-vol
       #  persistentVolumeClaim:
-    #    claimName: efs-claim
+      #    claimName: efs-claim
 
 secretVolume:
   enabled: true
@@ -165,7 +165,7 @@ persistence:
     accessModes:
       - ReadWriteOnce
 
-# Defines whether should be deployed Lotus node with service or without service.
+# Defines whether should be deployed Lotus node with service, gateway or without.
 Lotus:
   enabled: true
   service:
