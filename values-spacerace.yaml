@@ -74,7 +74,7 @@ init:
     volume: {}
       #- name: filecoin-chain-vol
       #  persistentVolumeClaim:
-      #    claimName: efs-claim
+      #  claimName: efs-claim
 
 secretVolume:
   enabled: true
