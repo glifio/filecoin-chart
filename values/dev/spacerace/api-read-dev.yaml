@@ -1,6 +1,10 @@
 cache:
   enabled: true
   replicas: 1
+
+image:
+  repository: glif/lotus:v1.9.0-dev
+
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
@@ -8,8 +12,21 @@ init:
   clearRestart:
     enabled: true
 
-image:
-  repository: glif/lotus:v1.9.0-dev
+ingress:
+  host: dev.node.glif.io
+  lotus:
+    gateway: true
+    annotations:
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        proxy_set_header Authorization $apiread_dev_jwt;
+        proxy_cache_bypass      $http_upgrade;
+      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
+      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+
+Lotus:
+  service:
+    release: api-read-dev
+    gateway: true
 
 resources:
   lotus:
@@ -40,17 +57,3 @@ persistence:
 nodeSelector:
   nodeLabel:
     lifecycle: Ec2Spot-i3
-
-ingress:
-  host: dev.node.glif.io
-  lotus:
-    annotations:
-      nginx.ingress.kubernetes.io/configuration-snippet: |
-        proxy_set_header Authorization $apiread_dev_jwt;
-        proxy_cache_bypass      $http_upgrade;
-      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
-      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
-
-Lotus:
-  service:
-    release: api-read-dev

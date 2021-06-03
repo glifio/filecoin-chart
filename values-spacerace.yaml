@@ -48,6 +48,7 @@ ingress:
       SecDebugLog /tmp/modsec_debug.log
   lotus:
     enabled: true
+    gateway: false
     # Uncomment following annotations to change access mode from JWT-based to Firewall-based. Also replace <JWT> with admin JWT token of the node and 1.2.3.4/32 to your IP address.
     #annotations:
     # nginx.ingress.kubernetes.io/whitelist-source-range: 1.2.3.4/32
@@ -73,7 +74,7 @@ init:
     volume: {}
       #- name: filecoin-chain-vol
       #  persistentVolumeClaim:
-    #    claimName: efs-claim
+      #  claimName: efs-claim
 
 secretVolume:
   enabled: true
@@ -164,13 +165,14 @@ persistence:
     accessModes:
       - ReadWriteOnce
 
-# Defines whether should be deployed Lotus node with service or without service.
+# Defines whether should be deployed Lotus node with service, gateway or without.
 Lotus:
   enabled: true
   service:
     enabled: true
     release: some-release
     slave: false
+    gateway: false
 
 # Defines remote endpoint for services(StateDiff e.t.c.)
 #lotusDNS: some-service

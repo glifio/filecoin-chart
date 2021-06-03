@@ -19,4 +19,10 @@ spec:
       port: 1234
       targetPort: 1234
       name: tcp-api
+  {{- if .Values.Lotus.service.gateway }}
+    - protocol: TCP
+      port: 2346
+      targetPort: 2346
+      name: gateway
+  {{- end}}
 {{- end }}
