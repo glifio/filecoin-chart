@@ -10,6 +10,10 @@ init:
     enabled: true
   clearRestart:
     enabled: true
+
+healthcheck:
+  allowedDelay: 5
+
 resources:
   lotus:
     limits:

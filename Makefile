@@ -1,29 +1,33 @@
 all: lint package
 
 ## Edit node and env
-NODE = space06
-ENV = prod
-NAMESPACE = spacerace
+NODE = nerpa00
+ENV = dev
+NAMESPACE = nerpanet
 
 ## lotus nodes management
-nodedelete:
-	helm -n $(NAMESPACE) delete $(NODE)
-	kubectl -n $(NAMESPACE) delete pvc vol-lotus-$(NODE)-lotus-0
 
-nodereinit:
+nodeInstall:
+	helm upgrade --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+
+nodeReinit:
 	helm -n $(NAMESPACE) delete $(NODE)
 	helm upgrade --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
-nodereinstall:
+nodeReinstall:
 	helm -n $(NAMESPACE) delete $(NODE)
 	kubectl -n $(NAMESPACE) delete pvc vol-lotus-$(NODE)-lotus-0
-	helm upgrade --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
-
-nodeinstall:
 	helm upgrade --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
 diff:
 	helm diff upgrade --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+
+nodeDeleteFull:
+	helm -n $(NAMESPACE) delete $(NODE)
+	kubectl -n $(NAMESPACE) delete pvc vol-lotus-$(NODE)-lotus-0
+
+nodeDeleteSpot:
+	helm -n $(NAMESPACE) delete $(NODE)
 
 cascadests:
 	kubectl -n $(NAMESPACE) delete sts $(NODE)-lotus --cascade=false
@@ -37,13 +41,6 @@ lint:
 
 package:
 	helm package .
-## minikube options
-
-minikube-upgrade:
-	helm upgrade --install -f values.yaml -f values-minikube.yaml filecoin .
-
-minikube-dry-run:
-	helm upgrade --install --dry-run --debug -f values.yaml -f values-minikube.yaml filecoin .
 
 ## admin configuration
 create-secret:
