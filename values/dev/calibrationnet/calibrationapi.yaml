@@ -7,10 +7,16 @@ ingress:
         proxy_cache_bypass      $http_upgrade;
       nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
       nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+
 Lotus:
   service:
     release: calibrationapi
     gateway: true
+
 nodeSelector:
   nodeLabel:
     lifecycle: OnDemand
+
+persistence:
+  autoResizer:
+    cron: "0 */1 * * *"

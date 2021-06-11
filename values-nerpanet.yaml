@@ -169,6 +169,7 @@ persistence:
 # Defines whether should be deployed Lotus node with service, gateway or without.
 Lotus:
   enabled: true
+  maxheapsize: false
   service:
     enabled: true
     release: some-release

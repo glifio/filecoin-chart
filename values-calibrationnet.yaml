@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v1.9.0-dev-calibnet
+  repository: glif/lotus:v1.10.0-rc2-calibnet
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -168,6 +168,7 @@ persistence:
 # Defines whether should be deployed Lotus node with service, gateway or without.
 Lotus:
   enabled: true
+  maxheapsize: false
   service:
     enabled: true
     release: some-release

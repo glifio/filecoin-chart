@@ -102,6 +102,7 @@ These are our emphasized config options. For a full list, see the [values files]
 | `healthcheck.enabled` | If you want to use custom lotus storage node healthcheck. | `<true>` |
 | `healthcheck.network` | Defines Filecoin network. Should be listed in [network specification repo](https://raw.githubusercontent.com/filecoin-project/network-info/master/static/networks) | `mainnet` |
 | `lotusDNS` | Overrides the lotus endpoint when using services in separate pods | `` |
+| `Lotus.maxheapsize` | Enable and set [LOTUS_MAX_HEAP](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#environment-variables) variable | `false` |
 | `Lotus.service.gateway` | Enable lotus-gateway service | `false` |
 | `Lotus.service.release` | Defines master endpoint in lotusAPI schema | `api-read` |
 | `Lotus.service.slave` | Defines slave endpoint(s) in lotusAPI schema | `false` |

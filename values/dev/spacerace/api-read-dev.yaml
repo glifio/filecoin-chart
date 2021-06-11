@@ -3,7 +3,7 @@ cache:
   replicas: 1
 
 image:
-  repository: glif/lotus:v1.9.0-dev
+  repository: glif/lotus:v1.9.0
 
 init:
   importSnapshot:
@@ -24,6 +24,7 @@ ingress:
       nginx.ingress.kubernetes.io/cors-allow-origin: "*"
 
 Lotus:
+  maxheapsize: "15GiB"
   service:
     release: api-read-dev
     gateway: true
