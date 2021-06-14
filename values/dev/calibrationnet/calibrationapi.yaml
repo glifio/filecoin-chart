@@ -9,6 +9,7 @@ ingress:
       nginx.ingress.kubernetes.io/cors-allow-origin: "*"
 
 Lotus:
+  maxheapsize: "10GiB"
   service:
     release: calibrationapi
     gateway: true
@@ -20,3 +21,17 @@ nodeSelector:
 persistence:
   autoResizer:
     cron: "0 */1 * * *"
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  lotus:
+    requests:
+      cpu: 500m
+      memory: 3Gi
+    limits:
+      cpu: 3500m
+      memory: 10Gi
+  ipfs:
