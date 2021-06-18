@@ -23,4 +23,4 @@ spec:
                 name: {{ .Release.Name }}-lotus-service
                 port:
                   number: 2346
-  {{- end }}
+{{- end }}
