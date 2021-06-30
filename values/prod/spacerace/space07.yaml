@@ -4,7 +4,31 @@ cache:
     nodeLabel:
       role: worker
 
-replicaCount: 1
+ingress:
+  lotus:
+    enabled: true
+  statediff:
+    enabled: true
+
+Lotus:
+  maxheapsize: "130GiB"
+
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: OnDemand-r5-8x
+
+persistence:
+  snapshots:
+    automation:
+      creation:
+        cron: "0 20 * * *"
+      deletion:
+        cron: "0 21 * * *"
+    restore:
+      enabled: true
+      name: space00-jrx9g
+
 resources:
   lotus:
     requests:
@@ -21,27 +45,7 @@ resources:
       cpu: 250m
       memory: 400Mi
 
-ingress:
-  lotus:
-    enabled: true
-  statediff:
-    enabled: true
-
-persistence:
-  snapshots:
-    automation:
-      creation:
-        cron: "0 20 * * *"
-      deletion:
-        cron: "0 21 * * *"
-    restore:
-      enabled: true
-      name: space00-jrx9g
 
 StateDiff:
   enabled: true
 
-nodeSelector:
-  enabled: true
-  nodeLabel:
-    lifecycle: OnDemand-r5-8x

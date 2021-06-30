@@ -1,4 +1,3 @@
-replicaCount: 1
 ingress:
   lotus:
     annotations:
@@ -6,21 +5,16 @@ ingress:
   ipfs:
     enabled: true
 
-resources:
-  lotus:
-    requests:
-      cpu: 23
-      memory: 160Gi
-    limits:
-      cpu: 29
-      memory: 220Gi
-  ipfs:
-    requests:
-      cpu: 2
-      memory: 30Gi
-    limits:
-      cpu: 8
-      memory: 90Gi
+IPFS:
+  enabled: true
+
+Lotus:
+  maxheapsize: "100GiB"
+
+nodeSelector:
+  enabled: true
+  nodeLabel:
+    lifecycle: OnDemand-r5-8x
 
 persistence:
   autoResizer:
@@ -48,13 +42,21 @@ persistence:
     accessModes:
       - ReadWriteOnce
 
-IPFS:
-  enabled: true
-
-nodeSelector:
-  enabled: true
-  nodeLabel:
-    lifecycle: OnDemand-r5-8x
+resources:
+  lotus:
+    requests:
+      cpu: 23
+      memory: 160Gi
+    limits:
+      cpu: 29
+      memory: 220Gi
+  ipfs:
+    requests:
+      cpu: 2
+      memory: 30Gi
+    limits:
+      cpu: 8
+      memory: 90Gi
 
 secretVolume:
   persistNodeID: true
