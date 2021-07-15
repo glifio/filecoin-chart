@@ -55,7 +55,7 @@ resources:
       cpu: 2
       memory: 30Gi
     limits:
-      cpu: 8
+      cpu: 20
       memory: 90Gi
 
 secretVolume:
