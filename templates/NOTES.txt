@@ -1,5 +1,5 @@
 1. Get the application URL by running these commands:
 {{- if .Values.ingress.enabled }}
   http://{{ .Values.ingress.host }}
-IPFS, StateDiff, Powergate and Lotus node will be available by /ipfs, /StateDiff /powergate, and /lotus paths accordingly if enabled.
+IPFS, StateDiff and Lotus node will be available by /ipfs, /StateDiff and /lotus paths accordingly if enabled.
 {{- end }}

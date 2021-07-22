@@ -7,8 +7,8 @@ Filecoin chart is a helm chart for hosting Lotus Node clients. [Lotus](https://g
 ## Goals
 
 1. Deploy one or more instances of Lotus client nodes.
-2. Deploy additional software such as [IPFS](https://github.com/ipfs/ipfs) and [Powergate](https://github.com/textileio/powergate).
-3. Expose Lotus, IPFS and Powergate APIs through HTTP endpoints.
+2. Deploy additional software such as [IPFS](https://github.com/ipfs/ipfs).
+3. Expose Lotus, IPFS APIs through HTTP endpoints.
 4. Enable importing chain data for faster syncs.
 5. Provide flexible configuration options to suit your needs.
 
@@ -106,7 +106,6 @@ These are our emphasized config options. For a full list, see the [values files]
 | `Lotus.service.gateway` | Enable lotus-gateway service | `false` |
 | `Lotus.service.release` | Defines master endpoint in lotusAPI schema | `api-read` |
 | `Lotus.service.slave` | Defines slave endpoint(s) in lotusAPI schema | `false` |
-| `Powergate.enabled` | Enable Powergate on the pod. | `false` |
 | `replicaCount` | The number of Lotus replicas to run. | 1 |
 | `resources.<service>.requests.cpu` | The amount of vCPU (per service). | `<unset>` |
 | `resources.<service>.requests.memory` | The amount of memory (per service). | `<unset>` |
@@ -168,7 +167,7 @@ You can also include your private `ssh` key into the installed persistent secret
 
 Generally - there are two way of deploying Lotus node with dependent services:
     1 - deployed in the single pod (single helm chart). Thus way each container will communicate through loopback interface
-    2 - deployed in the separate pods (multiple helm charts). In that case you will need to set `lotusDNS` when deploying IPFS, Powergate, StateDiff and `ipfsDNS` when deploying Lotus
+    2 - deployed in the separate pods (multiple helm charts). In that case you will need to set `lotusDNS` when deploying IPFS, StateDiff and `ipfsDNS` when deploying Lotus
 
   *NOTE*: Internal snapshotting are currently available for the single pod deployment option only!
 
