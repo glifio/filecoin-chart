@@ -10,10 +10,6 @@ cache:
 #  clearRestart:
 #    enabled: true
 
-ingress:
-  lotus:
-    gateway: true
-
 Lotus:
   service:
     gateway: true
