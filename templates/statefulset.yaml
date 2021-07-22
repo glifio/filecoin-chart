@@ -54,21 +54,6 @@ spec:
         fsGroup: {{ .Values.SecurityContext.fsGroup }}
 {{- end }}
       volumes:
-{{- if .Values.Powergate.enabled }}
-        - name: powergate-secret-vol
-          secret:
-            secretName: {{ .Release.Name }}-lotus-secret
-            defaultMode: 384 # permission 0600
-            items:
-            - key: token
-              path: token
-{{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
-        - name: vol-powergate
-          hostPath:
-            path: {{ .Values.persistence.hostPath }}
-            type: Directory
-{{- end }}
-{{- end }}
 {{- if and .Values.IPFS.enabled (not .Values.persistence.enabled) .Values.persistence.hostPath }}
         - name: vol-ipfs
           hostPath:
@@ -95,7 +80,7 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/bin/sh","-c"]
         args:
-          - mkdir -p /tmp/lotus /tmp/powergate /tmp/ipfs && chown -R 2000:2000 /tmp;
+          - mkdir -p /tmp/lotus /tmp/ipfs && chown -R 2000:2000 /tmp;
         securityContext:
           runAsUser: 0
         volumeMounts:
@@ -104,58 +89,6 @@ spec:
 {{- end }}
 {{- end }}
       containers:
-{{- if .Values.Powergate.enabled }}
-      - name: {{ .Chart.Name }}-powergate
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        image: textile/powergate
-        livenessProbe:
-          httpGet:
-            path: /{{ .Release.Name }}/powergate/7000
-            port: 7000
-          initialDelaySeconds: 150
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 6
-        ports:
-        - containerPort: 8889
-        - containerPort: 7000
-        - containerPort: 6060
-        - containerPort: 5002
-        - containerPort: 6002
-        env:
-{{- if .Values.lotusDNS }}
-        - name: POWD_LOTUSHOST
-          value: "/dns4/{{ .Values.lotusDNS }}/tcp/1234"
-        - name: POWD_IPFSAPIADDR
-          value: "/dns4/{{ .Values.lotusDNS }}/tcp/5001"
-{{- else }}
-        - name: POWD_LOTUSHOST
-          value: "/ip4/127.0.0.1/tcp/1234"
-        - name: POWD_IPFSAPIADDR
-          value: "/ip4/127.0.0.1/tcp/5001"
-{{- end }}
-        - name: POWD_LOTUSTOKENFILE
-          value: "/home/lotus_user/powergate/secret/token"
-        - name: POWD_REPOPATH
-          value: "/home/lotus_user/powergate/.powergate"
-        - name: POWD_GATEWAYBASEPATH
-          value: "/{{ .Release.Name }}/powergate/7000"
-        volumeMounts:
-          - name: vol-powergate
-            mountPath: /home/lotus_user/powergate
-            {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
-            subPath: powergate
-            {{- end }}
-          - name: vol-lotus
-            mountPath: /home/lotus_user/.lotus
-            {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
-            subPath: lotus
-            {{- end }}
-          - name: powergate-secret-vol
-            mountPath: /home/lotus_user/powergate/secret
-        resources:
-{{ toYaml .Values.resources.powergate | indent 10 }}
-{{- end }}
 {{- if .Values.StateDiff.enabled }}
       - name: {{ .Chart.Name }}-statediff
         imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -424,30 +357,6 @@ spec:
         {{- end }}
         {{- else }}
         storageClassName: "{{ .Values.persistence.ipfs.storageClassName }}"
-        {{- end }}
-{{- end }}
-{{- if .Values.Powergate.enabled }}
-    - metadata:
-        name: vol-powergate
-        {{- range $key, $value := .Values.persistence.powergate.annotations }}
-            {{ $key }}: {{ $value }}
-        {{- end }}
-      spec:
-        accessModes:
-            {{- range .Values.persistence.powergate.accessModes }}
-            - {{ . | quote }}
-            {{- end }}
-        resources:
-            requests:
-                storage: {{ .Values.persistence.powergate.size | quote }}
-        {{- if not .Values.persistence.powergate.storageClassName }}
-            {{- if .Values.persistence.snapshots.enabled }}
-        storageClassName: "ebs-sc"
-            {{- else }}
-        storageClassName: ""
-            {{- end }}
-          {{- else }}
-        storageClassName: "{{ .Values.persistence.powergate.storageClassName }}"
         {{- end }}
 {{- end }}
 {{- end }}

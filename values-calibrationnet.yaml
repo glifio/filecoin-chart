@@ -56,8 +56,6 @@ ingress:
     #       proxy_set_header Authorization "Bearer <JWT>";
   ipfs:
     enabled: false
-  powergate:
-    enabled: false
   statediff:
     enabled: false
 
@@ -98,13 +96,6 @@ resources:
       memory: 1Gi
     limits:
       cpu: 3000m
-      memory: 3Gi
-  powergate:
-    requests:
-      cpu: 1000m
-      memory: 2Gi
-    limits:
-      cpu: 2000m
       memory: 3Gi
   statediff:
     requests:
@@ -160,10 +151,6 @@ persistence:
     size: "10Gi"
     accessModes:
       - ReadWriteOnce
-  powergate:
-    size: "10Gi"
-    accessModes:
-      - ReadWriteOnce
 
 # Defines whether should be deployed Lotus node with service, gateway or without.
 Lotus:
@@ -177,10 +164,6 @@ Lotus:
 
 # Defines remote endpoint for services(StateDiff e.t.c.)
 #lotusDNS: some-service
-
-# Defines whether Powergate should be deployed with Lotus node. Note that IPFS must be enabled if Powergate is enabled.
-Powergate:
-  enabled: false
 
 # Defines whether IPFS should be deployed with Lotus node.
 IPFS:
