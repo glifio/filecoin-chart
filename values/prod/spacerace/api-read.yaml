@@ -4,12 +4,12 @@ cache:
     nodeLabel:
       role: worker
 
-init:
-  importSnapshot:
-    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
-    enabled: true
-  clearRestart:
-    enabled: true
+#init:
+#  importSnapshot:
+#    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+#    enabled: true
+#  clearRestart:
+#    enabled: true
 
 healthcheck:
   allowedDelay: 5
