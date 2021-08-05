@@ -5,8 +5,25 @@ init:
   clearRestart:
     enabled: true
 
-healthcheck:
-  allowedDelay: 5
+ingress:
+  lotus:
+    enabled: false
+
+Lotus:
+  service:
+    enabled: false
+    release: api-read
+    slave: true
+
+nodeSelector:
+  nodeLabel:
+    role: api-read
+
+podAntiAffinity:
+  enabled: true
+
+persistence:
+  enabled: false
 
 resources:
   lotus:
@@ -16,23 +33,3 @@ resources:
     requests:
       cpu: 7
       memory: 50Gi
-
-persistence:
-  enabled: false
-
-nodeSelector:
-  nodeLabel:
-    role: api-read
-
-Lotus:
-  service:
-    enabled: false
-    release: api-read
-    slave: true
-
-ingress:
-  lotus:
-    enabled: false
-
-podAntiAffinity:
-  enabled: true

@@ -1,29 +1,13 @@
-persistence:
-   enabled: false
-
-SecurityContext:
-  runAsNonRoot: false
 ingress:
   lotus:
     enabled: false
   statediff:
     enabled: true
 
-resources:
-  statediff:
-    requests:
-      cpu: 300m
-      memory: 1Gi
-    limits:
-      cpu: 7500m
-      memory: 12Gi
-
 Lotus:
   enabled: false
   service:
     enabled: false
-StateDiff:
-  enabled: true
 
 lotusDNS: api-read-lotus-service
 
@@ -35,3 +19,19 @@ persistence:
         enabled: false
       creation:
         enabled: false
+
+resources:
+  statediff:
+    requests:
+      cpu: 300m
+      memory: 1Gi
+    limits:
+      cpu: 7500m
+      memory: 12Gi
+
+
+SecurityContext:
+  runAsNonRoot: false
+
+StateDiff:
+  enabled: true
