@@ -10,9 +10,6 @@ ingress:
   statediff:
     enabled: true
 
-Lotus:
-  maxheapsize: "130GiB"
-
 nodeSelector:
   enabled: true
   nodeLabel:

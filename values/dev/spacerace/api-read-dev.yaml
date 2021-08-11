@@ -5,12 +5,12 @@ cache:
 image:
   repository: glif/lotus:v1.11.0
 
-init:
-  importSnapshot:
-    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
-    enabled: true
-  clearRestart:
-    enabled: true
+#init:
+#  importSnapshot:
+#    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+#    enabled: true
+#  clearRestart:
+#    enabled: true
 
 ingress:
   host: dev.node.glif.io
@@ -36,7 +36,7 @@ resources:
       memory: 28Gi
     requests:
       cpu: 1500m
-      memory: 10Gi
+      memory: 8Gi
 
 persistence:
   enabled: false

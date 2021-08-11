@@ -265,8 +265,8 @@ spec:
             - cat
             - /home/lotus_user/.lotus/sync-complete
   {{- end }}
-          failureThreshold: 200
-          periodSeconds: 10
+          failureThreshold: 1000
+          periodSeconds: 200
           successThreshold: 1
           timeoutSeconds: 10
         ports:
