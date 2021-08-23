@@ -1,9 +1,9 @@
 all: lint package
 
 ## Edit node and env
-NODE = nerpa00
+NODE = api-read-dev
 ENV = dev
-NAMESPACE = nerpanet
+NAMESPACE = spacerace
 
 ## lotus nodes management
 
