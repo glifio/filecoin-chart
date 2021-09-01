@@ -1,12 +1,19 @@
+persistence:
+
+
 ingress:
+  ipfs:
+    enabled: true
   lotus:
-    gateway: true
     annotations:
       nginx.ingress.kubernetes.io/configuration-snippet: |
         proxy_set_header Authorization $calibrationapi_jwt;
         proxy_cache_bypass      $http_upgrade;
       nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
       nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+
+IPFS:
+  enabled: true
 
 Lotus:
   maxheapsize: "10GiB"
@@ -21,6 +28,22 @@ nodeSelector:
 persistence:
   autoResizer:
     cron: "0 */1 * * *"
+  snapshots:
+    uploadToIpfs:
+      enabled: true
+      shareToGist:
+        enabled: true
+        address: git@gist.github.com:95da15b014ffc3b5a170485001f46abd.git
+        authorEmail: openworklabbot@gmail.com
+        authorName: Protofire Bot
+    enabled: true
+    automation:
+      creation:
+        enabled: true
+      deletion:
+        enabled: true
+        retention:
+          count: 2
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -34,4 +57,3 @@ resources:
     limits:
       cpu: 3500m
       memory: 10Gi
-  ipfs:

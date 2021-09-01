@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:nerpa-v1.11.1-dev-nerpanet
+  repository: glif/lotus:v1.11.2-rc1-nerpanet
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -145,7 +145,7 @@ persistence:
       #name: snapshot-blah
   # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    size: "40Gi"
+    size: "30Gi"
     accessModes:
       - ReadWriteOnce
   ipfs:
