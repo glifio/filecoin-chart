@@ -1,9 +1,9 @@
 all: lint package
 
 ## Edit node and env
-NODE = api-read-dev
+NODE = calibrationapi
 ENV = dev
-NAMESPACE = spacerace
+NAMESPACE = calibrationnet
 
 ## lotus nodes management
 
