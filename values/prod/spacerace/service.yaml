@@ -24,10 +24,10 @@ resources:
   statediff:
     requests:
       cpu: 300m
-      memory: 1Gi
+      memory: 3Gi
     limits:
       cpu: 7500m
-      memory: 12Gi
+      memory: 30Gi
 
 
 SecurityContext:
