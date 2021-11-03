@@ -14,7 +14,7 @@ Lotus:
 nodeSelector:
   enabled: true
   nodeLabel:
-    lifecycle: OnDemand-r5-8x
+    lifecycle: OnDemand-r5-12x
 
 persistence:
   autoResizer:
