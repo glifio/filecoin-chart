@@ -48,8 +48,8 @@ resources:
       cpu: 23
       memory: 160Gi
     limits:
-      cpu: 29
-      memory: 220Gi
+      cpu: 40
+      memory: 294Gi
   ipfs:
     requests:
       cpu: 2
