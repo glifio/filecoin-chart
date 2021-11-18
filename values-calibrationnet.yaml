@@ -186,3 +186,6 @@ healthcheck:
   enabled: true
   readinessProbe: true
   network: calibration
+
+sync-s3-marketdeals:
+  enabled: false

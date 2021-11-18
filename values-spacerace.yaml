@@ -186,3 +186,9 @@ healthcheck:
   enabled: true
   readinessProbe: true
   network: mainnet
+
+syncS3Marketdeals:
+  enabled: true
+  image: "glif/sync-s3-marketdeals:0.0.1"
+  jobName: "sync-s3-marketdeals"
+  cron: "*/10 * * * *"

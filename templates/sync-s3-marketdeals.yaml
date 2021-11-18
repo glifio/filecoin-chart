@@ -1,0 +1,58 @@
+{{- if .Values.syncS3Marketdeals.enabled }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.syncS3Marketdeals.jobName }}
+spec:
+  schedule: {{ .Values.syncS3Marketdeals.cron | default "*/10 * * * *" | quote }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: "Replace"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: "Never"
+          containers:
+          - name: sync-s3-marketdeals
+            image: {{ .Values.syncS3Marketdeals.image }}
+            imagePullPolicy: IfNotPresent
+            command:
+            - sh
+            - -c
+            args:
+            - set -eou pipefail;
+              curl -o /aws/StateMarketDeals.json -X POST
+                -H "Content-Type:application/json"
+                -H "Authorization:Bearer ${JWT_SPACE00_TOKEN}"
+                --data '{ "jsonrpc":"2.0", "method":"Filecoin.StateMarketDeals", "params":[[]], "id":1 }'
+                http://api-read-cache-service:8080;
+              jq -c '.result | to_entries | sort_by( .key|tonumber ) | reverse | from_entries'
+                /aws/StateMarketDeals.json > /aws/StateMarketDeals-stage.json &&
+              mv /aws/StateMarketDeals-stage.json /aws/StateMarketDeals.json;
+              jq -c '[ to_entries | .[] | select ( .value.Proposal.VerifiedDeal == true ) ] | sort_by( .key|tonumber ) | from_entries'
+                /aws/StateMarketDeals.json > /aws/StateMarketDealsFilPlusOnly.json;
+              aws s3 sync /aws  s3://marketdeals --acl public-read;
+            env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_ACCESS_KEY_ID
+                  name: aws-s3-marketdeals
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_SECRET_ACCESS_KEY
+                  name: aws-s3-marketdeals
+            - name: AWS_DEFAULT_REGION
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_DEFAULT_REGION
+                  name: aws-s3-marketdeals
+            - name: JWT_SPACE00_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: JWT_SPACE00_TOKEN
+                  name: aws-s3-marketdeals
+{{- end }}
