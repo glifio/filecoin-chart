@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v1.12.0-rc1-calibnet
+  repository: glif/lotus:v1.13.0-calibnet
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -187,5 +187,5 @@ healthcheck:
   readinessProbe: true
   network: calibration
 
-sync-s3-marketdeals:
+syncS3Marketdeals:
   enabled: false
