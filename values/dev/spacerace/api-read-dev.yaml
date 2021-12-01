@@ -3,7 +3,7 @@ cache:
   replicas: 1
 
 image:
-  repository: glif/lotus:v1.13.0
+  repository: glif/lotus:v1.13.1
 
 init:
   importSnapshot:

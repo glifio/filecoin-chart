@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v1.13.0
+  repository: glif/lotus:v1.13.1
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -188,7 +188,7 @@ healthcheck:
   network: mainnet
 
 syncS3Marketdeals:
-  enabled: true
+  enabled: false
   image: "glif/sync-s3-marketdeals:0.0.1"
   jobName: "sync-s3-marketdeals"
   cron: "*/10 * * * *"
