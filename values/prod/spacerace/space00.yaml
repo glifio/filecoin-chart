@@ -60,3 +60,6 @@ resources:
 
 secretVolume:
   persistNodeID: true
+
+syncS3Marketdeals:
+  enabled: true
