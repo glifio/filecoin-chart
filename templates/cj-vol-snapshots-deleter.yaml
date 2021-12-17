@@ -1,0 +1,33 @@
+{{- if .Values.persistence.enabled }}
+{{- if .Values.persistence.snapshots.enabled }}
+{{- if .Values.persistence.snapshots.automation.deletion.enabled }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-snapshot-deleter
+spec:
+  schedule: {{ .Values.persistence.snapshots.automation.deletion.cron | default "0 1 * * *" }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: "Forbid"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: "Never"
+          serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
+          containers:
+            - name: deleter
+              image: bitnami/kubectl
+              command: ["/bin/bash","-c"]
+              args:
+                - |
+                  export ITEMS=$(kubectl get --sort-by .metadata.creationTimestamp -n {{ .Release.Namespace }} --no-headers volumesnapshots | awk '/{{ .Release.Name }}-/{print $1}' | head -n -{{ add .Values.persistence.snapshots.automation.deletion.retention.count }})
+                  if [ ! -z "$ITEMS" ]
+                  then
+                    kubectl delete volumesnapshots $ITEMS
+                  fi
+{{- end }}
+{{- end }}
+{{- end }}

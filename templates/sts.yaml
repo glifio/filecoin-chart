@@ -1,0 +1,417 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.client }}
+  labels:
+    app: {{ .Values.client }}-node-app
+    {{- include "chart.allLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  serviceName: {{ .Release.Name }}-{{ .Values.client }}-service
+  selector:
+    matchLabels:
+      app: {{ .Values.client }}-node-app
+      chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+      heritage: {{ .Release.Service }}
+      release: {{ .Release.Name }}
+      releaseGroup: {{ .Values.releaseGroup }}
+      {{- include "chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.client }}-node-app
+        chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+        heritage: {{ .Release.Service }}
+        release: {{ .Release.Name }}
+        releaseGroup: {{ .Values.releaseGroup }}
+        {{- include "chart.allLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.securityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+      {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+        - name: hostpath-permission
+          image: busybox
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh","-c"]
+          args:
+            - mkdir -p /tmp/{{ .Values.client }} /tmp/ipfs && chown -R 2000:2000 /tmp;
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - name: vol-datastore
+              mountPath: /tmp
+      {{- end }}
+      {{- if eq .Values.client "lily" }}
+        - name: initfs
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              mkdir -p /var/lib/lily/keystore
+          volumeMounts:
+            - name: vol-repo
+              mountPath: /var/lib/lily
+          resources:
+            requests:
+              cpu: "1000m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "512Mi"
+        {{- if .Values.daemon.importSnapshot.enabled }}
+        - name: chain-import
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              if [ -f "/var/lib/lily/datastore/_imported" ]; then
+                echo "Skipping import, found /var/lib/lily/datastore/_imported file."
+                echo "Ensuring secrets have correct permissions."
+                chmod 0600 /var/lib/lily/keystore/*
+                exit 0
+              fi
+              echo "Importing snapshot from url {{ .Values.daemon.importSnapshot.url }}..."
+              lily init --import-snapshot={{ .Values.daemon.importSnapshot.url }}
+              status=$?
+              if [ $status -eq 0 ]; then
+                touch "/var/lib/lily/datastore/_imported"
+              fi
+              echo "Ensuring secrets have correct permissions."
+              chmod 0600 /var/lib/lily/keystore/*
+              exit $status
+          env:
+            - name: GOLOG_LOG_FMT
+              value: "json"
+            - name: LILY_REPO
+              value: "/var/lib/lily"
+          volumeMounts:
+            - name: vol-repo
+              mountPath: /var/lib/lily
+            - name: vol-config
+              mountPath: /var/lib/lily/config.toml
+              subPath: config.toml
+              readOnly: true
+            - name: vol-datastore
+              mountPath: /var/lib/lily/datastore
+          {{- /* Minimal resources as work is performed in daemon container. */}}
+          resources:
+            requests:
+              cpu: "1000m"
+              memory: "4Gi"
+            limits:
+              cpu: "1000m"
+              memory: "4Gi"
+        {{- end }}
+      {{- end }}
+      containers:
+        {{- if .Values.ipfs.enabled }}
+        - name: ipfs
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: ipfs/go-ipfs
+          livenessProbe:
+            httpGet:
+              path: /webui
+              port: 5001
+            initialDelaySeconds: 200
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 6
+          securityContext:
+            runAsUser: 0
+          ports:
+            - containerPort: 4001
+            - containerPort: 5001
+            - containerPort: 8080
+              name: rpc
+          volumeMounts:
+            - name: vol-ipfs
+              mountPath: /data/ipfs
+          resources: {{ toYaml .Values.ipfs.resources | nindent 12 }}
+        {{- end }}
+        {{/* We need to instrument lily container in the same way
+        as we did for lotus, so that we could get rid of separate
+        lily container definition here */}}
+        {{- if eq .Values.client "lotus" }}
+        - name: lotus-daemon
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/etc/lotus/docker/run"]
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]
+          env:
+            - name: INFRA_LOTUS_DAEMON
+              value: "true"
+            - name: INFRA_LOTUS_HOME
+              value: /home/lotus_user
+            {{- if .Values.lotusMaxHeap }}
+            - name: LOTUS_MAX_HEAP
+              value: "{{ .Values.lotusMaxHeap }}"
+            {{- end}}
+            {{- if .Values.infraLotusGateway }}
+            - name: INFRA_LOTUS_GATEWAY
+              value: "true"
+            {{- end}}
+            {{- if .Values.infraClearRestart }}
+            - name: INFRA_CLEAR_RESTART
+              value: "{{ .Values.infraClearRestart }}"
+            {{- end }}
+            {{- if .Values.daemon.importSnapshot.enabled }}
+            {{- if .Values.daemon.importSnapshot.url }}
+            - name: INFRA_IMPORT_SNAPSHOT
+              value: "true"
+            - name: SNAPSHOTURL
+              value: {{ .Values.daemon.importSnapshot.url }}
+            {{- else }}
+            - name: INFRA_IMPORT_SNAPSHOT_FROM_IPFS
+              value: "true"
+            - name: SNAPSHOT_CID
+              value: {{ required "Either snapshot URL or snapshot CID should be defined!" .Values.daemon.importSnapshot.cid }}
+            - name: IPFS_GW
+              value: {{ required "Define IPFS GW to get a snapshot from IPFS" .Values.daemon.importSnapshot.ipfsGw }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.infraSync }}
+            - name: INFRA_SYNC
+              value: "true"
+            {{- end }}
+            {{- if .Values.daemon.secretVolume.enabled }}
+            - name: INFRA_SECRETVOLUME
+              value: "true"
+            {{- end }}
+            {{- if .Values.daemon.secretVolume.persistNodeID }}
+            - name: INFRA_PERSISTNODEID
+              value: "true"
+            {{- end }}
+            {{- if .Values.healthcheck.enabled }}
+            - name: NETWORK
+              value: "{{ .Values.healthcheck.network }}"
+            {{- if .Values.healthcheck.allowedDelay }}
+            - name: ALLOWED_DELAY
+              value: "{{ .Values.healthcheck.allowedDelay }}"
+            {{- end }}
+            {{- end }}
+            {{- if .Values.ipfs.enabled }}
+            - name: LOTUS_CLIENT_USEIPFS
+              value: "true"
+            - name: LOTUS_CLIENT_IPFSUSEFORRETRIEVAL
+              value: "true"
+            {{- if .Values.ipfs.dns }}
+            - name: LOTUS_CLIENT_IPFSMADDR
+              value: "/dns4/{{ .Values.ipfs.dns }}/tcp/5001"
+            {{- else }}
+            - name: LOTUS_CLIENT_IPFSMADDR
+              value: "/ip4/127.0.0.1/tcp/5001"
+            {{- end }}
+            {{- end }}
+            {{- with .Values.daemon.env }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- if .Values.healthcheck.enabled }}
+          livenessProbe:
+            tcpSocket:
+              port: api
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          {{- end }}
+          {{- if .Values.healthcheck.readinessProbe }}
+          readinessProbe:
+            exec:
+              command:
+                - healthcheck
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          {{- end }}
+          {{- if .Values.daemon.importSnapshot.enabled }}
+          startupProbe:
+            exec:
+              command:
+                - cat
+                - /home/lotus_user/.lotus/import-complete
+          {{- else }}
+          startupProbe:
+            exec:
+              command:
+                - cat
+                - /home/lotus_user/.lotus/sync-complete
+          {{- end }}
+            failureThreshold: 1000
+            periodSeconds: 200
+            successThreshold: 1
+            timeoutSeconds: 10
+          ports:
+          - containerPort: 1234
+            name: api
+          - containerPort: 1235
+            name: p2p
+          {{- if .Values.infraLotusGateway }}
+          - containerPort: 2346
+            name: gateway
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.daemon.secretVolume.enabled }}
+            - name: {{ .Values.client }}-secret-vol
+              mountPath: /keystore
+            {{- end }}
+            - name: vol-datastore
+              mountPath: /home/lotus_user/.lotus
+              {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+              subPath: lotus
+              {{- end }}
+            {{- if and .Values.ipfs.enabled .Values.persistence.snapshots.uploadToIpfs.enabled }}
+            - name: vol-ipfs
+              mountPath: /data/ipfs
+            {{- end }}
+          resources: {{ toYaml .Values.daemon.resources | nindent 12 }}        
+        {{- end }}
+        {{- if eq .Values.client "lily" }}
+        - name: lily-daemon
+          image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["lily"]
+          args:
+            {{- if .Values.jaeger.enabled }}
+            - --tracing
+            {{- end }}
+            - daemon
+            {{- range .Values.daemon.args }}
+            - {{ . }}
+            {{- end }}
+          env:
+            {{- include "chart.jaegerTracingEnvvars" . | indent 12 }}
+            - name: GOLOG_LOG_FMT
+              value: {{ .Values.logFormat | default "json" | quote }}
+            - name: GOLOG_LOG_LEVEL
+              value: {{ .Values.logLevel | default "info" | quote }}
+            {{- if .Values.logLevelNamed }}
+            - name: LILY_LOG_LEVEL_NAMED
+              value: {{ .Values.logLevelNamed | quote }}
+            {{- end }}
+            - name: LILY_REPO
+              value: "/var/lib/lily"
+            - name: LILY_CONFIG
+              value: "/var/lib/lily/config.toml"
+            {{- range .Values.daemon.storage.postgresql }}
+            - name: LILY_STORAGE_POSTGRESQL_{{ .name | upper }}_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "expected secret name which holds postgres connection url" .secretName }}
+                  key: {{ .secretKey | default "url" }}
+            {{- end }}
+            {{- with .Values.daemon.env }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+          ports:
+            - containerPort: 1234
+              name: api
+            - containerPort: 1347
+              name: p2p
+            {{- if .Values.prometheusOperatorServiceMonitor }}
+            - containerPort: {{ .Values.prometheusPort }}
+              name: metrics
+            {{- end }}
+          volumeMounts:
+            - name: vol-repo
+              mountPath: /var/lib/lily
+            - name: vol-config
+              mountPath: /var/lib/lily/config.toml
+              subPath: config.toml
+              readOnly: true
+            - name: vol-datastore
+              mountPath: /var/lib/lily/datastore
+              {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+              subPath: lily
+              {{- end }}
+          resources:
+            {{- if .Values.daemon.resources }}
+            {{- toYaml .Values.daemon.resources | nindent 12 }}
+            {{- else }}
+            requests:
+              cpu: "8000m"
+              memory: "16Gi"
+            limits:
+              cpu: "8000m"
+              memory: "16Gi"
+            {{- end }}        
+        {{- end }}
+      volumes:
+        {{- if eq .Values.client "lily" }}
+        - name: vol-repo
+          emptyDir: {}
+        - name: vol-config
+          configMap:
+            name: {{ .Release.Name }}-lily-config
+            items:
+              - key: config.toml
+                path: config.toml
+        {{- end }}
+        {{- if .Values.daemon.storage.postgresql }}
+        - name: {{ .Values.client }}-secret-vol
+          secret:
+            secretName: {{ .Release.Name }}-{{ .Values.client }}-secret
+            defaultMode: 384 # permission 0600
+        {{- end }}
+        {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+        - name: vol-datastore
+          hostPath:
+            path: {{ .Values.persistence.hostPath }}
+            type: Directory
+        {{- end }}
+ {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+    {{/* A volume claim template for persistent 
+    datastore volume */}}
+    - metadata:
+        name: vol-datastore
+      spec:
+        accessModes:
+            {{- range .Values.persistence.daemon.accessModes }}
+            - {{ . | quote }}
+            {{- end }}
+        resources:
+            requests:
+                storage: {{ .Values.persistence.daemon.size | quote }}
+        storageClassName: {{ .Values.persistence.daemon.storageClass }}
+        {{- if .Values.persistence.snapshots.restore.enabled }}
+        dataSource:
+          name: {{ .Values.persistence.snapshots.restore.name }}
+          kind: VolumeSnapshot
+          apiGroup: snapshot.storage.k8s.io
+        {{- end }}
+    {{- if .Values.ipfs.enabled }}
+    - metadata:
+        name: vol-ipfs
+      spec:
+        accessModes:
+            {{- range .Values.persistence.ipfs.accessModes }}
+            - {{ . | quote }}
+            {{- end }}
+        resources:
+            requests:
+                storage: {{ .Values.persistence.ipfs.size | quote }}
+        storageClassName: {{ .Values.persistence.ipfs.storageClass }}
+    {{- end }}
+  {{- end }}

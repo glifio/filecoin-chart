@@ -1,0 +1,20 @@
+{{- if .Values.cache.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-cache-service
+  labels:
+    app: {{ .Values.client }}-cache
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+    prometheus.io/path: /metrics
+spec:
+  selector:
+    app: {{ .Release.Name }}-{{ .Values.client }}-cache
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+      name: cache-port
+{{- end }}

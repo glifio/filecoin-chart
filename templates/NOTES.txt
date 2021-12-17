@@ -1,5 +1,37 @@
+{{- if eq .Values.client "lotus" }}
+
+.____           __                 
+|    |    _____/  |_ __ __  ______ 
+|    |   /  _ \   __\  |  \/  ___/ 
+|    |__(  <_> )  | |  |  /\___ \  
+|_______ \____/|__| |____//____  > 
+        \/                     \/  
+
+
+Release ---------- {{ .Release.Name }}
+Namespace -------- {{ .Release.Namespace }}
+Container Repo --- {{ .Values.image.repo }}
+Tag -------------- {{ .Values.image.tag }}
+
 1. Get the application URL by running these commands:
-{{- if .Values.ingress.enabled }}
+  {{- if .Values.ingress.enabled }}
   http://{{ .Values.ingress.host }}
-IPFS, StateDiff and Lotus node will be available by /ipfs, /StateDiff and /lotus paths accordingly if enabled.
+  IPFS, StateDiff and Lotus node will be available by /ipfs, /StateDiff and /lotus paths accordingly if enabled.
+  {{- end }}
 {{- end }}
+{{- if eq .Values.client "lily" }}
+
+ __    _ _
+|  |  |_| |_ _
+|  |__| | | | |_
+|_____|_|_|_  |  `'.
+         /|___|     \
+         \    /\    |
+          `,_;  \_./
+            `    `
+Release ---------- {{ .Release.Name }}
+Namespace -------- {{ .Release.Namespace }}
+Container Repo --- {{ .Values.image.repo }}
+Tag -------------- {{ .Values.image.tag }}
+{{- end }}
+

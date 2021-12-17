@@ -1,0 +1,147 @@
+{{- if and (eq .Values.client "lily") .Values.daemon.gapfill.enabled }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-gapfiller
+  labels:
+    {{- include "chart.releaseLabels" . | nindent 4 }}
+    {{- if .Values.labels }}
+    {{- toYaml .Values.labels | nindent 4 }}
+    {{- end }}
+spec:
+  # TODO: make cron schedule configurable
+  schedule: {{ .Values.daemon.gapfill.cron | default "0 0 * * *" }}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        {{- include "chart.releaseLabels" . | nindent 8 }}
+        {{- if .Values.labels }}
+        {{- toYaml .Values.labels | nindent 8 }}
+        {{- end }}
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "chart.releaseLabels" . | nindent 12 }}
+            {{- if .Values.labels }}
+            {{- toYaml .Values.labels | nindent 12 }}
+            {{- end }}
+        spec:
+          restartPolicy: OnFailure
+          {{- if .Values.imagePullSecrets }}
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          # we're going to need root for a little while until
+          # we can package some helper binaries into the image
+          #securityContext:
+            #fsGroup: 562
+            #runAsNonRoot: true
+            #runAsUser: 562
+            #runAsGroup: 562
+          containers:
+          - name: gapfill
+            image: {{ .Values.image.repo }}:{{ .Values.image.tag }}
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command: ["/bin/bash", "-c"]
+            args:
+              - |
+                set -xo pipefail
+
+                function check(){
+                  if [ $1 -ne 0 ]; then
+                    exit $1
+                  fi
+                }
+
+                lily wait-api --timeout={{ .Values.daemon.apiWaitTimeout | quote }} > /dev/null 2>&1
+                check $?
+
+                ## TODO: check when last cron job was executed successfully
+                ## TODO: determine to/from window from last job exec
+                ## use default window of last 26 hours (overlap to
+                ## account for spin-up duration)
+
+                uid=`cat /var/lib/lily/uid`
+                to=$(((`date +%s` - {{ required "(root).daemon.genesisUnix expected" .Values.daemon.genesisUnix | int }}) / 30))
+                from=$(((`date -d "26 hours ago" +%s` - {{ required "(root).daemon.genesisUnix expected" .Values.daemon.genesisUnix | int }}) / 30))
+                echo "Starting gapfill jobs...from $from to $to"
+
+                {{ range .Values.daemon.gapfill.taskSets }}
+                  {{- $jobPrint := include "chart.fingerprintAllArgs" (printf "--tasks=%s" . | list ) }}
+                  {{- $jobName := printf "%s/gapfind-${uid}/%s" (include "chart.name" $) $jobPrint }}
+                  echo "lily gap find --from=$from --to=$to --tasks=\"{{ . }}\" --storage={{ $.Values.daemon.gapfill.storage }} --name \"{{ $jobName }}f=${from},t=${to}\""
+                  lily sync wait >/dev/null 2>&1
+                  check $?
+                  jobid=`lily gap find --from=$from --to=$to --tasks="{{ . }}" --storage={{ $.Values.daemon.gapfill.storage }} --name "{{ $jobName }}f=${from},t=${to}" | jq .ID`
+                  check $?
+                  /var/lib/lily/waitjob.sh $jobid
+                  check $?
+
+                  {{ $jobName = printf "%s/gapfill-${uid}/%s" (include "chart.name" $) $jobPrint }}
+                  echo "lily gap fill --from=$from --to=$to --tasks=\"{{ . }}\" --storage={{ $.Values.daemon.gapfill.storage }} --name \"{{ $jobName }}f=${from},t=${to}\""
+                  lily sync wait >/dev/null 2>&1
+                  check $?
+                  jobid=`lily gap fill --from=$from --to=$to --tasks="{{ . }}" --storage={{ $.Values.daemon.gapfill.storage }} --name "{{ $jobName }}f=${from},t=${to}" | jq .ID`
+                  check $?
+                  /var/lib/lily/waitjob.sh $jobid
+                  check $?
+                {{ end }}
+            volumeMounts:
+            - name: repo-volume
+              mountPath: /var/lib/lily
+            - name: config-volume
+              mountPath: /var/lib/lily/config.toml
+              subPath: config.toml
+              readOnly: true
+            - name: waitjob-script-volume
+              mountPath: /var/lib/lily/waitjob.sh
+              subPath: waitjob.sh
+            resources:
+              {{- toYaml .Values.debug.resources | nindent 14 }}
+            env:
+            - name: GOLOG_LOG_FMT
+              value: {{ .Values.logFormat | default "json" | quote }}
+            - name: GOLOG_LOG_LEVEL
+              value: {{ .Values.logLevel | default "info" | quote }}
+            {{- if .Values.logLevelNamed }}
+            - name: LILY_LOG_LEVEL_NAMED
+              value: {{ .Values.logLevelNamed | quote }}
+            {{- end }}
+            - name: LILY_REPO
+              value: "/var/lib/lily"
+            - name: LILY_API
+              value: "/dns4/{{- include "chart.service-name-daemon-api" . }}/tcp/1234/http"
+            - name: LILY_CONFIG
+              value: "/var/lib/lily/config.toml"
+            {{- range .Values.daemon.storage.postgresql }}
+            - name: LILY_STORAGE_POSTGRESQL_{{ .name | upper }}_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "expected secret name which holds postgres connection url" .secretName }}
+                  key: {{ .secretKey | default "url" }}
+            {{- end }}
+            {{- with .Values.daemon.env }}
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
+          volumes:
+          - name: repo-volume
+            emptyDir: {}
+          - name: config-volume
+            configMap:
+              name: {{ .Release.Name }}-lily-config
+              items:
+              - key: config.toml
+                path: config.toml
+          - name: waitjob-script-volume
+            configMap:
+              name: {{ .Release.Name }}-lily-waitjob-script
+              items:
+              - key: waitjob.sh
+                path: waitjob.sh
+                mode: 0755
+{{- end }}

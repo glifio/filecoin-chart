@@ -1,0 +1,23 @@
+{{/* This monitor is for lily nodes
+Need to check if it can be used with lotus client */}}
+{{- if eq .Values.client "lily" }}
+{{- if .Values.prometheusOperatorServiceMonitor }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.client }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "chart.selectorLabels" . | nindent 6 }}
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 30s
+{{- end }}
+{{- end }}

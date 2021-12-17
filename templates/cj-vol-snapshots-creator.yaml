@@ -1,0 +1,37 @@
+---
+{{- if .Values.persistence.enabled }}
+{{- if .Values.persistence.snapshots.enabled }}
+{{- if .Values.persistence.snapshots.automation.creation.enabled }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-snapshot-creator
+spec:
+  schedule: {{ .Values.persistence.snapshots.automation.creation.cron | default "0 0 * * *" }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: "Forbid"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: "Never"
+          serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccount.name }}
+          containers:
+            - name: creator
+              image: bitnami/kubectl
+              args:
+              - create
+              - -f
+              - /tmp/creator/snapshot-template.yaml
+              volumeMounts:
+              - name: {{ .Release.Name }}-snapshot-cm
+                mountPath: "/tmp/creator"
+                readOnly: true
+          volumes:
+            - name: {{ .Release.Name }}-snapshot-cm
+              configMap:
+                name: {{ .Release.Name }}-snapshot-cm
+{{- end }}
+{{- end }}
+{{- end }}

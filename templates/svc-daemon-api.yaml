@@ -1,0 +1,22 @@
+{{- if .Values.daemon.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "chart.service-name-daemon-api" . }}
+  labels:
+    app: {{ .Values.client }}-node-app
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "1234"
+    prometheus.io/path: /debug/metrics
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.client }}-node-app
+    releaseGroup: {{ .Values.releaseGroup }}
+  ports:
+    - protocol: TCP
+      port: 1234
+      targetPort: 1234
+      name: tcp-api
+{{- end }}

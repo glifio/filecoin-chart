@@ -1,0 +1,18 @@
+---
+{{- if .Values.persistence.snapshots.automation.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-snapshot-cm
+data:
+  snapshot-template.yaml: |
+    apiVersion: snapshot.storage.k8s.io/v1beta1
+    kind: VolumeSnapshot
+    metadata:
+      generateName: {{ .Release.Name }}-
+      namespace: {{ .Release.Namespace }} 
+    spec:
+      volumeSnapshotClassName: csi-aws-vsc
+      source:
+        persistentVolumeClaimName: vol-{{ .Values.client }}-{{ .Release.Name }}-{{ .Values.client }}-0
+{{- end }}

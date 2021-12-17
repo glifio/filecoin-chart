@@ -1,0 +1,36 @@
+---
+{{- if .Values.ingress.daemon.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress-{{ .Values.client }}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.ingress.daemon.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          {{- if .Values.cache.enabled }}
+          - path: /{{ .Release.Name }}/cache(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "chart.service-name-daemon-api" . }}
+                port:
+                  number: 8080
+          {{- end }}
+          - path: /{{ .Release.Name }}/{{ .Values.client }}(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "chart.service-name-daemon-api" . }}
+                port:
+                  number: 1234
+{{- end }}

@@ -1,0 +1,2 @@
+- Add a possibility to persist node id for lily client
+- Dig into persistent node id and jwt tokens for lotus and lily clients

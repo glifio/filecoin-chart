@@ -1,0 +1,26 @@
+{{/* This monitor is for lily nodes
+Need to check if it can be used with lotus client */}}
+{{- if eq .Values.client "lily" }}
+{{- if .Values.prometheusOperatorServiceMonitor }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.client }}-daemon-metrics
+  labels:
+    {{- include "chart.allLabels" . | nindent 4 }}
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "{{ .Values.prometheusPort }}"
+    prometheus.io/path: /metrics
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "chart.selectorLabels" . | nindent 4 }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.prometheusPort }}
+      targetPort: {{ .Values.prometheusPort }}
+      name: metrics
+{{- end }}
+{{- end }}

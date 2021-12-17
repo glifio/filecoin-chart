@@ -1,0 +1,50 @@
+# Additional values file to run lotus client and connect it to the Calibration network
+
+client: "lily"
+
+image:
+  repo: filecoin/lily
+  pullPolicy: IfNotPresent
+  tag: v0.8.5-calibnet
+
+securityContext:
+  runAsNonRoot: false
+
+daemon:
+  importSnapshot:
+    enabled: true
+    url: https://dev.node.glif.io/calibrationapi/ipfs/8080/ipfs/QmUo9gDcLGVMTiVk87wfJAfr58JagMEzyssLXcq7ppBZJi
+  resources:
+    requests:
+      cpu: 500m
+      memory: 3Gi
+    limits:
+      cpu: 1900m
+      memory: 5Gi
+  storage:
+    postgresql: []
+    file:
+      - name: csv
+        format: CSV
+        path: /tmp
+  jobs:
+    - command: watch
+      jobId: "123456"
+      name: "watchjob"
+      args:
+        - --confidence=10
+        - --tasks=messages
+persistence:
+  enabled: true
+  autoResizer:
+    enabled: true
+  snapshots:
+    enabled: false
+    automation:
+      enabled: false
+  daemon:
+    size: "35Gi"
+    
+release: 
+  network: calibrationnet
+  environment: dev

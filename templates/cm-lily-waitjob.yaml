@@ -1,0 +1,39 @@
+{{/* Only used for lily client */}}
+---
+{{- if eq .Values.client "lily" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-lily-waitjob-script
+  labels:
+    {{- include "chart.allLabels" . | nindent 4 }}
+data:
+  waitjob.sh: |
+    #!/usr/bin/env bash
+
+    set -o pipefail
+
+    if [[ ! "$1" =~ ^[0-9]+$ ]]; then
+      echo "Non-numeric ID"
+      exit 1
+    fi
+
+    # wait until lily is available for checking
+    lily wait-api --timeout={{ .Values.daemon.apiWaitTimeout | quote }} > /dev/null 2>&1
+
+    let jobCheckWait=60
+    while true; do
+      jobState=`lily job list | jq -c -e ".[] | select(.ID == $1) | {ID,Running}"`
+      if [[ $jobState == "" ]]; then
+        echo "No job found with ID $1"
+        exit 2
+      fi
+      if [[ ! $jobState =~ \"ID\":${1},\"Running\":true ]]; then
+        echo "Check: ${jobState}: exiting"
+        exit 0
+      fi
+
+      echo "Job is still running: ${jobState}: sleeping ~$(($jobCheckWait / 60))min..."
+      sleep $jobCheckWait
+    done
+{{- end }}

@@ -1,0 +1,52 @@
+---
+{{- if .Values.daemon.jobs }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-lily-jobs
+spec:
+  template:
+    spec:
+      containers:
+        {{- range .Values.daemon.jobs }}
+        - name: {{ .name | default .command }}-job-runner
+          image: {{ $.Values.image.repo }}:{{ $.Values.image.tag }}
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args:
+            {{- $jobName := "" }}
+            {{- if .name }}
+                {{- $jobName = printf "--name %s/%s" .jobId .name }}
+            {{- else }}
+                {{- $jobName = printf "--name %s/%s" .jobId .command }}
+            {{- end }}
+            - lily sync wait && lily {{ .command }} {{ join " " .args }} {{ $jobName }}
+          env:
+            - name: LILY_API
+              value: "/dns4/{{- include "chart.service-name-daemon-api" $ }}/tcp/1234"
+            - name: LILY_REPO
+              value: "/var/lib/lily"
+            - name: LILY_CONFIG
+              value: "/var/lib/lily/config.toml"
+            {{- range $.Values.daemon.storage.postgresql }}
+            - name: LILY_STORAGE_POSTGRESQL_{{ .name | upper }}_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secretName }}
+                  key: {{ .secretKey }}
+            {{- end }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /var/lib/lily/config.toml
+              subPath: config.toml
+              readOnly: true
+        {{- end }}
+      restartPolicy: Never
+      volumes: 
+        - name: config-volume
+          configMap:
+            name: {{ .Release.Name }}-lily-config
+            items:
+              - key: config.toml
+                path: config.toml
+{{- end }}

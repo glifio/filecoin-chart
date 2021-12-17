@@ -1,0 +1,43 @@
+{{/* Only used for lily client */}}
+---
+{{- if eq .Values.client "lily" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-lily-config
+  labels:
+    {{- include "chart.allLabels" . | nindent 4 }}
+data:
+  config.toml: |
+    [API]
+      ListenAddress = "/ip4/0.0.0.0/tcp/1234/http"
+    [Libp2p]
+      ListenAddresses = ["/ip4/0.0.0.0/tcp/1347"]
+      ConnMgrLow = 400
+      ConnMgrHigh = 500
+      ConnMgrGrace = "5m0s"
+    {{- if .Values.daemon.pubsub.ipwhitelist }}
+    [Pubsub]
+      IPColocationWhitelist = ["{{ join "\", \"" .Values.daemon.pubsub.ipwhitelist }}"]
+    {{- end }}
+    [Storage]
+      {{- if .Values.daemon.storage.postgresql }}
+      [Storage.Postgresql]
+        {{- range .Values.daemon.storage.postgresql }}
+        [Storage.Postgresql.{{ .name }}]
+          SchemaName = {{ .schema | default "lily" | quote }}
+          URLEnv = "LILY_STORAGE_POSTGRESQL_{{ .name | upper }}_URL"
+          ApplicationName = {{ .applicationName | default (include "chart.name" $ ) | quote }}
+          PoolSize = {{ .poolSize | default 20 }}
+          AllowUpsert = {{ .allowUpsert | default false }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.daemon.storage.file }}
+      [Storage.File]
+        {{- range .Values.daemon.storage.file }}
+        [Storage.File.{{ .name }}]
+          Format = {{ .format | default "CSV" | upper | quote }}
+          Path = {{ .path  | quote }}
+        {{- end }}
+      {{- end }}
+{{- end }}

@@ -1,0 +1,36 @@
+# Additional values file to run lotus client and connect it to the Calibration network
+
+client: "lotus"
+
+image:
+  tag: v1.13.1-calibnet
+
+daemon:
+  resources:
+    requests:
+      cpu: 500m
+      memory: 3Gi
+    limits:
+      cpu: 1900m
+      memory: 5Gi
+
+persistence:
+  enabled: false
+  hostPath: /nvme/disk
+  autoResizer:
+    enabled: false
+  snapshots:
+    enabled: false
+    automation:
+      deletion:
+        enabled: false
+      creation:
+        enabled: false
+    restore:
+      enabled: false
+  daemon:
+    size: "35Gi"
+    
+release: 
+  network: calibrationnet
+  environment: dev
