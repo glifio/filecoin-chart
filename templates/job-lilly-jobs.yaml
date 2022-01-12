@@ -1,14 +1,14 @@
 ---
 {{- if .Values.daemon.jobs }}
+{{- range .Values.daemon.jobs }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Release.Name }}-lily-jobs
+  name: {{ $.Release.Name }}-lily-jobs
 spec:
   template:
     spec:
       containers:
-        {{- range .Values.daemon.jobs }}
         - name: {{ .name | default .command }}-job-runner
           image: {{ $.Values.image.repo }}:{{ $.Values.image.tag }}
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
@@ -45,8 +45,9 @@ spec:
       volumes: 
         - name: config-volume
           configMap:
-            name: {{ .Release.Name }}-lily-config
+            name: {{ $.Release.Name }}-lily-config
             items:
               - key: config.toml
                 path: config.toml
+{{- end }}
 {{- end }}
