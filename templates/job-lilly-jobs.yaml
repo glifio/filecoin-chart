@@ -40,7 +40,6 @@ spec:
               mountPath: /var/lib/lily/config.toml
               subPath: config.toml
               readOnly: true
-        {{- end }}
       restartPolicy: Never
       volumes: 
         - name: config-volume

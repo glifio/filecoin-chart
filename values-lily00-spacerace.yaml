@@ -1,0 +1,102 @@
+# Additional values file to run lily client and connect it to the Spacerace network
+
+replicaCount: 1
+
+client: "lily"
+image:
+  repo: filecoin/lily
+  pullPolicy: IfNotPresent
+  tag: v0.8.5
+
+releaseGroup: lilymain-group
+
+securityContext: {}
+
+nodeSelector:
+  role: worker
+  assignedPod: lily00
+
+daemon:
+  importSnapshot:
+    enabled: true
+    url: https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/complete_chain_with_finality_stateroots_latest.car
+  resources:
+    requests:
+      cpu: 23
+      memory: 160Gi
+    limits:
+      cpu: 40
+      memory: 294Gi
+  secretVolume:
+    enabled: false
+    persistNodeID: false
+
+  storage:
+    postgresql:
+    - name: db
+      secretName: lily00-lily-secret
+      secretKey: url
+      schema: lily
+      applicationName: lily
+      poolSize: 20
+      allowUpsert: false
+    file: []
+  jobs:
+  - command: watch
+    name: "watch-job-0"
+    jobId: "123456"
+    args:
+      - --confidence=10
+      - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig
+  genesisUnix: "1598306400"
+  gapfill:
+    enabled: false
+    storage: "db"
+    taskSets:
+    # examples
+    #- actorstatesmultisig,actorstatespower,actorstatesraw,actorstatesreward,actorstatesverifreg,blocks,chaineconomics,consensus,implicitmessage,messages,msapprovals
+    #- actorstatesinit,actorstatesmarket
+    #- messages
+    cron: "0 0 * * *"
+
+  # daemon pubsub-specific settings
+  pubsub:
+    # ipwhitelist maps to Pubsub.IPColocationWhitelist in daemon's config.toml
+    ipwhitelist: []
+
+  # How long to wait for the daemon to start before failing
+  apiWaitTimeout: 600s
+
+# Storage persistence settings
+persistence:
+  # If persistence is set to false no persistent volumes will be created
+  enabled: true
+  hostPath: 
+  autoResizer:
+    enabled: true
+    increaseThreshold: 90 # in %
+    increaseStep: 10 # in %
+    cron: "0 0 * * *"
+  snapshots:
+    enabled: false
+  daemon:
+    size: "13000Gi"
+    accessModes:
+      - ReadWriteOnce
+    storageClass: "ebs-sc"
+
+logLevel: info
+logLevelNamed: "vm:error,badgerbs:error"
+logFormat: json
+
+healthcheck:
+  enabled: false
+  readinessProbe: false
+
+ingress:
+  enabled: true
+  host: lily00.node.glif.io
+
+release: 
+  network: spacerace
+  environment: prod

@@ -1,4 +1,4 @@
-# Additional values file to run lotus client and connect it to the Calibration network
+# Additional values file to run lily client and connect it to the Calibration network
 
 client: "lily"
 

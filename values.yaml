@@ -101,6 +101,7 @@ daemon:
   jobs: []
   #- command: watch
     #name: ""
+    #jobId: ""
     #args:
     #- --confidence=10
     #- --tasks=blocks,messages,chaineconomics
