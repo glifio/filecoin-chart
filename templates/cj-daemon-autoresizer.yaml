@@ -77,8 +77,3 @@ spec:
                   done
               {{- end }}
 {{- end }}
-
-
-
-
-/var/lib/lily/datastore
