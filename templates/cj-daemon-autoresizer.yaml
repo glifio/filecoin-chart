@@ -18,6 +18,7 @@ spec:
             - name: resizer
               image: bitnami/kubectl
               command: ["/bin/bash","-c"]
+              {{- if eq .Values.client "lotus" }}
               args:
                 - |
                   export REPLICAS=$(kubectl get sts -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-{{ .Values.client }}) 
@@ -45,4 +46,39 @@ spec:
                       echo "Disk is only ${USE}% used, not yet ready to expand. Current threshold is {{ .Values.persistence.autoResizer.increaseThreshold }}%"
                     fi
                   done
+              {{- end }}
+              {{- if eq .Values.client "lily" }}
+              args:
+                - |
+                  export REPLICAS=$(kubectl get sts -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-{{ .Values.client }}) 
+                  for ((i=0;i<$REPLICAS;i++)) 
+                  do 
+                    until kubectl exec {{ .Release.Name }}-{{ .Values.client }}-${i} -c {{ .Values.client }}-daemon -- df --output=pcent /var/lib/lily/datastore
+                    do
+                      echo "Can't access Liliy node. Sleeping..."
+                      sleep 60s
+                    done
+                    export USE=$(kubectl exec {{ .Release.Name }}-{{ .Values.client }}-${i} -c {{ .Values.client }}-daemon -- df --output=pcent /var/lib/lily/datastore | tr -dc '0-9')
+                    if [[ -z "$USE" ]]
+                    then
+                      echo "Error! Cannot get current disk size for some reason."
+                      false
+                    fi
+                    if [[ "$USE" -gt "{{ .Values.persistence.autoResizer.increaseThreshold }}" ]] 
+                    then
+                      export VALUE=$(kubectl get pvc -o=jsonpath='{.spec.resources.requests.storage}' vol-datastore-{{ .Release.Name }}-{{ .Values.client }}-${i}) 
+                      export OLD_SIZE=$(echo $VALUE | tr -dc '0-9')
+                      export NEW_SIZE=$(($OLD_SIZE+$OLD_SIZE*{{ .Values.persistence.autoResizer.increaseStep }}/100))
+                      export DIMENSION=$(echo $VALUE | tr -dc 'A-z')
+                      kubectl patch pvc -p='[{"op":"replace","path":"/spec/resources/requests/storage","value":"'${NEW_SIZE}${DIMENSION}'"}]' vol-datastore-{{ .Release.Name }}-{{ .Values.client }}-${i} --type='json'
+                    else 
+                      echo "Disk is only ${USE}% used, not yet ready to expand. Current threshold is {{ .Values.persistence.autoResizer.increaseThreshold }}%"
+                    fi
+                  done
+              {{- end }}
 {{- end }}
+
+
+
+
+/var/lib/lily/datastore
