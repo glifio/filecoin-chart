@@ -8,7 +8,7 @@ ingress:
   lotus:
     enabled: true
   statediff:
-    enabled: true
+    enabled: false
 
 nodeSelector:
   enabled: true
@@ -44,5 +44,5 @@ resources:
 
 
 StateDiff:
-  enabled: true
+  enabled: false
 
