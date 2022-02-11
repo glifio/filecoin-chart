@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v1.13.1
+  repository: glif/lotus:v1.13.2
   pullPolicy: Always
 
 imagePullSecrets: []

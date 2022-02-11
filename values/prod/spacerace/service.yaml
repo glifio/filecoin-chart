@@ -2,7 +2,7 @@ ingress:
   lotus:
     enabled: false
   statediff:
-    enabled: true
+    enabled: false
 
 Lotus:
   enabled: false
@@ -34,4 +34,4 @@ SecurityContext:
   runAsNonRoot: false
 
 StateDiff:
-  enabled: true
+  enabled: false
