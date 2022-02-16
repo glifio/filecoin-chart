@@ -25,9 +25,8 @@ spec:
             - set -eou pipefail;
               curl -o /aws/StateMarketDeals.json -X POST
                 -H "Content-Type:application/json"
-                -H "Authorization:Bearer ${JWT_SPACE00_TOKEN}"
                 --data '{ "jsonrpc":"2.0", "method":"Filecoin.StateMarketDeals", "params":[[]], "id":1 }'
-                http://api-read-cache-service:8080;
+                http://space00-lotus-service:1234/rpc/v0;
               jq -c '.result | to_entries | sort_by( .key|tonumber ) | reverse | from_entries'
                 /aws/StateMarketDeals.json > /aws/StateMarketDeals-stage.json &&
               mv /aws/StateMarketDeals-stage.json /aws/StateMarketDeals.json;
@@ -49,10 +48,5 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: AWS_DEFAULT_REGION
-                  name: aws-s3-marketdeals
-            - name: JWT_SPACE00_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  key: JWT_SPACE00_TOKEN
                   name: aws-s3-marketdeals
 {{- end }}
