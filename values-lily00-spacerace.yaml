@@ -6,7 +6,7 @@ client: "lily"
 image:
   repo: filecoin/lily
   pullPolicy: IfNotPresent
-  tag: v0.8.5
+  tag: v0.8.6
 
 releaseGroup: lilymain-group
 
@@ -43,11 +43,12 @@ daemon:
     file: []
   jobs:
   - command: watch
-    name: "watch-job-0"
+    name: "watch-job-2"
     jobId: "123456"
     args:
-      - --confidence=10
+      - --confidence=60
       - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig
+      - --storage=db
   genesisUnix: "1598306400"
   gapfill:
     enabled: false
@@ -92,6 +93,8 @@ logFormat: json
 healthcheck:
   enabled: false
   readinessProbe: false
+
+prometheusOperatorServiceMonitor: true
 
 ingress:
   enabled: true

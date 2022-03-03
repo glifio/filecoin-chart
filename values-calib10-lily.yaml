@@ -1,0 +1,99 @@
+replicaCount: 1
+
+client: "lily"
+image:
+  repo: filecoin/lily
+  pullPolicy: IfNotPresent
+  tag: v0.8.6-calibnet
+
+releaseGroup: lilymain-group
+
+securityContext: {}
+
+daemon:
+  importSnapshot:
+    enabled: false
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 15Gi
+    limits:
+      cpu: 2000m
+      memory: 20Gi
+  secretVolume:
+    enabled: false
+    persistNodeID: false
+
+  storage:
+    postgresql:
+    - name: db
+      secretName: calib10-lily-secret
+      secretKey: url
+      schema: lily
+      applicationName: lily
+      poolSize: 20
+      allowUpsert: false
+    file: []
+  jobs:
+    - command: watch
+      name: "calib10-watch-job"
+      jobId: "123456"
+      args:
+        - --confidence=30
+        - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig
+        - --storage=db
+    - command: walk
+      name: "calib10-test-walk-job"
+      jobId: "343089"
+      args:
+        - --from=0
+        - --to=240
+        - --storage=db
+        - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig
+    - command: walk
+      name: "calib10-walk-job"
+      jobId: "235097"
+      args:
+        - --from=241
+        - --to=735957
+        - --storage=db
+        - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig
+  genesisUnix: "1624060800"
+  gapfill:
+    enabled: false
+
+# Storage persistence settings
+persistence:
+  # If persistence is set to false no persistent volumes will be created
+  enabled: true
+  hostPath: 
+  autoResizer:
+    enabled: true
+    increaseThreshold: 90 # in %
+    increaseStep: 10 # in %
+    cron: "0 0 * * *"
+  snapshots:
+    enabled: false
+  daemon:
+    size: "300Gi"
+    accessModes:
+      - ReadWriteOnce
+    storageClass: "ebs-sc"
+
+logLevel: info
+logLevelNamed: "vm:error,badgerbs:error"
+logFormat: json
+
+healthcheck:
+  enabled: false
+  readinessProbe: false
+
+prometheusOperatorServiceMonitor: true
+
+ingress:
+  enabled: true
+  host: dev.node.glif.io
+
+release: 
+  network: calibrationnet
+  environment: dev

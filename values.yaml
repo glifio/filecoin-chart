@@ -105,6 +105,7 @@ daemon:
     #args:
     #- --confidence=10
     #- --tasks=blocks,messages,chaineconomics
+    #- --storage=
 
   # genesisUnix should be the unix time of the genesis epoch
   # and is used to calculate relative to/from windows for
@@ -209,7 +210,7 @@ persistence:
     
 # Service monitoring settings
 prometheusOperatorServiceMonitor: false
-prometheusPort: ":9991"
+prometheusPort: 9991
 
 # Service tracing settings
 jaeger:
