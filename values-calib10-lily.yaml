@@ -4,7 +4,7 @@ client: "lily"
 image:
   repo: filecoin/lily
   pullPolicy: IfNotPresent
-  tag: v0.8.6-calibnet
+  tag: v0.8.8-calibnet
 
 releaseGroup: lilymain-group
 
@@ -42,22 +42,6 @@ daemon:
         - --confidence=30
         - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig
         - --storage=db
-    - command: walk
-      name: "calib10-test-walk-job"
-      jobId: "343089"
-      args:
-        - --from=0
-        - --to=240
-        - --storage=db
-        - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig
-    - command: walk
-      name: "calib10-walk-job"
-      jobId: "235097"
-      args:
-        - --from=241
-        - --to=735957
-        - --storage=db
-        - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig
   genesisUnix: "1624060800"
   gapfill:
     enabled: false

@@ -345,6 +345,31 @@ spec:
               {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
               subPath: lily
               {{- end }}
+          {{- if .Values.daemon.jobs }}
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - "/bin/sh"
+                  - "-c"
+                  - |
+                    echo "Waiting for api to become ready..."
+                    lily wait-api --timeout={{ .Values.daemon.apiWaitTimeout | quote }} > /dev/null 2>&1
+                    status=$?
+                    if [ $status -ne 0 ]; then
+                      exit $status
+                    fi
+                    echo "Starting jobs..."
+                    {{- range .Values.daemon.jobs }}
+                    {{- $jobName := "" }}
+                    {{- if .name }}
+                        {{- $jobName = printf "--name %s/%s" .jobId .name }}
+                    {{- else }}
+                        {{- $jobName = printf "--name %s/%s" .jobId .command }}
+                    {{- end }}
+                    lily sync wait && lily {{ .command }} {{ join " " .args }} {{ $jobName }}
+                    {{- end }}
+          {{- end }}
           resources:
             {{- if .Values.daemon.resources }}
             {{- toYaml .Values.daemon.resources | nindent 12 }}
