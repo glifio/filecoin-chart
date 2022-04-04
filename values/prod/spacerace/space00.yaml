@@ -9,7 +9,7 @@ IPFS:
   enabled: true
 
 Lotus:
-  maxheapsize: "100GiB"
+  maxheapsize: "300GiB"
 
 nodeSelector:
   enabled: true
@@ -49,14 +49,14 @@ resources:
       memory: 160Gi
     limits:
       cpu: 40
-      memory: 294Gi
+      memory: 350Gi
   ipfs:
     requests:
       cpu: 2
-      memory: 30Gi
+      memory: 10Gi
     limits:
       cpu: 20
-      memory: 90Gi
+      memory: 15Gi
 
 secretVolume:
   persistNodeID: true
