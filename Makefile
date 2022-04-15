@@ -14,10 +14,10 @@ nodeReinit:
 	helm -n $(NAMESPACE) delete $(NODE)
 	helm upgrade --history-max 3 --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
-nodeReinstall:
-	helm -n $(NAMESPACE) delete $(NODE)
-	kubectl -n $(NAMESPACE) delete pvc vol-lotus-$(NODE)-lotus-0
-	helm upgrade --history-max 3 --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+# nodeReinstall:
+# 	helm -n $(NAMESPACE) delete $(NODE)
+# 	kubectl -n $(NAMESPACE) delete pvc vol-lotus-$(NODE)-lotus-0
+# 	helm upgrade --history-max 3 --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
 diff:
 	helm diff upgrade --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .

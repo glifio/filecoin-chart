@@ -9,7 +9,7 @@ IPFS:
   enabled: true
 
 Lotus:
-  maxheapsize: "300GiB"
+  maxheapsize: "100GiB"
 
 nodeSelector:
   enabled: true
