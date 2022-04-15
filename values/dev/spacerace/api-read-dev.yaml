@@ -24,7 +24,7 @@ ingress:
       nginx.ingress.kubernetes.io/cors-allow-origin: "*"
 
 Lotus:
-  maxheapsize: "15GiB"
+  maxheapsize: "30GiB"
   service:
     release: api-read-dev
     gateway: true
@@ -33,10 +33,10 @@ resources:
   lotus:
     limits:
       cpu: 3800m
-      memory: 28Gi
+      memory: 56Gi
     requests:
       cpu: 1500m
-      memory: 8Gi
+      memory: 16Gi
 
 persistence:
   enabled: false
