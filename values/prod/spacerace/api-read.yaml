@@ -4,7 +4,7 @@ cache:
     nodeLabel:
       role: worker
 
-#init:
+# init:
 #  importSnapshot:
 #    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
 #    enabled: true

@@ -14,7 +14,7 @@ Lotus:
 nodeSelector:
   enabled: true
   nodeLabel:
-    lifecycle: OnDemand-r5-8x
+    lifecycle: OnDemand-r5-12x
 
 persistence:
   autoResizer:
@@ -48,15 +48,18 @@ resources:
       cpu: 23
       memory: 160Gi
     limits:
-      cpu: 29
-      memory: 220Gi
+      cpu: 40
+      memory: 350Gi
   ipfs:
     requests:
       cpu: 2
-      memory: 30Gi
+      memory: 10Gi
     limits:
       cpu: 20
-      memory: 90Gi
+      memory: 15Gi
 
 secretVolume:
   persistNodeID: true
+
+syncS3Marketdeals:
+  enabled: true
