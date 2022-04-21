@@ -28,7 +28,7 @@ SecurityContext:
 cache:
   enabled: false
   image: protofire/filecoin-rpc-proxy:0.0.3
-  replicas: 2
+  replicas: 5
   nodeSelector:
     nodeLabel:
       role: worker

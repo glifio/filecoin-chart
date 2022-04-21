@@ -1,6 +1,6 @@
 init:
   importSnapshot:
-    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+    SNAPSHOTURL: "https://node.glif.io/space00/ipfs/8080/ipfs/QmXy1iZt3D4ycgiiZCrd2XsVN738MAHmDmqkFfSY4avxyv" 
     enabled: true
   clearRestart:
     enabled: true
@@ -28,8 +28,9 @@ persistence:
 resources:
   lotus:
     limits:
+      cpu: 30
+      memory: 240Gi
+    requests:
       cpu: 15
       memory: 120Gi
-    requests:
-      cpu: 7
-      memory: 50Gi
+
