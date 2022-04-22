@@ -40,7 +40,7 @@ daemon:
       jobId: "123456"
       args:
         - --confidence=30
-        - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig
+        - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig,actorstatesinit
         - --storage=db
   genesisUnix: "1624060800"
   gapfill:

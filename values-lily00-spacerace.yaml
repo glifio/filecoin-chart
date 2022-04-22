@@ -47,16 +47,16 @@ daemon:
       jobId: "346928"
       args:
         - --confidence=60
-        - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig
+        - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig,actorstatesinit
         - --storage=db
     - command: walk
       name: "space-walk-job"
       jobId: "235987"
       args:
         - --storage=db
-        - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig
-        - --from=1592880
-        - --to=1657207
+        - --tasks=actorstatesinit
+        - --from=1682157
+        - --to=1718110
   genesisUnix: "1598306400"
   gapfill:
     enabled: false
