@@ -28,9 +28,9 @@ persistence:
 resources:
   lotus:
     limits:
-      cpu: 30
-      memory: 240Gi
-    requests:
       cpu: 15
       memory: 120Gi
+    requests:
+      cpu: 7
+      memory: 50Gi
 

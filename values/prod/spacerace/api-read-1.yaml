@@ -1,9 +1,9 @@
-# init:
-#   importSnapshot:
-#     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
-#     enabled: true
-#   clearRestart:
-#     enabled: true
+init:
+  importSnapshot:
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+    enabled: true
+  clearRestart:
+    enabled: true
 
 ingress:
   lotus:
@@ -28,8 +28,8 @@ persistence:
 resources:
   lotus:
     limits:
-      cpu: 30
-      memory: 240Gi
-    requests:
       cpu: 15
       memory: 120Gi
+    requests:
+      cpu: 7
+      memory: 50Gi
