@@ -1,6 +1,6 @@
 init:
   importSnapshot:
-    SNAPSHOTURL: "https://node.glif.io/space00/ipfs/8080/ipfs/QmXy1iZt3D4ycgiiZCrd2XsVN738MAHmDmqkFfSY4avxyv" 
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
     enabled: true
   clearRestart:
     enabled: true

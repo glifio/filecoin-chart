@@ -3,6 +3,14 @@ cache:
   nodeSelector:
     nodeLabel:
       role: worker
+  replicas: 2
+  resources:
+    limits:
+      cpu: 5
+      memory: 12Gi
+    requests:
+      cpu: 500m
+      memory: 4Gi
 
 ingress:
   lotus:
