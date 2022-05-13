@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: glif/lotus:v1.15.1-calibnet
+  repository: glif/lotus:v1.15.2-calibnet
   pullPolicy: Always
 
 imagePullSecrets: []

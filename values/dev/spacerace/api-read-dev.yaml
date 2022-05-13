@@ -10,7 +10,7 @@ cache:
       memory: 8Gi
 
 image:
-  repository: glif/lotus:v1.15.1
+  repository: glif/lotus:v1.15.2
 
 init:
   importSnapshot:
