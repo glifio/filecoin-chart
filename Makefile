@@ -10,6 +10,9 @@ NAMESPACE = calibrationnet
 nodeInstall:
 	helm upgrade --history-max 3 --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
+nodeInstalldryrun:
+	helm --dry-run --install upgrade --debug --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+
 nodeReinit:
 	helm -n $(NAMESPACE) delete $(NODE)
 	helm upgrade --history-max 3 --install -f values-$(NAMESPACE).yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .

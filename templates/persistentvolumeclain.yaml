@@ -1,0 +1,13 @@
+{{- if .Values.isEFS.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: filecoin-dev-use1-dev-efs
+  resources:
+    requests:
+      storage: 5Gi
+{{- end }}

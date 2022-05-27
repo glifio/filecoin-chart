@@ -152,6 +152,9 @@ persistence:
     accessModes:
       - ReadWriteOnce
 
+isEFS:
+  enabled: true
+
 # Defines whether should be deployed Lotus node with service, gateway or without.
 Lotus:
   enabled: true
