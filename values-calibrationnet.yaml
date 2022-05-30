@@ -152,6 +152,8 @@ persistence:
     accessModes:
       - ReadWriteOnce
 
+# Definces to having AWS EFS service as component to the chart.
+# This functionality relates to Lotus home dir configuration.
 isEFS:
   enabled: true
 
@@ -164,6 +166,12 @@ Lotus:
     release: some-release
     slave: false
     gateway: false
+  lotusHomeDirLocation:
+    path: /home/lotus_user/.lotus
+    isKeepingData:
+      inEFS:
+        bool: true
+    pathTmp: /data/tmp
 
 # Defines remote endpoint for services(StateDiff e.t.c.)
 #lotusDNS: some-service
@@ -192,3 +200,14 @@ healthcheck:
 
 syncS3Marketdeals:
   enabled: false
+
+globalParameters:
+  project:
+    name: filecoin
+  environment:
+    name: dev
+  subEnvironment:
+    name: dev
+  region:
+    fullRegionName: us-east-1
+    shortRegionName: use1

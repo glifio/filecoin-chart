@@ -6,7 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: filecoin-dev-use1-dev-efs
+  storageClassName: {{ .Values.globalParameters.project.name }}-{{ .Values.globalParameters.environment.name }}-{{ .Values.globalParameters.region.shortRegionName }}-{{ .Values.globalParameters.subEnvironment.name }}-efs
   resources:
     requests:
       storage: 5Gi

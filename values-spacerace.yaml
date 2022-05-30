@@ -159,6 +159,9 @@ persistence:
     accessModes:
       - ReadWriteOnce
 
+isEFS:
+  enabled: true
+
 # Defines whether should be deployed Lotus node with service, gateway or without.
 Lotus:
   enabled: true
@@ -199,3 +202,14 @@ syncS3Marketdeals:
   image: "glif/sync-s3-marketdeals:0.0.1"
   jobName: "sync-s3-marketdeals"
   cron: "*/10 * * * *"
+
+globalParameters:
+  project:
+    name: filecoin
+  environment:
+    name: dev
+  subEnvironment:
+    name: dev
+  region:
+    fullRegionName: us-east-1
+    shortRegionName: use1

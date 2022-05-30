@@ -262,13 +262,21 @@ spec:
   {{- end }}
   {{- if .Values.isEFS.enabled }}
           - name: persistent-storage
-            mountPath: /home/lotus_user/.lotus
+          {{- if eq .Values.Lotus.lotusHomeDirLocation.isKeepingData.inEFS.bool true }}
+            mountPath: {{ .Values.Lotus.lotusHomeDirLocation.path }}
+          {{- else }}
+            mountPath: {{ .Values.Lotus.lotusHomeDirLocation.pathTmp }}
+          {{- end }}
   {{- end }}
           - name: vol-lotus
-            mountPath: /data/efs_volume
+          {{- if ne .Values.Lotus.lotusHomeDirLocation.isKeepingData.inEFS.bool true }}
+            mountPath: {{ .Values.Lotus.lotusHomeDirLocation.path }}
+          {{- else }}
+            mountPath: {{ .Values.Lotus.lotusHomeDirLocation.pathTmp }}
             {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
             subPath: lotus
             {{- end }}
+          {{- end }}
             {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
           - name: {{ (index .Values.init.import.volume 0).name }}
             mountPath: /chain

@@ -1,3 +1,10 @@
+# https://api.node.glif.io/
+# https://lotus.filecoin.io/developers/glif-nodes/
+# Before going to Available API request methods, please, consider that Filecoin.StateMarketDeals operation data is
+# available as direct link to AWS s3.
+# StateMarketDeals Data is refreshing every 10 minutes:
+# https://marketdeals.s3.amazonaws.com/StateMarketDeals.json
+
 {{- if .Values.syncS3Marketdeals.enabled }}
 ---
 apiVersion: batch/v1beta1
