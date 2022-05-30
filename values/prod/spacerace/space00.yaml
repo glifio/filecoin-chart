@@ -10,6 +10,10 @@ IPFS:
 
 Lotus:
   maxheapsize: "100GiB"
+  lotusHomeDirLocation:
+    isKeepingData:
+      inEFS:
+        bool: true
 
 nodeSelector:
   enabled: true

@@ -23,6 +23,12 @@ nodeSelector:
   nodeLabel:
     lifecycle: OnDemand-r5-8x
 
+Lotus:
+  lotusHomeDirLocation:
+    isKeepingData:
+      inEFS:
+        bool: true
+
 persistence:
   snapshots:
     automation:

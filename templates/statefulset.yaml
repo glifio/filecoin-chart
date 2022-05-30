@@ -76,7 +76,7 @@ spec:
 {{- if .Values.isEFS.enabled }}
         - name: persistent-storage
           persistentVolumeClaim:
-            claimName: efs-claim
+            claimName: {{ .Values.globalParameters.project.name }}-{{ .Values.globalParameters.environment.name }}-{{ .Values.globalParameters.region.shortRegionName }}-{{ .Values.globalParameters.subEnvironment.name }}-{{- .Release.Name -}}-efs-claim
 {{- end }}
       initContainers:
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}

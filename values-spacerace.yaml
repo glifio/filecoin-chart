@@ -171,7 +171,12 @@ Lotus:
     release: some-release
     slave: false
     gateway: false
-
+  lotusHomeDirLocation:
+    path: /home/lotus_user/.lotus
+    isKeepingData:
+      inEFS:
+        bool: false
+    pathTmp: /data/tmp
 # Defines remote endpoint for services(StateDiff e.t.c.)
 #lotusDNS: some-service
 
@@ -207,9 +212,9 @@ globalParameters:
   project:
     name: filecoin
   environment:
-    name: dev
+    name: prod
   subEnvironment:
-    name: dev
+    name: prod
   region:
     fullRegionName: us-east-1
     shortRegionName: use1

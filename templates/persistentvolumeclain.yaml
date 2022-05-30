@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: efs-claim
+  name: {{ .Values.globalParameters.project.name }}-{{ .Values.globalParameters.environment.name }}-{{ .Values.globalParameters.region.shortRegionName }}-{{ .Values.globalParameters.subEnvironment.name }}-{{- .Release.Name -}}-efs-claim
 spec:
   accessModes:
     - ReadWriteMany

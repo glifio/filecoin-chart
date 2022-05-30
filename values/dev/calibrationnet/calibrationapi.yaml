@@ -54,3 +54,4 @@ resources:
     limits:
       cpu: 3500m
       memory: 10Gi
+
