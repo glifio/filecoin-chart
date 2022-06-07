@@ -3,11 +3,11 @@ cache:
   nodeSelector:
     nodeLabel:
       role: worker
-  replicas: 4
+  replicas: 3
   resources:
     limits:
       cpu: 5
-      memory: 24Gi
+      memory: 35Gi
     requests:
       cpu: 500m
       memory: 8Gi
