@@ -9,9 +9,6 @@ cache:
       cpu: 500m
       memory: 8Gi
 
-image:
-  repository: glif/lotus:v1.15.2
-
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
