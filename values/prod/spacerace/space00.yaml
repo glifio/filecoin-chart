@@ -36,11 +36,13 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space07-hlzw6
+      name: space00-hrkdw
   lotus:
-    size: "6050Gi"
+    size: "32768Gi"
     accessModes:
       - ReadWriteOnce
+    storageClassName: "ebs-sc-io2"
+    lotusVolumeName: "vol-lotus-io2"
 
 resources:
   lotus:
