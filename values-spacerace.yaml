@@ -151,9 +151,11 @@ persistence:
       #name: snapshot-blah
   # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
+    storageClassName: "ebs-sc"
     size: "5500Gi"
     accessModes:
       - ReadWriteOnce
+    lotusVolumeName: "vol-lotus"
   ipfs:
     size: "350Gi"
     accessModes:

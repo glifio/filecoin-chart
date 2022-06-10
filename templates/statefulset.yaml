@@ -68,7 +68,7 @@ spec:
             defaultMode: 384 # permission 0600
 {{- end }}
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
-        - name: vol-lotus
+        - name: {{ .Values.persistence.lotus.lotusVolumeName }}
           hostPath:
             path: {{ .Values.persistence.hostPath }}
             type: Directory
@@ -84,7 +84,7 @@ spec:
         securityContext:
           runAsUser: 0
         volumeMounts:
-          - name: vol-lotus
+          - name: {{ .Values.persistence.lotus.lotusVolumeName }}
             mountPath: /tmp
 {{- end }}
 {{- end }}
@@ -283,7 +283,7 @@ spec:
           - name: lotus-secret-vol
             mountPath: /keystore
   {{- end }}
-          - name: vol-lotus
+          - name: {{ .Values.persistence.lotus.lotusVolumeName }}
             mountPath: /home/lotus_user/.lotus
             {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
             subPath: lotus
@@ -310,7 +310,7 @@ spec:
   volumeClaimTemplates:
 {{- if .Values.Lotus.enabled }}
     - metadata:
-        name: vol-lotus
+        name: {{ .Values.persistence.lotus.lotusVolumeName }}
       spec:
         accessModes:
             {{- range .Values.persistence.lotus.accessModes }}
@@ -321,7 +321,7 @@ spec:
                 storage: {{ .Values.persistence.lotus.size | quote }}
         {{- if not .Values.persistence.lotus.storageClassName }}
         {{- if .Values.persistence.snapshots.enabled }}
-        storageClassName: "ebs-sc"
+        storageClassName: {{ .Values.persistence.lotus.storageClassName | quote }}
         {{- else }}
         storageClassName: ""
         {{- end }}

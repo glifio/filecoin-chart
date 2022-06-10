@@ -147,6 +147,8 @@ persistence:
     size: "35Gi"
     accessModes:
       - ReadWriteOnce
+    storageClassName: "ebs-sc"
+    lotusVolumeName: "vol-lotus"
   ipfs:
     size: "10Gi"
     accessModes:
