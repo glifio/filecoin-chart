@@ -12,7 +12,6 @@ Lotus:
   maxheapsize: "100GiB"
 
 nodeSelector:
-  enabled: true
   nodeLabel:
     lifecycle: OnDemand-r5-12x
 

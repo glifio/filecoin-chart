@@ -4,6 +4,8 @@
 
 replicaCount: 1
 
+nodeGroupName: noGroup
+
 image:
   repository: glif/lotus:v1.15.3-calibnet
   pullPolicy: Always
@@ -97,13 +99,6 @@ resources:
     limits:
       cpu: 3000m
       memory: 3Gi
-  statediff:
-    requests:
-      cpu: 100m
-      memory: 200Mi
-    limits:
-      cpu: 250m
-      memory: 400Mi
 
 persistence:
   # If persistence is set to false no persistent volumes will be created
@@ -147,7 +142,7 @@ persistence:
     size: "35Gi"
     accessModes:
       - ReadWriteOnce
-    storageClassName: "ebs-sc"
+    storageClassName: "ebs-sc-gp2"
     lotusVolumeName: "vol-lotus"
   ipfs:
     size: "10Gi"
@@ -177,7 +172,7 @@ StateDiff:
 nodeSelector:
   enabled: true
   nodeLabel:
-    role: worker
+
 
 tolerations: []
 
