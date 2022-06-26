@@ -1,13 +1,16 @@
-cache:
-  enabled: true
-  replicas: 1
-  resources:
-    limits:
-      cpu: 5
-      memory: 24Gi
-    requests:
-      cpu: 500m
-      memory: 8Gi
+nodeGroupName: group2
+
+##self-managed cache-service integration
+#cache:
+#  enabled: true
+#  replicas: 1
+#  resources:
+#    limits:
+#      cpu: 5
+#      memory: 24Gi
+#    requests:
+#      cpu: 500m
+#      memory: 8Gi
 
 init:
   importSnapshot:
@@ -16,16 +19,16 @@ init:
   clearRestart:
     enabled: true
 
-ingress:
-  host: dev.node.glif.io
-  lotus:
-    gateway: true
-    annotations:
-      nginx.ingress.kubernetes.io/configuration-snippet: |
-        proxy_set_header Authorization $apiread_dev_jwt;
-        proxy_cache_bypass      $http_upgrade;
-      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
-      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+#ingress:
+#  host: dev.node.glif.io
+#  lotus:
+#    gateway: true
+#    annotations:
+#      nginx.ingress.kubernetes.io/configuration-snippet: |
+#        proxy_set_header Authorization $apiread_dev_jwt;
+#        proxy_cache_bypass      $http_upgrade;
+#      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
+#      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
 
 Lotus:
   maxheapsize: "30GiB"
@@ -45,6 +48,6 @@ resources:
 persistence:
   enabled: false
 
-nodeSelector:
-  nodeLabel:
-    lifecycle: Ec2Spot-i3
+#nodeSelector:
+#  nodeLabel:
+#    lifecycle: Ec2Spot-i3

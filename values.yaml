@@ -7,7 +7,7 @@ replicaCount: 1
 nodeGroupName: noGroup
 
 image:
-  repository: glif/lotus:v1.15.3-calibnet
+  repository: glif/lotus:v1.16.0-rc1-calibnet
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -26,7 +26,7 @@ SecurityContext:
   runAsGroup: 2000
   fsGroup: 2000
 
-## cashe service settings
+## cache service settings
 cache:
   enabled: false
   image: protofire/filecoin-rpc-proxy:0.0.3

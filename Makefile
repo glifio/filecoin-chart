@@ -1,7 +1,13 @@
 all: lint package
 
 ## Edit node and env
-NODE = calibrationapi-archive
+
+## Deploy archive_node
+#NODE = calibrationapi-archive
+#ENV = dev
+#NAMESPACE = spacerace
+
+NODE = api-read-dev
 ENV = dev
 NAMESPACE = spacerace
 
@@ -13,6 +19,10 @@ nodeInstall:
 nodeReinit:
 	helm -n $(NAMESPACE) delete $(NODE)
 	helm upgrade --history-max 3 --install -f values.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+
+nodeDelete:
+	helm -n $(NAMESPACE) delete $(NODE)
+	helm delete --history-max 3 --install -f values.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
 # nodeReinstall:
 # 	helm -n $(NAMESPACE) delete $(NODE)
