@@ -19,6 +19,9 @@ init:
   clearRestart:
     enabled: true
 
+image:
+  repository: glif/lotus:v1.16.0
+
 #ingress:
 #  host: dev.node.glif.io
 #  lotus:

@@ -39,5 +39,5 @@ spec:
           - key: config
             path: config.yaml
       nodeSelector:
-{{ toYaml .Values.cache.nodeSelector.nodeLabel | indent 8 }}
+        nodeGroupName: {{ .Values.nodeGroupName }}
 {{- end }}

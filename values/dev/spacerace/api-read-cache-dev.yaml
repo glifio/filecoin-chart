@@ -11,3 +11,7 @@ cache:
     requests:
       cpu: 500m
       memory: 8Gi
+
+Lotus:
+  service:
+    enabled: false

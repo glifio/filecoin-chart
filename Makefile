@@ -7,9 +7,20 @@ all: lint package
 #ENV = dev
 #NAMESPACE = spacerace
 
-NODE = api-read-dev
+## Deploy api_read_node
+#NODE = api-read-dev
+#ENV = dev
+#NAMESPACE = spacerace
+
+#deploy cache service for api-read
+NODE = api-read-cache-dev
 ENV = dev
 NAMESPACE = spacerace
+
+## Deploy calibnetapi
+#NODE = calibrationapi
+#ENV = dev
+#NAMESPACE = spacerace
 
 ## lotus nodes management
 
