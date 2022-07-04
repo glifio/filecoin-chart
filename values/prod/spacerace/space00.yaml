@@ -18,7 +18,7 @@ nodeSelector:
 
 persistence:
   autoResizer:
-    cron: "0 */6 * * *"
+    enabled: false
   snapshots:
     uploadToIpfs:
       cron: "10 */12 * * *"
@@ -30,10 +30,10 @@ persistence:
         address: git@gist.github.com:d03393d1f6e70e089e9e8d18922474f6.git
         authorName: Protofire Bot
         authorEmail: openworklabbot@gmail.com
-    automation:
-      deletion:
-        retention:
-          count: 7
+    # automation:
+    #   deletion:
+    #     retention:
+    #       count: 7
     restore:
       enabled: true
       name: space00-hrkdw
