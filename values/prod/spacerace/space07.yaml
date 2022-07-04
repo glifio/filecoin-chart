@@ -24,12 +24,14 @@ nodeSelector:
     lifecycle: OnDemand-r5-8x
 
 persistence:
+  autoResizer:
+    enabled: false
   snapshots:
-    automation:
-      creation:
-        cron: "0 20 * * *"
-      deletion:
-        cron: "0 21 * * *"
+    # automation:
+    #   creation:
+    #     cron: "0 20 * * *"
+    #   deletion:
+    #     cron: "0 21 * * *"
     restore:
       enabled: true
       name: space07-t2b8f
