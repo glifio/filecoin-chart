@@ -26,7 +26,7 @@ data:
         {{- range .Values.daemon.storage.postgresql }}
         [Storage.Postgresql.{{ .name }}]
           SchemaName = {{ .schema | default "lily" | quote }}
-          URLEnv = "LILY_STORAGE_POSTGRESQL_{{ .name | upper }}_URL"
+          URLEnv = "LILY_{{ .name | upper }}"
           ApplicationName = {{ .applicationName | default (include "chart.name" $ ) | quote }}
           PoolSize = {{ .poolSize | default 20 }}
           AllowUpsert = {{ .allowUpsert | default false }}

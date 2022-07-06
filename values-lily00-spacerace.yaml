@@ -6,7 +6,7 @@ client: "lily"
 image:
   repo: filecoin/lily
   pullPolicy: IfNotPresent
-  tag: v0.8.8
+  tag: v0.10.1
 
 releaseGroup: lilymain-group
 
@@ -42,21 +42,21 @@ daemon:
       allowUpsert: false
     file: []
   jobs:
-    - command: watch
+    - command: job run
       name: "space-watch-job"
       jobId: "346928"
       args:
-        - --confidence=60
         - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig,actorstatesinit
-        - --storage=db
-    - command: walk
-      name: "space-walk-job"
-      jobId: "235987"
-      args:
-        - --storage=db
-        - --tasks=actorstatesinit
-        - --from=1682157
-        - --to=1718110
+        - watch
+        - --confidence=60
+    # - command: walk
+    #   name: "space-walk-job"
+    #   jobId: "235987"
+    #   args:
+    #     - --storage=db
+    #     - --tasks=actorstatesinit
+    #     - --from=1682157
+    #     - --to=1718110
   genesisUnix: "1598306400"
   gapfill:
     enabled: false

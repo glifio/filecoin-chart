@@ -315,7 +315,7 @@ spec:
             - name: LILY_CONFIG
               value: "/var/lib/lily/config.toml"
             {{- range .Values.daemon.storage.postgresql }}
-            - name: LILY_STORAGE_POSTGRESQL_{{ .name | upper }}_URL
+            - name: LILY_{{ .name | upper }}
               valueFrom:
                 secretKeyRef:
                   name: {{ required "expected secret name which holds postgres connection url" .secretName }}
@@ -367,7 +367,7 @@ spec:
                     {{- else }}
                         {{- $jobName = printf "--name %s/%s" .jobId .command }}
                     {{- end }}
-                    lily sync wait && lily {{ .command }} {{ join " " .args }} {{ $jobName }}
+                    lily sync wait && lily migrate --latest && lily {{ .command }} {{ $jobName }} {{ join " " .args }}
                     {{- end }}
           {{- end }}
           resources:

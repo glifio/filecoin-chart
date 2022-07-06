@@ -4,7 +4,7 @@ client: "lily"
 image:
   repo: filecoin/lily
   pullPolicy: IfNotPresent
-  tag: v0.8.8-calibnet
+  tag: v0.10.1-calibnet
 
 releaseGroup: lilymain-group
 
@@ -35,13 +35,13 @@ daemon:
       allowUpsert: false
     file: []
   jobs:
-    - command: watch
+    - command: job run
       name: "calib10-watch-job"
       jobId: "123456"
       args:
-        - --confidence=30
         - --tasks=blocks,messages,chaineconomics,msapprovals,actorstatesraw,actorstatesmultisig,actorstatesinit
-        - --storage=db
+        - watch
+        - --confidence=30
   genesisUnix: "1624060800"
   gapfill:
     enabled: false
