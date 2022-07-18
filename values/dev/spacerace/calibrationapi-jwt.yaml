@@ -1,13 +1,24 @@
-nodeGroupName: group3
+nodeGroupName: group1
+
+#ingress:
+#  ipfs:
+#    enabled: true
+#  lotus:
+#    annotations:
+#      nginx.ingress.kubernetes.io/configuration-snippet: |
+#        proxy_set_header Authorization $calibrationapi_jwt;
+#        proxy_cache_bypass      $http_upgrade;
+#      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
+#      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
 
 IPFS:
   enabled: true
 
-## if we need to start from genesis the best idea is starting from existing snapshot;
-## snaphot url is https://download1349.mediafire.com/j1cumh5cjyog/6d6ngyku9baidv0/lotus_cali_snapshot_2022_07_01_high_1086060.car.tar.xz
+# if we need to start from genesis the best idea is starting from existing snapshot;
+# snaphot url is https://www.mediafire.com/file/tlgfwnwzosd4d1p/lotus_cali_snapshot_UTC%252B8_20220618_high_1048244.tar.bz2/file
 #init:
 #  importSnapshot:
-#    SNAPSHOTURL: "/home/lotus_user/.lotus/lotus_cali_snapshot_2022_07_01_high_1086060.car"
+#    SNAPSHOTURL: "/home/lotus_user/.lotus/chain.car"
 #    enabled: true
 
 Lotus:
@@ -15,6 +26,10 @@ Lotus:
   service:
     release: calibrationapi
     gateway: true
+
+#nodeSelector:
+#  nodeLabel:
+#    lifecycle: OnDemand
 
 persistence:
 #  autoResizer:

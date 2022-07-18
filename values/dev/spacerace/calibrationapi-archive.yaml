@@ -1,17 +1,6 @@
 # you have to put the group name from existing EKS working group names.
 nodeGroupName: group4
 
-ingress:
-  ipfs:
-    enabled: false
-  lotus:
-    annotations:
-      nginx.ingress.kubernetes.io/configuration-snippet: |
-        proxy_set_header Authorization $calibrationapi_archive_jwt;
-        proxy_cache_bypass      $http_upgrade;
-      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
-      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
-
 IPFS:
   enabled: false
 
@@ -20,14 +9,9 @@ Lotus:
     release: calibrationapi-archive
     gateway: false
 
-nodeSelector:
-  nodeLabel:
-    lifecycle: OnDemand-calib-archive-node
-
-
 persistence:
-  autoResizer:
-    cron: "0 0 * * *"
+#  autoResizer:
+#    cron: "0 0 * * *"
   snapshots:
     enabled: true
     automation:
@@ -38,18 +22,9 @@ persistence:
         retention:
           count: 2
   lotus:
-    size: "150Gi"
+    size: "200Gi"
     accessModes:
       - ReadWriteOnce
-
-#resources:
-#  lotus:
-#    requests:
-#      cpu: 3
-#      memory: 10Gi
-#    limits:
-#      cpu: 7
-#      memory: 60Gi
 
 resources:
   lotus:

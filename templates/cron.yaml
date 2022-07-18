@@ -156,9 +156,9 @@
 {{/*            - bash*/}}
 {{/*            - -c*/}}
 {{/*            args:*/}}
-{{/*            - export REPLICAS=$(kubectl get sts -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-lotus); */}}
-{{/*              for ((i=0;i<$REPLICAS;i++)); */}}
-{{/*              do */}}
+{{/*            - export REPLICAS=$(kubectl get sts -o=jsonpath='{.spec.replicas}' {{ .Release.Name }}-lotus);*/}}
+{{/*              for ((i=0;i<$REPLICAS;i++));*/}}
+{{/*              do*/}}
 {{/*                until kubectl exec {{ .Release.Name }}-lotus-${i} -c filecoin -- df --output=pcent /home/lotus_user/.lotus; do*/}}
 {{/*                  echo "Can't access Lotus node. Sleeping..." && sleep 60s;*/}}
 {{/*                done;*/}}
@@ -168,14 +168,14 @@
 {{/*                  echo "Error! Cannot get current disk size for some reason.";*/}}
 {{/*                  false;*/}}
 {{/*                fi;*/}}
-{{/*                if [[ "$USE" -gt "{{ .Values.persistence.autoResizer.increaseThreshold }}" ]]; */}}
+{{/*                if [[ "$USE" -gt "{{ .Values.persistence.autoResizer.increaseThreshold }}" ]];*/}}
 {{/*                then*/}}
-{{/*                  export VALUE=$(kubectl get pvc -o=jsonpath='{.spec.resources.requests.storage}' vol-lotus-{{ .Release.Name }}-lotus-${i}); */}}
+{{/*                  export VALUE=$(kubectl get pvc -o=jsonpath='{.spec.resources.requests.storage}' vol-lotus-{{ .Release.Name }}-lotus-${i});*/}}
 {{/*                  export OLD_SIZE=$(echo $VALUE | tr -dc '0-9');*/}}
-{{/*                  export NEW_SIZE=$(($OLD_SIZE+$OLD_SIZE*{{ .Values.persistence.autoResizer.increaseStep }}/100)); */}}
-{{/*                  export DIMENSION=$(echo $VALUE | tr -dc 'A-z'); */}}
+{{/*                  export NEW_SIZE=$(($OLD_SIZE+$OLD_SIZE*{{ .Values.persistence.autoResizer.increaseStep }}/100));*/}}
+{{/*                  export DIMENSION=$(echo $VALUE | tr -dc 'A-z');*/}}
 {{/*                  kubectl patch pvc -p='[{"op":"replace","path":"/spec/resources/requests/storage","value":"'${NEW_SIZE}${DIMENSION}'"}]' vol-lotus-{{ .Release.Name }}-lotus-${i} --type='json';*/}}
-{{/*                else echo "Disk is only ${USE}% used, not yet ready to expand. Current threshold is {{ .Values.persistence.autoResizer.increaseThreshold }}%"; */}}
+{{/*                else echo "Disk is only ${USE}% used, not yet ready to expand. Current threshold is {{ .Values.persistence.autoResizer.increaseThreshold }}%";*/}}
 {{/*                fi;*/}}
 {{/*              done;*/}}
 

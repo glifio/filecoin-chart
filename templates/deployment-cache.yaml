@@ -2,23 +2,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-cache-deployment
+  name: {{ .Release.Name }}-deployment
 spec:
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-lotus-cache
+      app: {{ .Release.Name }}-lotus
   replicas: {{ .Values.cache.replicas }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-lotus-cache
+        app: {{ .Release.Name }}-lotus
     spec:
       containers:
       - name: lotus-cache
         image: {{ .Values.cache.image }}
         imagePullPolicy: Always
         volumeMounts:
-        - name: {{ .Release.Name }}-config-cache
+        - name: {{ .Release.Name }}-config
           mountPath: /home/proxy/config.yaml
           subPath: config.yaml
           readOnly: true
@@ -32,9 +32,9 @@ spec:
             memory: {{ .Values.cache.resources.requests.memory }}
             cpu: {{ .Values.cache.resources.requests.cpu }}
       volumes:
-      - name: {{ .Release.Name }}-config-cache
+      - name: {{ .Release.Name }}-config
         secret:
-          secretName: {{ .Release.Name }}-lotus-secret
+          secretName: {{ .Release.Name }}-secret
           items:
           - key: config
             path: config.yaml

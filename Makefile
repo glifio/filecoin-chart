@@ -1,7 +1,7 @@
 all: lint package
 
 ## Edit node and env
-
+#
 ## Deploy archive_node
 #NODE = calibrationapi-archive
 #ENV = dev
@@ -12,13 +12,18 @@ all: lint package
 #ENV = dev
 #NAMESPACE = spacerace
 
-#deploy cache service for api-read
-NODE = api-read-cache-dev
+##deploy cache service for api-read
+#NODE = api-read-cache-dev
+#ENV = dev
+#NAMESPACE = spacerace
+
+# Deploy calibnetapi
+NODE = calibrationapi
 ENV = dev
 NAMESPACE = spacerace
 
-## Deploy calibnetapi
-#NODE = calibrationapi
+## Deploy calibnetapi-jwt
+#NODE = calibrationapi-jwt
 #ENV = dev
 #NAMESPACE = spacerace
 

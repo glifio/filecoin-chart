@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-cache-service
+  name: {{ .Release.Name }}-service
   labels:
     app: lotus-cache
   annotations:
@@ -11,7 +11,7 @@ metadata:
     prometheus.io/path: /metrics
 spec:
   selector:
-    app: {{ .Release.Name }}-lotus-cache
+    app: {{ .Release.Name }}-lotus
   type: ClusterIP
   ports:
     - port: 8080
