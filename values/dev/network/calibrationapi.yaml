@@ -5,10 +5,10 @@ IPFS:
 
 ## if we need to start from genesis the best idea is starting from existing snapshot;
 ## snaphot url is https://download1349.mediafire.com/j1cumh5cjyog/6d6ngyku9baidv0/lotus_cali_snapshot_2022_07_01_high_1086060.car.tar.xz
-#init:
-#  importSnapshot:
-#    SNAPSHOTURL: "/home/lotus_user/.lotus/lotus_cali_snapshot_2022_07_01_high_1086060.car"
-#    enabled: true
+init:
+  importSnapshot:
+    SNAPSHOTURL: "/home/lotus_user/.lotus/lotus_cali_snapshot_2022_07_01_high_1086060.car"
+    enabled: true
 
 Lotus:
   maxheapsize: "10GiB"

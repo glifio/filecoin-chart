@@ -5,27 +5,27 @@ all: lint package
 ## Deploy archive_node
 #NODE = calibrationapi-archive
 #ENV = dev
-#NAMESPACE = spacerace
+#NAMESPACE = network
 
 ## Deploy api_read_node
 #NODE = api-read-dev
 #ENV = dev
-#NAMESPACE = spacerace
+#NAMESPACE = network
 
 ##deploy cache service for api-read
 #NODE = api-read-cache-dev
 #ENV = dev
-#NAMESPACE = spacerace
+#NAMESPACE = network
 
 # Deploy calibnetapi
 NODE = calibrationapi
 ENV = dev
-NAMESPACE = spacerace
+NAMESPACE = network
 
 ## Deploy calibnetapi-jwt
 #NODE = calibrationapi-jwt
 #ENV = dev
-#NAMESPACE = spacerace
+#NAMESPACE = network
 
 ## lotus nodes management
 
@@ -38,7 +38,7 @@ nodeReinit:
 
 nodeDelete:
 	helm -n $(NAMESPACE) delete $(NODE)
-	helm delete --history-max 3 --install -f values.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
+	helm delete --install -f values.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
 # nodeReinstall:
 # 	helm -n $(NAMESPACE) delete $(NODE)
