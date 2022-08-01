@@ -28,13 +28,6 @@ spec:
             service:
               name: {{ .Release.Name }}-ipfs-service
               port:
-                number: 5001
-          path: /{{ .Release.Name }}/ipfs/(5001|ipfs)(/|$)(.*)
-          pathType: Prefix
-        - backend:
-            service:
-              name: {{ .Release.Name }}-ipfs-service
-              port:
                 number: 8080
           path: /{{ .Release.Name }}/ipfs/(web|8080)(/|$)(.*)
           pathType: Prefix
