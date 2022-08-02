@@ -1,15 +1,15 @@
 nodeSelector:
-  nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: group2
+  nodeSelectorKey: lifecycle
+  nodeSelectorValue: ondemand
 
 #self-managed cache-service integration
 cache:
   enabled: true
-  replicas: 1
+  replicas: 3
   resources:
     limits:
       cpu: 5
-      memory: 24Gi
+      memory: 35Gi
     requests:
       cpu: 500m
       memory: 8Gi

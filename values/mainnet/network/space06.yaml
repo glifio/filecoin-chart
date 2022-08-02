@@ -1,3 +1,4 @@
+#we have a cache service for space06
 cache:
   enabled: true
   replicas: 2

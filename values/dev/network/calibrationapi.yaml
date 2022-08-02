@@ -1,4 +1,6 @@
-nodeGroupName: group3
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group3
 
 IPFS:
   enabled: true

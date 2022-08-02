@@ -1,3 +1,5 @@
+#cache should be installed
+
 cache:
   enabled: true
   nodeSelector:

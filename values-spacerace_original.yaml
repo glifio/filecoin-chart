@@ -25,20 +25,20 @@ SecurityContext:
   fsGroup: 2000
 
 ## cashe service settings
-cache:
-  enabled: false
-  image: protofire/filecoin-rpc-proxy:0.0.3
-  replicas: 2
-  nodeSelector:
-    nodeLabel:
-      role: worker
-  resources:
-    limits:
-      cpu: 5
-      memory: 24Gi
-    requests:
-      cpu: 500m
-      memory: 8Gi
+#cache:
+#  enabled: false
+#  image: protofire/filecoin-rpc-proxy:0.0.3
+#  replicas: 2
+#  nodeSelector:
+#    nodeLabel:
+#      role: worker
+#  resources:
+#    limits:
+#      cpu: 5
+#      memory: 24Gi
+#    requests:
+#      cpu: 500m
+#      memory: 8Gi
 
 ingress:
   enabled: true

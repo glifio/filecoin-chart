@@ -1,0 +1,52 @@
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group6
+
+# init:
+#  importSnapshot:
+#    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+#    enabled: true
+#  clearRestart:
+#    enabled: true
+#
+#ingress:
+#  lotus:
+#    annotations:
+#      nginx.ingress.kubernetes.io/configuration-snippet: |
+#        proxy_set_header Authorization $apiread_jwt;
+#        proxy_cache_bypass      $http_upgrade;
+#      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
+#      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+
+Lotus:
+  service:
+    release: api-read
+
+image:
+  repository: glif/lotus:v1.16.0
+
+resources:
+  lotus:
+    limits:
+      cpu: 15
+      memory: 120Gi
+    requests:
+      cpu: 12
+      memory: 80Gi
+
+persistence:
+  enabled: true
+  autoResizer:
+    enabled: false
+  lotus:
+    size: "1325Gi"
+    storageClassName: local-storage
+  snapshots:
+    automation:
+      creation:
+        enabled: false
+      deletion:
+        enabled: false
+    enabled: false
+    restore:
+      enabled: false

@@ -240,7 +240,7 @@ spec:
 {{ toYaml .Values.resources.lotus | indent 10 }}
 {{- end }}
       nodeSelector:
-        nodeGroupName: {{ .Values.nodeGroupName }}
+        {{ .Values.nodeSelector.nodeSelectorKey }}: {{ .Values.nodeSelector.nodeSelectorValue }}
 {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
 {{- if .Values.Lotus.enabled }}

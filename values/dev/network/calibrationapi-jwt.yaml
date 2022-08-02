@@ -1,4 +1,6 @@
-nodeGroupName: group1
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group1
 
 #ingress:
 #  ipfs:

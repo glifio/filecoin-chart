@@ -17,10 +17,10 @@ all: lint package
 #ENV = dev
 #NAMESPACE = network
 
-# Deploy calibnetapi
-NODE = calibrationapi
-ENV = dev
-NAMESPACE = network
+## Deploy calibnetapi
+#NODE = calibrationapi
+#ENV = dev
+#NAMESPACE = network
 
 ## Deploy calibnetapi-jwt
 #NODE = calibrationapi-jwt
@@ -28,6 +28,17 @@ NAMESPACE = network
 #NAMESPACE = network
 
 ## lotus nodes management
+
+
+###deploy cache service for api-read mainnet
+#NODE = api-read-cache
+#ENV = mainnet
+#NAMESPACE = network
+
+# Deploy api_read_node
+NODE = api-read-master
+ENV = mainnet
+NAMESPACE = network
 
 nodeInstall:
 	helm upgrade --history-max 3 --install -f values.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .

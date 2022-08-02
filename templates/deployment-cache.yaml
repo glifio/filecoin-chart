@@ -39,5 +39,5 @@ spec:
           - key: config
             path: config.yaml
       nodeSelector:
-        nodeGroupName: {{ .Values.nodeGroupName }}
+        {{ .Values.nodeSelector.nodeSelectorKey }}: {{ .Values.nodeSelector.nodeSelectorValue }}
 {{- end }}

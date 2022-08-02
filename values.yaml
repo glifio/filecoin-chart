@@ -4,7 +4,11 @@
 
 replicaCount: 1
 
-nodeGroupName: noGroup
+nodeSelector:
+  enabled: true
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: noGroup
+
 
 lotus:
   service:
@@ -35,9 +39,6 @@ cache:
   enabled: false
   image: protofire/filecoin-rpc-proxy:0.0.3
   replicas: 2
-  nodeSelector:
-    nodeLabel:
-      role: worker
 
 ingress:
   enabled: true
@@ -173,9 +174,7 @@ IPFS:
 StateDiff:
   enabled: false
 
-nodeSelector:
-  enabled: true
-  nodeLabel:
+
 
 
 tolerations: []

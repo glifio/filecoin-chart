@@ -1,4 +1,6 @@
-nodeGroupName: group2
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group2
 
 init:
   importSnapshot:

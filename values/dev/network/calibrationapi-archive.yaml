@@ -1,5 +1,7 @@
 # you have to put the group name from existing EKS working group names.
-nodeGroupName: group4
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group4
 
 IPFS:
   enabled: false
