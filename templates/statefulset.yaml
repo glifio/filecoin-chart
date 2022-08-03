@@ -239,6 +239,7 @@ spec:
         resources:
 {{ toYaml .Values.resources.lotus | indent 10 }}
 {{- end }}
+
       nodeSelector:
         {{ .Values.nodeSelector.nodeSelectorKey }}: {{ .Values.nodeSelector.nodeSelectorValue }}
 {{- if .Values.persistence.enabled }}

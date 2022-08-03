@@ -35,7 +35,6 @@ resources:
       memory: 80Gi
 
 persistence:
-  enabled: true
   autoResizer:
     enabled: false
   lotus:
