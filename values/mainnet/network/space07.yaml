@@ -1,26 +1,6 @@
-#cache should be installed
-
-cache:
-  enabled: true
-  nodeSelector:
-    nodeLabel:
-      role: worker
-  replicas: 2
-  resources:
-    limits:
-      cpu: 5
-      memory: 12Gi
-    requests:
-      cpu: 500m
-      memory: 4Gi
-
-ingress:
-  lotus:
-    enabled: true
-
 nodeSelector:
-  nodeLabel:
-    lifecycle: OnDemand-r5-8x
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group4
 
 persistence:
   snapshots:
@@ -31,13 +11,16 @@ persistence:
         cron: "0 21 * * *"
     restore:
       enabled: true
-      name: space07-t2b8f
+      name: imported-aws-snapshot
   lotus:
     size: "32768Gi"
     accessModes:
       - ReadWriteOnce
     storageClassName: "ebs-sc-io2"
     lotusVolumeName: "vol-lotus-io2"
+
+image:
+  repository: glif/lotus:v1.16.0
 
 resources:
   lotus:

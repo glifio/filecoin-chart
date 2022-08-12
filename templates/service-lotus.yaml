@@ -12,7 +12,6 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-{{/*    app: lotus-node-app*/}}
     release: {{ .Release.Name }}
   ports:
     - protocol: TCP

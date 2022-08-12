@@ -1,3 +1,7 @@
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group10
+
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
@@ -5,24 +9,16 @@ init:
   clearRestart:
     enabled: true
 
-ingress:
-  lotus:
-    enabled: false
-
 Lotus:
   service:
     enabled: false
     release: space06
-    slave: true
     gateway: true
 
 nameOverride: ""
 
-nodeSelector:
-  nodeLabel:
-    lifecycle: Ec2Spot-i3-2x4x
-    environment: prod
-    aws.amazon.com/eks-local-ssd: "true"
+image:
+  repository: glif/lotus:v1.16.0
 
 persistence:
   enabled: false
@@ -35,6 +31,3 @@ resources:
     requests:
       cpu: 7
       memory: 50Gi
-
-secretVolume:
-  enabled: true

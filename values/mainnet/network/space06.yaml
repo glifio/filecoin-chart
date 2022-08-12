@@ -1,42 +1,27 @@
-#we have a cache service for space06
-cache:
-  enabled: true
-  replicas: 2
-  resources:
-    limits:
-      cpu: 5
-      memory: 12Gi
-    requests:
-      cpu: 500m
-      memory: 4Gi
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group3
 
-# init:
-#   importSnapshot:
-#     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
-#     enabled: true
-#   clearRestart:
-#     enabled: true
+
+
+init:
+   importSnapshot:
+     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+     enabled: true
+   clearRestart:
+     enabled: false
 
 Lotus:
   service:
     gateway: true
 
+image:
+  repository: glif/lotus:v1.16.0
+
 nameOverride: ""
-nodeSelector:
-  nodeLabel:
-    aws.amazon.com/eks-local-ssd: "true"
-    lifecycle: OnDemand
-    assignedPod: space06
 
 persistence:
-  enabled: true
-  autoResizer:
-    enabled: false
-  lotus:
-    accessModes:
-    - ReadWriteOnce
-    size: 3482Gi
-    storageClassName: local-storage
+  enabled: false
   snapshots:
     automation:
       creation:
@@ -55,6 +40,3 @@ resources:
     requests:
       cpu: 12
       memory: 64Gi
-
-secretVolume:
-  enabled: true

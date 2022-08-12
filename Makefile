@@ -30,15 +30,65 @@ all: lint package
 ## lotus nodes management
 
 
-###deploy cache service for api-read mainnet
-#NODE = api-read-cache
+####deploy cache service for api-read v0 mainnet
+#NODE = api-read-v0-cache
 #ENV = mainnet
 #NAMESPACE = network
 
-# Deploy api_read_node
-NODE = api-read-master
-ENV = mainnet
-NAMESPACE = network
+####deploy cache service for api-read v1 mainnet
+#NODE = api-read-v1-cache
+#ENV = mainnet
+#NAMESPACE = network
+
+### Deploy api_read_master_node
+#NODE = api-read-master
+#ENV = mainnet
+#NAMESPACE = network
+
+### Deploy api_read_slave_0_node
+#NODE = api-read-slave-0
+#ENV = mainnet
+#NAMESPACE = network
+
+### Deploy api_read_slave_1_node
+#NODE = api-read-slave-1
+#ENV = mainnet
+#NAMESPACE = network
+
+### Deploy api_read_slave_2_node
+#NODE = api-read-slave-2
+#ENV = mainnet
+#NAMESPACE = network
+
+#### Deploy space00
+#NODE = space00
+#ENV = mainnet
+#NAMESPACE = network
+
+### Deploy space06
+#NODE = space06
+#ENV = mainnet
+#NAMESPACE = network
+
+### Deploy space06-cache
+#NODE = space06-cache
+#ENV = mainnet
+#NAMESPACE = network
+
+#### Deploy space06-1
+#NODE = space06-1
+#ENV = mainnet
+#NAMESPACE = network
+
+#### Deploy space07
+#NODE = space07
+#ENV = mainnet
+#NAMESPACE = network
+
+#### Deploy space07-cache
+#NODE = space07-cache
+#ENV = mainnet
+#NAMESPACE = network
 
 nodeInstall:
 	helm upgrade --history-max 3 --install -f values.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
@@ -49,12 +99,6 @@ nodeReinit:
 
 nodeDelete:
 	helm -n $(NAMESPACE) delete $(NODE)
-	helm delete --install -f values.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
-
-# nodeReinstall:
-# 	helm -n $(NAMESPACE) delete $(NODE)
-# 	kubectl -n $(NAMESPACE) delete pvc vol-lotus-$(NODE)-lotus-0
-# 	helm upgrade --history-max 3 --install -f values.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .
 
 diff:
 	helm diff upgrade --install -f values.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .

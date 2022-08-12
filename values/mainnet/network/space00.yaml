@@ -1,9 +1,6 @@
-ingress:
-  lotus:
-    annotations:
-      nginx.ingress.kubernetes.io/whitelist-source-range: "91.149.128.236/32,216.144.250.150,69.162.124.224/28,63.143.42.240/28,216.245.221.80/28,46.137.190.132,122.248.234.23,188.226.183.141,178.62.52.237,54.79.28.129,54.94.142.218,104.131.107.63,54.67.10.127,54.64.67.106,159.203.30.41,46.101.250.135,18.221.56.27,52.60.129.180,159.89.8.111,146.185.143.14,139.59.173.249,165.227.83.148,128.199.195.156,138.197.150.151,34.233.66.117"
-  ipfs:
-    enabled: true
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group5
 
 IPFS:
   enabled: true
@@ -11,9 +8,8 @@ IPFS:
 Lotus:
   maxheapsize: "100GiB"
 
-nodeSelector:
-  nodeLabel:
-    lifecycle: OnDemand-r5-12x
+image:
+  repository: glif/lotus:v1.16.0
 
 persistence:
   autoResizer:
@@ -35,7 +31,7 @@ persistence:
           count: 7
     restore:
       enabled: true
-      name: space00-hrkdw
+      name: imported-aws-snapshot
   lotus:
     size: "32768Gi"
     accessModes:
@@ -60,7 +56,4 @@ resources:
       memory: 15Gi
 
 secretVolume:
-  persistNodeID: true
-
-syncS3Marketdeals:
-  enabled: true
+  persistNodeID: false

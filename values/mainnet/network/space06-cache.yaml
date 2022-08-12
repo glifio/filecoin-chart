@@ -1,6 +1,6 @@
 nodeSelector:
-  nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: group2
+  nodeSelectorKey: lifecycle
+  nodeSelectorValue: ondemand
 
 #self-managed cache-service integration
 cache:
@@ -9,10 +9,10 @@ cache:
   resources:
     limits:
       cpu: 5
-      memory: 24Gi
+      memory: 35Gi
     requests:
       cpu: 500m
-      memory: 8Gi
+      memory: 1Gi
 
 Lotus:
   statefulset:

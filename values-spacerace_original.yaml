@@ -168,7 +168,6 @@ Lotus:
   service:
     enabled: true
     release: some-release
-    slave: false
     gateway: false
 
 # Defines remote endpoint for services(StateDiff e.t.c.)

@@ -1,4 +1,4 @@
-{{- if .Values.Lotus.service.enabled }}
+{{- if .Values.Lotus.statefulset.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -10,14 +10,24 @@ spec:
   serviceName: {{ .Release.Name }}-lotus-service
   selector:
     matchLabels:
+      {{- if .Values.Lotus.service.is_slave }}
+      release: {{ .Values.Lotus.service.label }}
+      release-fork: {{ .Release.Name }}
+      {{- else }}
       release: {{ .Release.Name }}
+      {{- end }}
   template:
     metadata:
       labels:
         chart: {{ .Chart.Version }}
         appVersion: {{ .Chart.AppVersion }}
         heritage: {{ .Release.Service }}
+        {{- if .Values.Lotus.service.is_slave }}
+        release: {{ .Values.Lotus.service.label }}
+        release-fork: {{ .Release.Name }}
+        {{- else }}
         release: {{ .Release.Name }}
+        {{- end }}
     spec:
       securityContext:
         runAsGroup: {{ .Values.SecurityContext.runAsGroup }}

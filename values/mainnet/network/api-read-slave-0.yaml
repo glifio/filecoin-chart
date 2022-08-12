@@ -1,39 +1,22 @@
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group2
+
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
     enabled: true
   clearRestart:
-    enabled: true
-
-ingress:
-  lotus:
     enabled: false
+
 Lotus:
   service:
     enabled: false
-    release: api-read
-    slave: true
+    is_slave: true
+    label: api-read-master
 
-nodeSelector:
-  nodeLabel:
-    role: api-read-ondemand
-
-persistence:
-  enabled: true
-  autoResizer:
-    enabled: false
-  lotus:
-    size: "1325Gi"
-    storageClassName: local-storage
-  snapshots:
-    automation:
-      creation:
-        enabled: false
-      deletion:
-        enabled: false
-    enabled: false
-    restore:
-      enabled: false
+image:
+  repository: glif/lotus:v1.16.0
 
 resources:
   lotus:
@@ -43,3 +26,6 @@ resources:
     requests:
       cpu: 12
       memory: 80Gi
+
+persistence:
+  enabled: false

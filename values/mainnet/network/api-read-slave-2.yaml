@@ -1,26 +1,22 @@
-# init:
-#   importSnapshot:
-#     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
-#     enabled: true
-#   clearRestart:
-#     enabled: true
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group9
 
-ingress:
-  lotus:
-    enabled: false
+init:
+  importSnapshot:
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+    enabled: true
+  clearRestart:
+    enabled: true
+
+image:
+  repository: glif/lotus:v1.16.0
 
 Lotus:
   service:
     enabled: false
-    release: api-read
-    slave: true
-
-nodeSelector:
-  nodeLabel:
-    role: api-read
-
-podAntiAffinity:
-  enabled: true
+    is_slave: true
+    label: api-read-master
 
 persistence:
   enabled: false
@@ -28,9 +24,9 @@ persistence:
 resources:
   lotus:
     limits:
-      cpu: 30
-      memory: 240Gi
-    requests:
       cpu: 15
       memory: 120Gi
+    requests:
+      cpu: 12
+      memory: 80Gi
 
