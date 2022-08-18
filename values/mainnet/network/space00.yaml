@@ -56,4 +56,4 @@ resources:
       memory: 15Gi
 
 secretVolume:
-  persistNodeID: false
+  persistNodeID: true

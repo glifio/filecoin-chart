@@ -35,11 +35,6 @@ all: lint package
 #ENV = mainnet
 #NAMESPACE = network
 
-####deploy cache service for api-read v1 mainnet
-#NODE = api-read-v1-cache
-#ENV = mainnet
-#NAMESPACE = network
-
 ### Deploy api_read_master_node
 #NODE = api-read-master
 #ENV = mainnet
@@ -61,9 +56,9 @@ all: lint package
 #NAMESPACE = network
 
 #### Deploy space00
-#NODE = space00
-#ENV = mainnet
-#NAMESPACE = network
+NODE = space00
+ENV = mainnet
+NAMESPACE = network
 
 ### Deploy space06
 #NODE = space06
