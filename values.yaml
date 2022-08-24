@@ -9,11 +9,6 @@ nodeSelector:
   nodeSelectorKey: nodeGroupName
   nodeSelectorValue: noGroup
 
-
-lotus:
-  service:
-    enabled: true
-
 image:
   repository: glif/lotus:v1.16.0-calibnet
   pullPolicy: Always
@@ -140,7 +135,15 @@ Lotus:
     is_slave: false
     label: some-release
     gateway: false
-
+    annotations:
+      # default annotations are used for every lotus service
+      default:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "1234"
+        prometheus.io/path: /debug/metrics
+      # custom annotations on service used if u need to something non-trivial, e.x. set custom timeout on the service
+      custom:
+        {}
 # Defines remote endpoint for services(StateDiff e.t.c.)
 #lotusDNS: some-service
 

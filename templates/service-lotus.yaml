@@ -5,14 +5,17 @@ metadata:
   name: {{ .Release.Name }}-lotus-service
   labels:
     app: lotus-node-app
+  {{- if .Values.Lotus.service.annotations.default }}
   annotations:
-  # Annotation to apply timeout from https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
-  {{- if .Values.Lotus.service.kongConfig }}
-    konghq.com/override: {{ .Values.Lotus.service.kongConfig }}
-  {{- end}}
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "1234"
-    prometheus.io/path: /debug/metrics
+  {{- range $key, $value := .Values.Lotus.service.annotations.default }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.Lotus.service.annotations.custom }}
+  {{- range $key, $value := .Values.Lotus.service.annotations.custom }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- end }}
 spec:
   type: ClusterIP
   selector:
