@@ -6,6 +6,10 @@ metadata:
   labels:
     app: lotus-node-app
   annotations:
+  # Annotation to apply timeout from https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
+  {{- if .Values.Lotus.service.kongConfig }}
+    konghq.com/override: {{ .Values.Lotus.service.kongConfig }}
+  {{- end}}
     prometheus.io/scrape: "true"
     prometheus.io/port: "1234"
     prometheus.io/path: /debug/metrics

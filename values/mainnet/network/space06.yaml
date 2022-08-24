@@ -14,6 +14,7 @@ init:
 Lotus:
   service:
     gateway: true
+    kongConfig: kong-ingress-read-timeout
 
 image:
   repository: glif/lotus:v1.16.0
