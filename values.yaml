@@ -151,9 +151,6 @@ IPFS:
 StateDiff:
   enabled: false
 
-
-
-
 tolerations: []
 
 podAntiAffinity:
@@ -163,6 +160,3 @@ healthcheck:
   enabled: true
   readinessProbe: true
   network: calibration
-
-syncS3Marketdeals:
-  enabled: false
