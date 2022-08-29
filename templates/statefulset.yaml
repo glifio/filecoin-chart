@@ -140,10 +140,6 @@ spec:
           value: {{ .Values.init.importSnapshot.IPFS_GW }}
     {{- end }}
   {{- end }}
-  {{- if .Values.secretVolume.persistNodeID }}
-        - name: INFRA_PERSISTNODEID
-          value: "true"
-  {{- end }}
   {{- if .Values.IPFS.enabled }}
         - name: LOTUS_CLIENT_USEIPFS
           value: "true"
