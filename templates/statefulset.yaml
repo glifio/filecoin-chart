@@ -123,8 +123,6 @@ spec:
         - name: LOTUS_MAX_HEAP
           value: "{{ .Values.Lotus.maxheapsize }}"
   {{- end}}
-        - name: INFRA_LOTUS_HOME
-          value: /home/lotus_user
   {{- if .Values.Lotus.service.gateway }}
         - name: INFRA_LOTUS_GATEWAY
           value: "true"
