@@ -149,6 +149,10 @@ Lotus:
       # Maximum heap size that the memory watchdog will try to respect.
       # Link: https://github.com/raulk/go-watchdog
       # LOTUS_MAX_HEAP: "false"
+      # Var needed by StateCall operation for simulation of future messages to FIL blockchain
+      # Links:
+      #  * https://lotus.filecoin.io/reference/lotus/state/#statecall - StateCall description
+      #  * https://github.com/filecoin-project/lotus/issues/9046 - the root of requirement
       # LOTUS_VM_ENABLE_TRACING: "false"
       {}
   service:

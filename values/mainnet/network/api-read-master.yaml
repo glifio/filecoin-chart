@@ -2,6 +2,10 @@ nodeSelector:
   nodeSelectorKey: nodeGroupName
   nodeSelectorValue: group6
 
+Lotus:
+  env:
+    custom:
+      LOTUS_VM_ENABLE_TRACING: "true"
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
