@@ -127,13 +127,6 @@ spec:
         - name: INFRA_LOTUS_GATEWAY
           value: "true"
   {{- end}}
-  {{- if .Values.init.clearRestart.enabled }}
-        - name: INFRA_CLEAR_RESTART
-          value: "true"
-  {{- else}}
-        - name: INFRA_CLEAR_RESTART
-          value: "false"
-  {{- end }}
   {{- if .Values.init.importSnapshot.enabled }}
     {{- if .Values.init.importSnapshot.SNAPSHOTURL }}
         - name: INFRA_IMPORT_SNAPSHOT

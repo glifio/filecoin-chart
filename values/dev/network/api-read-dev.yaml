@@ -17,6 +17,9 @@ Lotus:
   service:
     release: api-read-dev
     gateway: true
+  env:
+    default:
+      INFRA_CLEAR_RESTART: "true"
 
 resources:
   lotus:

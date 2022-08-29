@@ -17,6 +17,9 @@ Lotus:
     enabled: false
     is_slave: true
     label: api-read-master
+  env:
+    default:
+      INFRA_CLEAR_RESTART: "true"
 
 persistence:
   enabled: false
