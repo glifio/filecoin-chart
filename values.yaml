@@ -47,10 +47,6 @@ init:
       #  persistentVolumeClaim:
       #    claimName: efs-claim
 
-secretVolume:
-  enabled: true
-  persistNodeID: false
-
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -143,11 +139,12 @@ Lotus:
       # variable for healthcheck script, threshold for block delay
       # Link to script: https://github.com/glifio/filecoin-docker/blob/master/scripts/healthcheck
       ALLOWED_DELAY: 3
+      # Add persistent node which will be shared after any session, nodeid should be placed into lotus-secret
+      INFRA_PERSISTNODEID: "false"
     custom:
     # custom envvars on lotus pod is used if u need to something non-trivial,
     #   e.x. set some Lotus binary/container env vars
     # Possible values:
-      # INFRA_PERSISTNODEID: "false"
       # INFRA_LOTUS_GATEWAY: "false"
       # LOTUS_MAX_HEAP: "false"
       # LOTUS_VM_ENABLE_TRACING: "false"
