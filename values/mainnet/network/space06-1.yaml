@@ -13,10 +13,11 @@ Lotus:
   service:
     enabled: false
     release: space06
-    gateway: true
   env:
     default:
       INFRA_CLEAR_RESTART: "true"
+    custom:
+      INFRA_LOTUS_GATEWAY: "true"
 
 nameOverride: ""
 

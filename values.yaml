@@ -145,6 +145,7 @@ Lotus:
     # custom envvars on lotus pod is used if u need to something non-trivial,
     #   e.x. set some Lotus binary/container env vars
     # Possible values:
+      # variable to enable 2346 port and gateway service
       # INFRA_LOTUS_GATEWAY: "false"
       # LOTUS_MAX_HEAP: "false"
       # LOTUS_VM_ENABLE_TRACING: "false"
@@ -153,7 +154,6 @@ Lotus:
     enabled: true
     is_slave: false
     label: some-release
-    gateway: false
     annotations:
       # default annotations are used for every lotus service
       default:

@@ -16,7 +16,9 @@ Lotus:
   maxheapsize: "10GiB"
   service:
     release: calibrationapi
-    gateway: true
+  env:
+    custom:
+      INFRA_LOTUS_GATEWAY: "true"
 
 persistence:
 #  autoResizer:

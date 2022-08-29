@@ -12,8 +12,10 @@ init:
      enabled: false
 
 Lotus:
+  env:
+    custom:
+      INFRA_LOTUS_GATEWAY: "true"
   service:
-    gateway: true
     annotations:
       custom:
         # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
