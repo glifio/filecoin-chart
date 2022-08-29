@@ -135,6 +135,8 @@ Lotus:
     default:
       # variable needed to start `lotus daemon`
       INFRA_LOTUS_DAEMON: "true"
+      # home folder for the Lotus user
+      INFRA_LOTUS_HOME: "/home/lotus_user"
     custom:
       {}
   service:
