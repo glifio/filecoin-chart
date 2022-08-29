@@ -16,10 +16,11 @@ Lotus:
   maxheapsize: "30GiB"
   service:
     release: api-read-dev
-    gateway: true
   env:
     default:
       INFRA_CLEAR_RESTART: "true"
+    custom:
+      INFRA_LOTUS_GATEWAY: "true"
 
 resources:
   lotus:

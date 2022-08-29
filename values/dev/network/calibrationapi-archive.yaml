@@ -9,7 +9,6 @@ IPFS:
 Lotus:
   service:
     release: calibrationapi-archive
-    gateway: false
 
 persistence:
 #  autoResizer:

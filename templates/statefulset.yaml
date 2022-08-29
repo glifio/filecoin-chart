@@ -121,10 +121,6 @@ spec:
         - name: LOTUS_MAX_HEAP
           value: "{{ .Values.Lotus.maxheapsize }}"
   {{- end}}
-  {{- if .Values.Lotus.service.gateway }}
-        - name: INFRA_LOTUS_GATEWAY
-          value: "true"
-  {{- end}}
   {{- if .Values.init.importSnapshot.enabled }}
     {{- if .Values.init.importSnapshot.SNAPSHOTURL }}
         - name: INFRA_IMPORT_SNAPSHOT
@@ -193,7 +189,7 @@ spec:
           name: api
         - containerPort: 1235
           name: p2p
-  {{- if .Values.Lotus.service.gateway }}
+  {{- if .Values.Lotus.env.custom.INFRA_LOTUS_GATEWAY }}
         - containerPort: 2346
           name: gateway
   {{- end }}
