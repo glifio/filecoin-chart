@@ -138,6 +138,8 @@ Lotus:
       INFRA_CLEAR_RESTART: "false"
       # var to start `lotus sync wait` in the Lotus container
       INFRA_SYNC: "true"
+      # variable to enable reuse token across installations of Lotus
+      INFRA_SECRETVOLUME: "true"
     custom:
       {}
   service:
