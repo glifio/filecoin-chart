@@ -130,6 +130,13 @@ Lotus:
     enabled: true
   enabled: true
   maxheapsize: false
+  env:
+    # default env vars needed by every lotus pod
+    default:
+      # variable needed to start `lotus daemon`
+      INFRA_LOTUS_DAEMON: "true"
+    custom:
+      {}
   service:
     enabled: true
     is_slave: false

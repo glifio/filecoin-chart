@@ -107,12 +107,22 @@ spec:
             exec:
               command: ["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]
         env:
+  {{- if .Values.Lotus.env.default }}
+    {{- range $key, $value := .Values.Lotus.env.default }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.Lotus.env.custom }}
+    {{- range $key, $value := .Values.Lotus.env.custom }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
   {{- if .Values.Lotus.maxheapsize }}
         - name: LOTUS_MAX_HEAP
           value: "{{ .Values.Lotus.maxheapsize }}"
   {{- end}}
-        - name: INFRA_LOTUS_DAEMON
-          value: "true"
         - name: INFRA_LOTUS_HOME
           value: /home/lotus_user
   {{- if .Values.Lotus.service.gateway }}
