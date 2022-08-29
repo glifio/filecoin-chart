@@ -144,14 +144,6 @@ spec:
         - name: INFRA_PERSISTNODEID
           value: "true"
   {{- end }}
-  {{- if .Values.healthcheck.enabled }}
-        - name: NETWORK
-          value: "{{ .Values.healthcheck.network }}"
-    {{- if .Values.healthcheck.allowedDelay }}
-        - name: ALLOWED_DELAY
-          value: "{{ .Values.healthcheck.allowedDelay }}"
-    {{- end }}
-  {{- end }}
   {{- if .Values.IPFS.enabled }}
         - name: LOTUS_CLIENT_USEIPFS
           value: "true"

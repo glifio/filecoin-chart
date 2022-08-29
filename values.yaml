@@ -140,6 +140,9 @@ Lotus:
       INFRA_SYNC: "true"
       # variable to enable reuse token across installations of Lotus
       INFRA_SECRETVOLUME: "true"
+      # variable for healthcheck script, threshold for block delay
+      # Link to script: https://github.com/glifio/filecoin-docker/blob/master/scripts/healthcheck
+      ALLOWED_DELAY: 3
     custom:
       {}
   service:
@@ -174,4 +177,3 @@ podAntiAffinity:
 healthcheck:
   enabled: true
   readinessProbe: true
-  network: calibration
