@@ -41,12 +41,10 @@ spec:
             type: Directory
 {{- end }}
 {{- if .Values.Lotus.enabled }}
-{{- if .Values.secretVolume.enabled }}
         - name: lotus-secret-vol
           secret:
             secretName: {{ .Release.Name }}-lotus-secret
             defaultMode: 384 # permission 0600
-{{- end }}
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
         - name: {{ .Values.persistence.lotus.lotusVolumeName }}
           hostPath:
@@ -142,10 +140,6 @@ spec:
           value: {{ .Values.init.importSnapshot.IPFS_GW }}
     {{- end }}
   {{- end }}
-  {{- if .Values.secretVolume.enabled }}
-        - name: INFRA_SECRETVOLUME
-          value: "true"
-  {{- end }}
   {{- if .Values.secretVolume.persistNodeID }}
         - name: INFRA_PERSISTNODEID
           value: "true"
@@ -222,10 +216,8 @@ spec:
           name: gateway
   {{- end }}
         volumeMounts:
-  {{- if .Values.secretVolume.enabled }}
           - name: lotus-secret-vol
             mountPath: /keystore
-  {{- end }}
           - name: {{ .Values.persistence.lotus.lotusVolumeName }}
             mountPath: /home/lotus_user/.lotus
             {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
