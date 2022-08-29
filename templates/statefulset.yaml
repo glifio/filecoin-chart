@@ -142,11 +142,6 @@ spec:
           value: {{ .Values.init.importSnapshot.IPFS_GW }}
     {{- end }}
   {{- end }}
-  {{- if .Values.init.sync.enabled }}
-        - name: INFRA_SYNC
-          value: "true"
-  {{- end }}
-
   {{- if .Values.secretVolume.enabled }}
         - name: INFRA_SECRETVOLUME
           value: "true"

@@ -37,8 +37,6 @@ cache:
 
 
 init:
-  sync:
-    enabled: true
   importSnapshot:
     enabled: false
   import:
@@ -138,6 +136,8 @@ Lotus:
       # var for wiping Lotus home folder
       # CAUTION: should be disabled for archive/on-demand nodes
       INFRA_CLEAR_RESTART: "false"
+      # var to start `lotus sync wait` in the Lotus container
+      INFRA_SYNC: "true"
     custom:
       {}
   service:
