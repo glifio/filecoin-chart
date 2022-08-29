@@ -117,10 +117,6 @@ spec:
           value: {{ $value | quote }}
     {{- end }}
   {{- end }}
-  {{- if .Values.Lotus.maxheapsize }}
-        - name: LOTUS_MAX_HEAP
-          value: "{{ .Values.Lotus.maxheapsize }}"
-  {{- end}}
   {{- if .Values.init.importSnapshot.enabled }}
     {{- if .Values.init.importSnapshot.SNAPSHOTURL }}
         - name: INFRA_IMPORT_SNAPSHOT

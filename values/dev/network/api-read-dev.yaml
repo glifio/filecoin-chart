@@ -13,7 +13,6 @@ image:
   repository: glif/lotus:v1.16.0
 
 Lotus:
-  maxheapsize: "30GiB"
   service:
     release: api-read-dev
   env:
@@ -21,6 +20,7 @@ Lotus:
       INFRA_CLEAR_RESTART: "true"
     custom:
       INFRA_LOTUS_GATEWAY: "true"
+      LOTUS_MAX_HEAP: "30GiB"
 
 resources:
   lotus:
