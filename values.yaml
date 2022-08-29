@@ -41,8 +41,6 @@ init:
     enabled: true
   importSnapshot:
     enabled: false
-  clearRestart:
-    enabled: false
   import:
     enabled: false
     # ideally a shared volume containing chain dump
@@ -133,10 +131,13 @@ Lotus:
   env:
     # default env vars needed by every lotus pod
     default:
-      # variable needed to start `lotus daemon`
+      # var needed to start `lotus daemon`
       INFRA_LOTUS_DAEMON: "true"
       # home folder for the Lotus user
       INFRA_LOTUS_HOME: "/home/lotus_user"
+      # var for wiping Lotus home folder
+      # CAUTION: should be disabled for archive/on-demand nodes
+      INFRA_CLEAR_RESTART: "false"
     custom:
       {}
   service:
