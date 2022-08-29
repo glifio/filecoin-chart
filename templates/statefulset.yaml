@@ -160,18 +160,13 @@ spec:
         - name: INFRA_SHEDEXPORTPERIOD
           value: "{{ .Values.persistence.snapshots.uploadToIpfs.shedPeriod }}"
   {{- end }}
-  {{- if ne .Values.persistence.snapshots.uploadToIpfs.export "cold" }}
         livenessProbe:
-    {{- if .Values.healthcheck.enabled }}
           tcpSocket:
             port: api
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 10
-    {{- end }}
-  {{- end }}
-  {{- if .Values.healthcheck.readinessProbe }}
         readinessProbe:
           exec:
             command:
@@ -180,7 +175,6 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 3
-  {{- end }}
   {{- if .Values.init.importSnapshot.enabled }}
         startupProbe:
           exec:
