@@ -24,12 +24,12 @@ IPFS:
 #    enabled: true
 
 Lotus:
-  maxheapsize: "10GiB"
   service:
     release: calibrationapi
   env:
     custom:
       INFRA_LOTUS_GATEWAY: "true"
+      LOTUS_MAX_HEAP: "10GiB"
 
 #nodeSelector:
 #  nodeLabel:
