@@ -144,6 +144,13 @@ Lotus:
       # Link to script: https://github.com/glifio/filecoin-docker/blob/master/scripts/healthcheck
       ALLOWED_DELAY: 3
     custom:
+    # custom envvars on lotus pod is used if u need to something non-trivial,
+    #   e.x. set some Lotus binary/container env vars
+    # Possible values:
+      # INFRA_PERSISTNODEID: "false"
+      # INFRA_LOTUS_GATEWAY: "false"
+      # LOTUS_MAX_HEAP: "false"
+      # LOTUS_VM_ENABLE_TRACING: "false"
       {}
   service:
     enabled: true
@@ -173,7 +180,3 @@ tolerations: []
 
 podAntiAffinity:
   enabled: false
-
-healthcheck:
-  enabled: true
-  readinessProbe: true
