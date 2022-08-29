@@ -5,16 +5,13 @@ metadata:
   name: {{ .Release.Name }}-lotus-service
   labels:
     app: lotus-node-app
-  {{- if .Values.Lotus.service.annotations.default }}
   annotations:
-  {{- range $key, $value := .Values.Lotus.service.annotations.default }}
+  {{- if .Values.Lotus.service.annotations }}
+    {{- $mergedAnnotations := merge .Values.Lotus.service.annotations.custom
+      .Values.Lotus.service.annotations.default -}}
+    {{- range $key, $value := $mergedAnnotations }}
     {{ $key }}: {{ $value | quote }}
-  {{- end }}
-  {{- end }}
-  {{- if .Values.Lotus.service.annotations.custom }}
-  {{- range $key, $value := .Values.Lotus.service.annotations.custom }}
-    {{ $key }}: {{ $value | quote }}
-  {{- end }}
+    {{- end }}
   {{- end }}
 spec:
   type: ClusterIP

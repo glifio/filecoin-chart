@@ -105,14 +105,9 @@ spec:
             exec:
               command: ["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]
         env:
-  {{- if .Values.Lotus.env.default }}
-    {{- range $key, $value := .Values.Lotus.env.default }}
-        - name: {{ $key }}
-          value: {{ $value | quote }}
-    {{- end }}
-  {{- end }}
-  {{- if .Values.Lotus.env.custom }}
-    {{- range $key, $value := .Values.Lotus.env.custom }}
+  {{- if .Values.Lotus.env }}
+    {{- $mergedEnvVars := merge .Values.Lotus.env.custom .Values.Lotus.env.default -}}
+    {{- range $key, $value := $mergedEnvVars }}
         - name: {{ $key }}
           value: {{ $value | quote }}
     {{- end }}
