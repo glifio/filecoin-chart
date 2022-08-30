@@ -44,6 +44,13 @@ persistence:
   ipfs:
     size: "20Gi"
 
+# init:
+#   importSnapshot:
+#     SNAPSHOTURL: "/home/lotus_user/.lotus/chain.car"
+#     enabled: true
+  # clearRestart:
+  #   enabled: true
+
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
