@@ -1,0 +1,21 @@
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group2
+
+#self-managed cache-service integration
+cache:
+  enabled: true
+  replicas: 1
+  resources:
+    limits:
+      cpu: 5
+      memory: 24Gi
+    requests:
+      cpu: 500m
+      memory: 8Gi
+
+Lotus:
+  statefulset:
+    enabled: false
+  service:
+    enabled: false

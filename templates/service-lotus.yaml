@@ -6,20 +6,23 @@ metadata:
   labels:
     app: lotus-node-app
   annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "1234"
-    prometheus.io/path: /debug/metrics
+  {{- if .Values.Lotus.service.annotations }}
+    {{- $mergedAnnotations := merge .Values.Lotus.service.annotations.custom
+      .Values.Lotus.service.annotations.default -}}
+    {{- range $key, $value := $mergedAnnotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
 spec:
   type: ClusterIP
   selector:
-    app: lotus-node-app
     release: {{ .Release.Name }}
   ports:
     - protocol: TCP
       port: 1234
       targetPort: 1234
       name: tcp-api
-  {{- if .Values.Lotus.service.gateway }}
+  {{- if .Values.Lotus.env.custom.INFRA_LOTUS_GATEWAY }}
     - protocol: TCP
       port: 2346
       targetPort: 2346

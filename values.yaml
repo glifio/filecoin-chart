@@ -4,8 +4,13 @@
 
 replicaCount: 1
 
+nodeSelector:
+  enabled: true
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: noGroup
+
 image:
-  repository: glif/lotus:v1.16.0
+  repository: glif/lotus:v1.16.0-calibnet
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -24,54 +29,15 @@ SecurityContext:
   runAsGroup: 2000
   fsGroup: 2000
 
-## cashe service settings
+## cache service settings
 cache:
   enabled: false
   image: protofire/filecoin-rpc-proxy:0.0.3
   replicas: 2
-  nodeSelector:
-    nodeLabel:
-      role: worker
-  resources:
-    limits:
-      cpu: 5
-      memory: 24Gi
-    requests:
-      cpu: 500m
-      memory: 8Gi
 
-ingress:
-  enabled: true
-  host: node.glif.io
-  annotations:
-    nginx.ingress.kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range"
-    nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
-    # nginx.ingress.kubernetes.io/server-alias: "_"
-    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
-    nginx.ingress.kubernetes.io/modsecurity-snippet: |
-      SecRuleEngine On
-      SecDebugLog /tmp/modsec_debug.log
-  lotus:
-    enabled: true
-    gateway: false
-    # Uncomment following annotations to change access mode from JWT-based to Firewall-based. Also replace <JWT> with admin JWT token of the node and 1.2.3.4/32 to your IP address.
-    #annotations:
-    # nginx.ingress.kubernetes.io/whitelist-source-range: 1.2.3.4/32
-    # nginx.ingress.kubernetes.io/configuration-snippet: |
-    #       proxy_set_header Authorization "Bearer <JWT>";
-  ipfs:
-    enabled: false
-  statediff:
-    enabled: false
 
 init:
-  sync:
-    enabled: true
   importSnapshot:
-    enabled: false
-  clearRestart:
     enabled: false
   import:
     enabled: false
@@ -79,11 +45,7 @@ init:
     volume: {}
       #- name: filecoin-chain-vol
       #  persistentVolumeClaim:
-      #  claimName: efs-claim
-
-secretVolume:
-  enabled: true
-  persistNodeID: false
+      #    claimName: efs-claim
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -92,35 +54,28 @@ resources:
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   lotus:
     requests:
-      cpu: 25
-      memory: 200Gi
+      cpu: 500m
+      memory: 3Gi
     limits:
-      cpu: 31
-      memory: 250Gi
+      cpu: 1900m
+      memory: 5Gi
   ipfs:
     requests:
-      cpu: 1500m
-      memory: 2Gi
-    limits:
-      cpu: 3000m
-      memory: 4Gi
-  statediff:
-    requests:
-      cpu: 100m
+      cpu: 500m
       memory: 1Gi
     limits:
-      cpu: 250m
-      memory: 2Gi
+      cpu: 3000m
+      memory: 3Gi
 
 persistence:
   # If persistence is set to false no persistent volumes will be created
   enabled: true
   hostPath: /nvme/disk
-  autoResizer:
-    enabled: true
-    increaseThreshold: 90 # in %
-    increaseStep: 10 # in %
-    cron: "0 0 * * *"
+  # autoResizer:
+  #   enabled: true
+  #   increaseThreshold: 90 # in %
+  #   increaseStep: 10 # in %
+  #   cron: "0 0 * * *"
   snapshots:
     # If uploadToIpfs is set to true the internal Lotus snapshot will be created and uploaded to the IPFS system. Note that IPFS must be nenabled in that case
     uploadToIpfs:
@@ -151,26 +106,68 @@ persistence:
       #name: snapshot-blah
   # For each of the deployed services one can specify the disk size, custom disk type and access mode.
   lotus:
-    storageClassName: "ebs-sc"
-    size: "5500Gi"
+    size: "50Gi"
     accessModes:
       - ReadWriteOnce
+    storageClassName: "ebs-sc-gp2"
     lotusVolumeName: "vol-lotus"
   ipfs:
-    size: "350Gi"
+    size: "16Gi"
     accessModes:
       - ReadWriteOnce
 
 # Defines whether should be deployed Lotus node with service, gateway or without.
 Lotus:
+  statefulset:
+    enabled: true
   enabled: true
-  maxheapsize: false
+  env:
+    # default env vars needed by every lotus pod
+    default:
+      # var needed to start `lotus daemon`
+      INFRA_LOTUS_DAEMON: "true"
+      # home folder for the Lotus user
+      INFRA_LOTUS_HOME: "/home/lotus_user"
+      # var for wiping Lotus home folder
+      # CAUTION: should be disabled for archive/on-demand nodes
+      INFRA_CLEAR_RESTART: "false"
+      # var to start `lotus sync wait` in the Lotus container
+      INFRA_SYNC: "true"
+      # variable to enable reuse token across installations of Lotus
+      INFRA_SECRETVOLUME: "true"
+      # variable for healthcheck script, threshold for block delay
+      # Link to script: https://github.com/glifio/filecoin-docker/blob/master/scripts/healthcheck
+      ALLOWED_DELAY: 3
+      # Add persistent node which will be shared after any session, nodeid should be placed into lotus-secret
+      INFRA_PERSISTNODEID: "false"
+    custom:
+    # custom envvars on lotus pod is used if u need to something non-trivial,
+    #   e.x. set some Lotus binary/container env vars
+    # Possible values:
+      # variable to enable 2346 port and gateway service
+      # INFRA_LOTUS_GATEWAY: "false"
+      # Maximum heap size that the memory watchdog will try to respect.
+      # Link: https://github.com/raulk/go-watchdog
+      # LOTUS_MAX_HEAP: "false"
+      # Var needed by StateCall operation for simulation of future messages to FIL blockchain
+      # Links:
+      #  * https://lotus.filecoin.io/reference/lotus/state/#statecall - StateCall description
+      #  * https://github.com/filecoin-project/lotus/issues/9046 - the root of requirement
+      # LOTUS_VM_ENABLE_TRACING: "false"
+      {}
   service:
     enabled: true
-    release: some-release
-    slave: false
-    gateway: false
-
+    is_slave: false
+    label: some-release
+    annotations:
+      # default annotations are used for every lotus service
+      default:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "1234"
+        prometheus.io/path: /debug/metrics
+      # custom annotations on service used if u need to something non-trivial, e.x. set custom timeout on the service
+      custom:
+        {}
 # Defines remote endpoint for services(StateDiff e.t.c.)
 #lotusDNS: some-service
 
@@ -181,23 +178,7 @@ IPFS:
 StateDiff:
   enabled: false
 
-nodeSelector:
-  enabled: true
-  nodeLabel:
-    role: worker
-
 tolerations: []
 
 podAntiAffinity:
   enabled: false
-
-healthcheck:
-  enabled: true
-  readinessProbe: true
-  network: mainnet
-
-syncS3Marketdeals:
-  enabled: false
-  image: "glif/sync-s3-marketdeals:0.0.1"
-  jobName: "sync-s3-marketdeals"
-  cron: "*/10 * * * *"

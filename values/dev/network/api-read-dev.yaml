@@ -1,0 +1,35 @@
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group2
+
+init:
+  importSnapshot:
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+    enabled: true
+  clearRestart:
+    enabled: true
+
+image:
+  repository: glif/lotus:v1.16.0
+
+Lotus:
+  service:
+    release: api-read-dev
+  env:
+    default:
+      INFRA_CLEAR_RESTART: "true"
+    custom:
+      INFRA_LOTUS_GATEWAY: "true"
+      LOTUS_MAX_HEAP: "30GiB"
+
+resources:
+  lotus:
+    limits:
+      cpu: 3800m
+      memory: 56Gi
+    requests:
+      cpu: 1500m
+      memory: 16Gi
+
+persistence:
+  enabled: false

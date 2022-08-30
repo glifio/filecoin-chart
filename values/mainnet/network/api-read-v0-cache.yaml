@@ -1,0 +1,21 @@
+nodeSelector:
+  nodeSelectorKey: lifecycle
+  nodeSelectorValue: ondemand
+
+#self-managed cache-service integration
+cache:
+  enabled: true
+  replicas: 1
+  resources:
+    limits:
+      cpu: 5
+      memory: 35Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+
+Lotus:
+  statefulset:
+    enabled: false
+  service:
+    enabled: false

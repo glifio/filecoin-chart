@@ -1,0 +1,32 @@
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group4
+
+persistence:
+  snapshots:
+    automation:
+      creation:
+        cron: "0 20 * * *"
+      deletion:
+        cron: "0 21 * * *"
+    restore:
+      enabled: true
+      name: imported-aws-snapshot
+  lotus:
+    size: "32768Gi"
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: "ebs-sc-io2"
+    lotusVolumeName: "vol-lotus-io2"
+
+image:
+  repository: glif/lotus:v1.16.0
+
+resources:
+  lotus:
+    requests:
+      cpu: 23
+      memory: 160Gi
+    limits:
+      cpu: 29
+      memory: 240Gi

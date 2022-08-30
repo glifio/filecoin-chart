@@ -1,30 +1,28 @@
-ingress:
-  ipfs:
-    enabled: true
-  lotus:
-    annotations:
-      nginx.ingress.kubernetes.io/configuration-snippet: |
-        proxy_set_header Authorization $calibrationapi_jwt;
-        proxy_cache_bypass      $http_upgrade;
-      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
-      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group3
 
 IPFS:
   enabled: true
 
+## if we need to start from genesis the best idea is starting from existing snapshot;
+## snaphot url is https://download1349.mediafire.com/j1cumh5cjyog/6d6ngyku9baidv0/lotus_cali_snapshot_2022_07_01_high_1086060.car.tar.xz
+init:
+  importSnapshot:
+    SNAPSHOTURL: "/home/lotus_user/.lotus/lotus_cali_snapshot_2022_07_01_high_1086060.car"
+    enabled: true
+
 Lotus:
-  maxheapsize: "10GiB"
   service:
     release: calibrationapi
-    gateway: true
-
-nodeSelector:
-  nodeLabel:
-    lifecycle: OnDemand
+  env:
+    custom:
+      INFRA_LOTUS_GATEWAY: "true"
+      LOTUS_MAX_HEAP: "10GiB"
 
 persistence:
-  autoResizer:
-    cron: "0 */1 * * *"
+#  autoResizer:
+#    cron: "0 */1 * * *"
   snapshots:
     uploadToIpfs:
       enabled: true
@@ -41,6 +39,10 @@ persistence:
         enabled: true
         retention:
           count: 2
+  lotus:
+    size: "150Gi"
+  ipfs:
+    size: "20Gi"
 
 # init:
 #   importSnapshot:

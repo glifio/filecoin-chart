@@ -1,3 +1,4 @@
+{{- if .Values.Lotus.statefulset.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -6,53 +7,32 @@ metadata:
     app: lotus-node-app
 spec:
   replicas: {{ .Values.replicaCount }}
-{{- if .Values.Lotus.service.slave }}
-  serviceName: {{ .Values.Lotus.service.release }}-lotus-service
-{{- else }}
   serviceName: {{ .Release.Name }}-lotus-service
-{{- end }}
   selector:
     matchLabels:
-      app: lotus-node-app
-      chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-      heritage: {{ .Release.Service }}
-{{- if .Values.Lotus.service.slave }}
-      release: {{ .Values.Lotus.service.release }}
+      {{- if .Values.Lotus.service.is_slave }}
+      release: {{ .Values.Lotus.service.label }}
       release-fork: {{ .Release.Name }}
-{{- else }}
+      {{- else }}
       release: {{ .Release.Name }}
-{{- end }}
+      {{- end }}
   template:
     metadata:
       labels:
-        app: lotus-node-app
-        chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+        chart: {{ .Chart.Version }}
+        appVersion: {{ .Chart.AppVersion }}
         heritage: {{ .Release.Service }}
-{{- if .Values.Lotus.service.slave }}
-        release: {{ .Values.Lotus.service.release }}
+        {{- if .Values.Lotus.service.is_slave }}
+        release: {{ .Values.Lotus.service.label }}
         release-fork: {{ .Release.Name }}
-{{- else }}
+        {{- else }}
         release: {{ .Release.Name }}
-{{- end }}
+        {{- end }}
     spec:
-{{- if .Values.podAntiAffinity.enabled }}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - lotus-node-app
-              topologyKey: "kubernetes.io/hostname"
-{{- end }}
-{{- if .Values.SecurityContext.runAsNonRoot }}
       securityContext:
         runAsGroup: {{ .Values.SecurityContext.runAsGroup }}
         runAsUser: {{ .Values.SecurityContext.runAsUser }}
         fsGroup: {{ .Values.SecurityContext.fsGroup }}
-{{- end }}
       volumes:
 {{- if and .Values.IPFS.enabled (not .Values.persistence.enabled) .Values.persistence.hostPath }}
         - name: vol-ipfs
@@ -61,12 +41,10 @@ spec:
             type: Directory
 {{- end }}
 {{- if .Values.Lotus.enabled }}
-{{- if .Values.secretVolume.enabled }}
         - name: lotus-secret-vol
           secret:
             secretName: {{ .Release.Name }}-lotus-secret
             defaultMode: 384 # permission 0600
-{{- end }}
 {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
         - name: {{ .Values.persistence.lotus.lotusVolumeName }}
           hostPath:
@@ -89,34 +67,6 @@ spec:
 {{- end }}
 {{- end }}
       containers:
-{{- if .Values.StateDiff.enabled }}
-      - name: {{ .Chart.Name }}-statediff
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        image: filecoin/stateexplorer:latest
-        args:
-          - explore
-          - --bind
-          - 0.0.0.0:33333
-          - --api
-{{- if .Values.lotusDNS }}
-          - :/dns4/{{ .Values.lotusDNS }}/tcp/1234/http
-{{- else }}
-          - :/ip4/127.0.0.1/tcp/1234/http
-{{- end }}
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 33333
-          initialDelaySeconds: 200
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 6
-        ports:
-        - containerPort: 33333
-          name: rpc
-        resources:
-{{ toYaml .Values.resources.statediff | indent 10 }}
-{{- end }}
 {{- if .Values.IPFS.enabled }}
       - name: {{ .Chart.Name }}-ipfs
         imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -155,24 +105,12 @@ spec:
             exec:
               command: ["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]
         env:
-  {{- if .Values.Lotus.maxheapsize }}
-        - name: LOTUS_MAX_HEAP
-          value: "{{ .Values.Lotus.maxheapsize }}"
-  {{- end}}
-        - name: INFRA_LOTUS_DAEMON
-          value: "true"
-        - name: INFRA_LOTUS_HOME
-          value: /home/lotus_user
-  {{- if .Values.Lotus.service.gateway }}
-        - name: INFRA_LOTUS_GATEWAY
-          value: "true"
-  {{- end}}
-  {{- if .Values.init.clearRestart.enabled }}
-        - name: INFRA_CLEAR_RESTART
-          value: "true"
-  {{- else}}
-        - name: INFRA_CLEAR_RESTART
-          value: "false"
+  {{- if .Values.Lotus.env }}
+    {{- $mergedEnvVars := merge .Values.Lotus.env.custom .Values.Lotus.env.default -}}
+    {{- range $key, $value := $mergedEnvVars }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+    {{- end }}
   {{- end }}
   {{- if .Values.init.importSnapshot.enabled }}
     {{- if .Values.init.importSnapshot.SNAPSHOTURL }}
@@ -189,39 +127,13 @@ spec:
           value: {{ .Values.init.importSnapshot.IPFS_GW }}
     {{- end }}
   {{- end }}
-  {{- if .Values.init.sync.enabled }}
-        - name: INFRA_SYNC
-          value: "true"
-  {{- end }}
-
-  {{- if .Values.secretVolume.enabled }}
-        - name: INFRA_SECRETVOLUME
-          value: "true"
-  {{- end }}
-  {{- if .Values.secretVolume.persistNodeID }}
-        - name: INFRA_PERSISTNODEID
-          value: "true"
-  {{- end }}
-  {{- if .Values.healthcheck.enabled }}
-        - name: NETWORK
-          value: "{{ .Values.healthcheck.network }}"
-    {{- if .Values.healthcheck.allowedDelay }}
-        - name: ALLOWED_DELAY
-          value: "{{ .Values.healthcheck.allowedDelay }}"
-    {{- end }}
-  {{- end }}
   {{- if .Values.IPFS.enabled }}
         - name: LOTUS_CLIENT_USEIPFS
           value: "true"
         - name: LOTUS_CLIENT_IPFSUSEFORRETRIEVAL
           value: "true"
-    {{- if .Values.ipfsDNS }}
-        - name: LOTUS_CLIENT_IPFSMADDR
-          value: "/dns4/{{ .Values.ipfsDNS }}/tcp/5001"
-    {{- else }}
         - name: LOTUS_CLIENT_IPFSMADDR
           value: "/ip4/127.0.0.1/tcp/5001"
-    {{- end }}
   {{- end }}
   {{- if and .Values.IPFS.enabled (eq .Values.persistence.snapshots.uploadToIpfs.export "cold") }}
         - name: INFRA_SHEDEXPORT
@@ -231,18 +143,13 @@ spec:
         - name: INFRA_SHEDEXPORTPERIOD
           value: "{{ .Values.persistence.snapshots.uploadToIpfs.shedPeriod }}"
   {{- end }}
-  {{- if ne .Values.persistence.snapshots.uploadToIpfs.export "cold" }}
         livenessProbe:
-    {{- if .Values.healthcheck.enabled }}
           tcpSocket:
             port: api
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 10
-    {{- end }}
-  {{- end }}
-  {{- if .Values.healthcheck.readinessProbe }}
         readinessProbe:
           exec:
             command:
@@ -251,7 +158,6 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 3
-  {{- end }}
   {{- if .Values.init.importSnapshot.enabled }}
         startupProbe:
           exec:
@@ -274,15 +180,13 @@ spec:
           name: api
         - containerPort: 1235
           name: p2p
-  {{- if .Values.Lotus.service.gateway }}
+  {{- if .Values.Lotus.env.custom.INFRA_LOTUS_GATEWAY }}
         - containerPort: 2346
           name: gateway
   {{- end }}
         volumeMounts:
-  {{- if .Values.secretVolume.enabled }}
           - name: lotus-secret-vol
             mountPath: /keystore
-  {{- end }}
           - name: {{ .Values.persistence.lotus.lotusVolumeName }}
             mountPath: /home/lotus_user/.lotus
             {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
@@ -302,10 +206,9 @@ spec:
         resources:
 {{ toYaml .Values.resources.lotus | indent 10 }}
 {{- end }}
-{{- if .Values.nodeSelector.enabled }}
+
       nodeSelector:
-{{ toYaml .Values.nodeSelector.nodeLabel | indent 8 }}
-{{- end }}
+        {{ .Values.nodeSelector.nodeSelectorKey }}: {{ .Values.nodeSelector.nodeSelectorValue }}
 {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
 {{- if .Values.Lotus.enabled }}
@@ -326,7 +229,7 @@ spec:
         storageClassName: ""
         {{- end }}
         {{- else }}
-        storageClassName: "{{ .Values.persistence.lotus.storageClassName }}"
+        storageClassName: {{ .Values.persistence.lotus.storageClassName | quote }}
         {{- end }}
         {{- if .Values.persistence.snapshots.restore.enabled }}
         dataSource:
@@ -338,9 +241,6 @@ spec:
 {{- if .Values.IPFS.enabled }}
     - metadata:
         name: vol-ipfs
-        {{- range $key, $value := .Values.persistence.ipfs.annotations }}
-            {{ $key }}: {{ $value }}
-        {{- end }}
       spec:
         accessModes:
             {{- range .Values.persistence.ipfs.accessModes }}
@@ -349,14 +249,6 @@ spec:
         resources:
             requests:
                 storage: {{ .Values.persistence.ipfs.size | quote }}
-        {{- if not .Values.persistence.ipfs.storageClassName }}
-        {{- if .Values.persistence.snapshots.enabled }}
-        storageClassName: "ebs-sc"
-        {{- else }}
-        storageClassName: ""
-        {{- end }}
-        {{- else }}
-        storageClassName: "{{ .Values.persistence.ipfs.storageClassName }}"
-        {{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

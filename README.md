@@ -105,7 +105,6 @@ These are our emphasized config options. For a full list, see the [values files]
 | `Lotus.maxheapsize` | Enable and set [LOTUS_MAX_HEAP](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#environment-variables) variable | `false` |
 | `Lotus.service.gateway` | Enable lotus-gateway service | `false` |
 | `Lotus.service.release` | Defines master endpoint in lotusAPI schema | `api-read` |
-| `Lotus.service.slave` | Defines slave endpoint(s) in lotusAPI schema | `false` |
 | `replicaCount` | The number of Lotus replicas to run. | 1 |
 | `resources.<service>.requests.cpu` | The amount of vCPU (per service). | `<unset>` |
 | `resources.<service>.requests.memory` | The amount of memory (per service). | `<unset>` |

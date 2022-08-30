@@ -1,3 +1,7 @@
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group10
+
 init:
   importSnapshot:
     SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
@@ -5,22 +9,20 @@ init:
   clearRestart:
     enabled: true
 
-ingress:
-  lotus:
-    enabled: false
-
 Lotus:
   service:
     enabled: false
-    release: api-read
-    slave: true
+    release: space06
+  env:
+    default:
+      INFRA_CLEAR_RESTART: "true"
+    custom:
+      INFRA_LOTUS_GATEWAY: "true"
 
-nodeSelector:
-  nodeLabel:
-    role: api-read
+nameOverride: ""
 
-podAntiAffinity:
-  enabled: true
+image:
+  repository: glif/lotus:v1.16.0
 
 persistence:
   enabled: false

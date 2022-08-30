@@ -1,0 +1,73 @@
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group1
+
+#ingress:
+#  ipfs:
+#    enabled: true
+#  lotus:
+#    annotations:
+#      nginx.ingress.kubernetes.io/configuration-snippet: |
+#        proxy_set_header Authorization $calibrationapi_jwt;
+#        proxy_cache_bypass      $http_upgrade;
+#      nginx.ingress.kubernetes.io/cors-allow-headers: Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Length,Content-Range,Range
+#      nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+
+IPFS:
+  enabled: true
+
+# if we need to start from genesis the best idea is starting from existing snapshot;
+# snaphot url is https://www.mediafire.com/file/tlgfwnwzosd4d1p/lotus_cali_snapshot_UTC%252B8_20220618_high_1048244.tar.bz2/file
+#init:
+#  importSnapshot:
+#    SNAPSHOTURL: "/home/lotus_user/.lotus/chain.car"
+#    enabled: true
+
+Lotus:
+  service:
+    release: calibrationapi
+  env:
+    custom:
+      INFRA_LOTUS_GATEWAY: "true"
+      LOTUS_MAX_HEAP: "10GiB"
+
+#nodeSelector:
+#  nodeLabel:
+#    lifecycle: OnDemand
+
+persistence:
+#  autoResizer:
+#    cron: "0 */1 * * *"
+  snapshots:
+    uploadToIpfs:
+      enabled: true
+      shareToGist:
+        enabled: true
+        address: git@gist.github.com:95da15b014ffc3b5a170485001f46abd.git
+        authorEmail: openworklabbot@gmail.com
+        authorName: Protofire Bot
+    enabled: true
+    automation:
+      creation:
+        enabled: true
+      deletion:
+        enabled: true
+        retention:
+          count: 2
+  lotus:
+    size: "150Gi"
+  ipfs:
+    size: "20Gi"
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  lotus:
+    requests:
+      cpu: 500m
+      memory: 3Gi
+    limits:
+      cpu: 3500m
+      memory: 10Gi
