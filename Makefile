@@ -2,10 +2,15 @@ all: lint package
 
 ## Edit node and env
 #
-## Deploy archive_node
-#NODE = calibrationapi-archive
-#ENV = dev
-#NAMESPACE = network
+# Deploy archive_node
+# NODE = calibrationapi-archive
+# ENV = dev
+# NAMESPACE = network
+
+# Deploy archive_node
+NODE = wallaby-archive
+ENV = dev
+NAMESPACE = network
 
 ## Deploy api_read_node
 #NODE = api-read-dev
@@ -56,9 +61,9 @@ all: lint package
 #NAMESPACE = network
 
 #### Deploy space00
-NODE = space00
-ENV = mainnet
-NAMESPACE = network
+# NODE = space00
+# ENV = mainnet
+# NAMESPACE = network
 
 ### Deploy space06
 #NODE = space06
