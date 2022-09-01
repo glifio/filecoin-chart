@@ -7,7 +7,7 @@ all: lint package
 # ENV = dev
 # NAMESPACE = network
 
-# Deploy archive_node
+### Deploy archive_node
 NODE = wallaby-archive
 ENV = dev
 NAMESPACE = network

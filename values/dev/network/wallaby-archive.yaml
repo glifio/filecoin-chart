@@ -12,6 +12,9 @@ IPFS:
 Lotus:
   service:
     release: wallaby-archive
+  env:
+    custom:
+      LOTUS_VM_ENABLE_TRACING: "true"
 
 persistence:
   snapshots:
