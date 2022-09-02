@@ -13,6 +13,8 @@ Lotus:
   service:
     release: wallaby-archive
   env:
+    default:
+      INFRA_CLEAR_RESTART: "true"
     custom:
       LOTUS_VM_ENABLE_TRACING: "true"
 
