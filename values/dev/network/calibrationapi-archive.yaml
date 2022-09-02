@@ -9,6 +9,9 @@ IPFS:
 Lotus:
   service:
     release: calibrationapi-archive
+  env:
+    custom:
+      LOTUS_VM_ENABLE_TRACING: "true"
 
 persistence:
 #  autoResizer:
