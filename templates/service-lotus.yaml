@@ -7,10 +7,9 @@ metadata:
     app: lotus-node-app
   annotations:
   {{- if .Values.Lotus.service.annotations }}
-    {{- $mergedAnnotations := merge .Values.Lotus.service.annotations.custom
-      .Values.Lotus.service.annotations.default -}}
+    {{- $mergedAnnotations := merge .Values.Lotus.service.annotations.custom .Values.Lotus.service.annotations.default -}}
     {{- range $key, $value := $mergedAnnotations }}
-    {{ $key }}: {{ $value | quote }}
+      {{ $key }}: {{ $value | quote }}
     {{- end }}
   {{- end }}
 spec:
