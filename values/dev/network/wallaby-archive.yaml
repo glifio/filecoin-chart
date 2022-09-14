@@ -4,7 +4,7 @@ nodeSelector:
   nodeSelectorValue: group3
 
 image:
-  repository: glif/lotus:experimental-wallabynet-rc3-copper
+  repository: glif/lotus:experimental-wallabynet-rc3-copper-v2
 
 IPFS:
   enabled: false
