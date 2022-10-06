@@ -22,6 +22,7 @@ Lotus:
       INFRA_CLEAR_RESTART: "true"
     custom:
       LOTUS_VM_ENABLE_TRACING: "true"
+      INFRA_LOTUS_GATEWAY: "true"
 
 persistence:
   enabled: false

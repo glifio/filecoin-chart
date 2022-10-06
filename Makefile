@@ -12,7 +12,7 @@ all: lint package
 #ENV = dev
 #NAMESPACE = network
 
-## Deploy api_read_node
+### Deploy api_read_node
 #NODE = api-read-dev
 #ENV = dev
 #NAMESPACE = network
@@ -40,7 +40,7 @@ all: lint package
 #ENV = mainnet
 #NAMESPACE = network
 
-## Deploy api_read_master_node
+### Deploy api_read_master_node
 # NODE = api-read-master
 # ENV = mainnet
 # NAMESPACE = network
@@ -60,7 +60,7 @@ all: lint package
 #ENV = mainnet
 #NAMESPACE = network
 
-### Deploy api_read_slave_0_node
+### Deploy api_read_slave_3_node
 # NODE = api-read-slave-3
 # ENV = mainnet
 # NAMESPACE = network
