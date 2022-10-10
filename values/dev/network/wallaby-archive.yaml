@@ -4,7 +4,7 @@ nodeSelector:
   nodeSelectorValue: group3
 
 image:
-  repository: glif/lotus:experimental-wallabynet-rc3-copper-v2
+  repository: glif/lotus:wallaby_latest
 
 IPFS:
   enabled: false
@@ -15,6 +15,7 @@ Lotus:
   env:
     default:
       INFRA_CLEAR_RESTART: "true"
+#      INFRA_PERSISTNODEID: "true"
     custom:
       LOTUS_VM_ENABLE_TRACING: "true"
       INFRA_LOTUS_GATEWAY: "true"

@@ -7,10 +7,10 @@ all: lint package
 #  ENV = dev
 #  NAMESPACE = network
 
-### Deploy archive_node
-#NODE = wallaby-archive
-#ENV = dev
-#NAMESPACE = network
+## Deploy archive_node
+NODE = wallaby-archive
+ENV = dev
+NAMESPACE = network
 
 ### Deploy api_read_node
 #NODE = api-read-dev
