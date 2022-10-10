@@ -4,14 +4,10 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-ipfs-service
 spec:
-  type: ClusterIP 
+  type: ClusterIP
   selector:
-    app: lotus-node-app
     release: {{ .Release.Name }}
   ports:
-    - protocol: TCP
-      port: 5001
-      name: ipfs
     - protocol: TCP
       port: 4001
       name: ipfs4001
