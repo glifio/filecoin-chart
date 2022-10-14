@@ -249,6 +249,7 @@ spec:
         resources:
             requests:
                 storage: {{ .Values.persistence.ipfs.size | quote }}
+        storageClassName: {{ .Values.persistence.ipfs.storageClassName | quote }}
 {{- end }}
 {{- end }}
 {{- end }}
