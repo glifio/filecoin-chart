@@ -115,6 +115,7 @@ persistence:
     size: "16Gi"
     accessModes:
       - ReadWriteOnce
+    storageClassName: "ebs-sc-gp2"
 
 # Defines whether should be deployed Lotus node with service, gateway or without.
 Lotus:
