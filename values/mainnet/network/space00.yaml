@@ -13,7 +13,7 @@ Lotus:
       LOTUS_MAX_HEAP: "100GiB"
 
 image:
-  repository: glif/lotus:v1.16.0
+  repository: glif/lotus:v1.16.0-bootstrap
 
 persistence:
   autoResizer:
@@ -42,6 +42,8 @@ persistence:
       - ReadWriteOnce
     storageClassName: "ebs-sc-io2"
     lotusVolumeName: "vol-lotus-io2"
+  ipfs:
+    size: "250Gi"
 
 resources:
   lotus:
