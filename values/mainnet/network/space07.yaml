@@ -2,6 +2,18 @@ nodeSelector:
   nodeSelectorKey: nodeGroupName
   nodeSelectorValue: group4
 
+Lotus:
+  service:
+    annotations:
+      custom:
+        # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
+        #   the Lotus side.
+        # Due to this we found that it could be configured in the Kong ingress configuration and used by annotation on
+        #   the desired service.
+        # Ingress configuration placed here:
+        #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
+        konghq.com/override: kong-ingress-one-day-read-timeout
+
 persistence:
   snapshots:
     automation:
