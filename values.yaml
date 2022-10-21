@@ -10,7 +10,7 @@ nodeSelector:
   nodeSelectorValue: noGroup
 
 image:
-  repository: glif/lotus:1.18.0-rc2-calibnet
+  repository: glif/lotus:1.18.0-rc3-calibnet
   pullPolicy: Always
 
 imagePullSecrets: []
