@@ -15,6 +15,8 @@ Lotus:
   env:
     custom:
       INFRA_LOTUS_GATEWAY: "true"
+    default:
+      INFRA_CLEAR_RESTART: "false"
   service:
     annotations:
       custom:

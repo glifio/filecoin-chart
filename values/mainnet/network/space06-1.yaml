@@ -12,7 +12,8 @@ init:
 Lotus:
   service:
     enabled: false
-    release: space06
+    is_slave: true
+    label: space06
   env:
     default:
       INFRA_CLEAR_RESTART: "true"
