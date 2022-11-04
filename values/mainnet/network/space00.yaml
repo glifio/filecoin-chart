@@ -53,7 +53,7 @@ persistence:
     storageClassName: "ebs-sc-io2"
     lotusVolumeName: "vol-lotus-io2"
   ipfs:
-    size: "250Gi"
+    size: "313Gi"
 
 resources:
   lotus:
