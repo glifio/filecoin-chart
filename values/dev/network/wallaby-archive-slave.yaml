@@ -11,11 +11,12 @@ IPFS:
 
 Lotus:
   service:
-    release: wallaby-archive
+    enabled: false
+    is_slave: true
+    label: wallaby-archive
   env:
     default:
       INFRA_CLEAR_RESTART: "true"
-      INFRA_PERSISTNODEID: "true"
     custom:
       LOTUS_VM_ENABLE_TRACING: "true"
       INFRA_LOTUS_GATEWAY: "true"
