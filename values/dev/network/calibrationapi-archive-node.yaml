@@ -12,6 +12,8 @@ Lotus:
   env:
     custom:
       LOTUS_VM_ENABLE_TRACING: "true"
+    # default:
+    #   INFRA_CLEAR_RESTART: "true"
 
 persistence:
 #  autoResizer:
