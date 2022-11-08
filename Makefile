@@ -8,9 +8,9 @@ all: lint package
 #  NAMESPACE = network
 
 ## Deploy archive_node
-NODE = wallaby-archive
-ENV = dev
-NAMESPACE = network
+# NODE = wallaby-archive
+# ENV = dev
+# NAMESPACE = network
 
 ### Deploy api_read_node
 #NODE = api-read-dev
@@ -22,10 +22,10 @@ NAMESPACE = network
 #ENV = dev
 #NAMESPACE = network
 
-## Deploy calibnetapi
-#NODE = calibrationapi
-#ENV = dev
-#NAMESPACE = network
+# Deploy calibnetapi
+NODE = wallaby-archive
+ENV = dev
+NAMESPACE = network
 
 ## Deploy calibnetapi-jwt
 #NODE = calibrationapi-jwt

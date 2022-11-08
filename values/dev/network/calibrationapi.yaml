@@ -11,12 +11,12 @@ IPFS:
 
 init:
   importSnapshot:
-    # SNAPSHOTURL: "http://calibrationapi-ipfs-service:8080/ipfs/QmP5yHB5WyszguauePoPCFHCNA8oAqJMgTaESi96ntzZvb"
-    # SNAPSHOTURL: "http://localhost:8080/ipfs/QmP5yHB5WyszguauePoPCFHCNA8oAqJMgTaESi96ntzZvb"
-    # SNAPSHOTURL: "/data/ipfs/lotus-current.car"
-    SNAPSHOTURL: "https://snapshots.calibrationnet.filops.net/minimal/latest"
+  #   # SNAPSHOTURL: "http://calibrationapi-ipfs-service:8080/ipfs/QmP5yHB5WyszguauePoPCFHCNA8oAqJMgTaESi96ntzZvb"
+  #   # SNAPSHOTURL: "http://localhost:8080/ipfs/QmP5yHB5WyszguauePoPCFHCNA8oAqJMgTaESi96ntzZvb"
+  #   # SNAPSHOTURL: "/data/ipfs/lotus-current.car"
+  #   SNAPSHOTURL: "https://snapshots.calibrationnet.filops.net/minimal/latest"
 
-    enabled: true
+    enabled: false
 
 Lotus:
   service:
