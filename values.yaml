@@ -8,6 +8,11 @@ nodeSelector:
   enabled: true
   nodeSelectorKey: nodeGroupName
   nodeSelectorValue: noGroup
+  nodeSelectorAllow: assign_pods_to_key_nodes
+  nodeSelectorLabel: podLabel
+  ## If we need assign critical pods by only node "space00" use nodeSelectorLabel "allow_only_critical_pods",
+  ## another option, by default pods assign by any nodes "allow_any_pods".
+
 
 image:
   repository: glif/lotus:1.18.0-rc5-calibnet

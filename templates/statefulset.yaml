@@ -209,6 +209,7 @@ spec:
 
       nodeSelector:
         {{ .Values.nodeSelector.nodeSelectorKey }}: {{ .Values.nodeSelector.nodeSelectorValue }}
+        {{ .Values.nodeSelector.nodeSelectorAllow }}: {{ .Values.nodeSelector.nodeSelectorLabel }}
 {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
 {{- if .Values.Lotus.enabled }}
