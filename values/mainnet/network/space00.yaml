@@ -1,6 +1,6 @@
 nodeSelector:
-  nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: group5
+  default:
+   nodeGroupName: group5
 
 IPFS:
   enabled: true

@@ -1,12 +1,8 @@
 nodeSelector:
   default:
-   nodeSelectorKey: nodeGroupName
-   nodeSelectorValue: group3
+    nodeGroupName: group3
   custom:
-   nodeSelectorAllow: assign_pods_to_key_nodes
-   nodeSelectorLabel: allow_any_pods
-
-
+    assign_pods_to_key_nodes: allow_any_pods
 
 IPFS:
   enabled: true

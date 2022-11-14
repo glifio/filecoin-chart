@@ -1,6 +1,6 @@
 nodeSelector:
-  nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: group1
+  default:
+    nodeGroupName: group1
 
 #ingress:
 #  ipfs:

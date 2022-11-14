@@ -1,6 +1,6 @@
 nodeSelector:
-  nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: group2
+  default:
+   nodeGroupName: group2
 
 init:
   importSnapshot:

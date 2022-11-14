@@ -1,8 +1,8 @@
 nodeSelector:
-  nodeSelectorKey: lifecycle
-  nodeSelectorValue: ondemand
-  nodeSelectorAllow: assign_pods_to_key_nodes
-  nodeSelectorLabel: allow_any_pods
+  default:
+   lifecycle: ondemand
+  custom:
+   assign_pods_to_key_nodes: allow_any_pods
   ## If we need assign critical pods by only node "space00" use nodeSelectorLabel "allow_only_critical_pods",
   ## another option, by default pods assign by any nodes "allow_any_pods".
 

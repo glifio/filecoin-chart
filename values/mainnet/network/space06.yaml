@@ -1,6 +1,6 @@
 nodeSelector:
-  nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: group3
+  default:
+   nodeGroupName: group3
 
 
 
