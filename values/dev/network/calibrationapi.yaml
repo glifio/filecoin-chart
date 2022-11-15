@@ -1,8 +1,6 @@
 nodeSelector:
   default:
     nodeGroupName: group3
-  custom:
-    assign_pods_to_key_nodes: allow_any_pods
 
 IPFS:
   enabled: true
