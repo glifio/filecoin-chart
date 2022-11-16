@@ -22,8 +22,23 @@ all: lint package
 #ENV = dev
 #NAMESPACE = network
 
-# Deploy calibnetapi
-NODE = wallaby-archive
+# Deploy wallaby
+#NODE = wallaby-archive
+#ENV = mainnet
+#NAMESPACE = network
+
+# Deploy wallaby-slave
+#NODE = wallaby-archive-slave
+#ENV = dev
+#NAMESPACE = network
+
+# Deploy calibrationapi
+#NODE = calibrationapi
+#ENV = dev
+#NAMESPACE = network
+
+# Deploy calibrationapi-archive-node
+NODE = calibrationapi-archive-node
 ENV = dev
 NAMESPACE = network
 
