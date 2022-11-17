@@ -1,32 +1,37 @@
 # you have to put the group name from existing EKS working group names.
 nodeSelector:
   nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: group4
+  nodeSelectorValue: group11
+
+image:
+  repository: glif/lotus:wallaby_latest
 
 IPFS:
   enabled: false
 
 Lotus:
   service:
-    release: calibrationapi-archive
+    release: wallaby-archive
   env:
+    default:
+      INFRA_CLEAR_RESTART: "true"
+      INFRA_PERSISTNODEID: "true"
     custom:
       LOTUS_VM_ENABLE_TRACING: "true"
+      INFRA_LOTUS_GATEWAY: "true"
 
 persistence:
-#  autoResizer:
-#    cron: "0 0 * * *"
   snapshots:
-    enabled: true
+    enabled: false
     automation:
       creation:
-        enabled: true
+        enabled: false
       deletion:
-        enabled: true
+        enabled: false
         retention:
           count: 2
   lotus:
-    size: "200Gi"
+    size: "50Gi"
     accessModes:
       - ReadWriteOnce
 
