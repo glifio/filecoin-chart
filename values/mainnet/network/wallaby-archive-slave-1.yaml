@@ -1,0 +1,46 @@
+# you have to put the group name from existing EKS working group names.
+nodeSelector:
+  nodeSelectorKey: nodeGroupName
+  nodeSelectorValue: group12
+
+image:
+  repository: glif/lotus:wallaby_latest
+
+IPFS:
+  enabled: false
+
+Lotus:
+  service:
+    enabled: false
+    is_slave: true
+    label: wallaby-archive
+  env:
+    default:
+      INFRA_CLEAR_RESTART: "true"
+    custom:
+      LOTUS_VM_ENABLE_TRACING: "true"
+      INFRA_LOTUS_GATEWAY: "true"
+
+persistence:
+  snapshots:
+    enabled: false
+    automation:
+      creation:
+        enabled: false
+      deletion:
+        enabled: false
+        retention:
+          count: 2
+  lotus:
+    size: "50Gi"
+    accessModes:
+      - ReadWriteOnce
+
+resources:
+  lotus:
+    requests:
+      cpu: 0.5
+      memory: 10Gi
+    limits:
+      cpu: 7
+      memory: 60Gi
