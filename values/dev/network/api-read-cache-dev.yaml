@@ -1,6 +1,6 @@
 nodeSelector:
-  nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: group2
+  default:
+    nodeGroupName: group2
 
 #self-managed cache-service integration
 cache:

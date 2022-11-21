@@ -1,6 +1,6 @@
 nodeSelector:
-  nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: group4
+  default:
+    nodeGroupName: group4
 
 Lotus:
   service:
