@@ -1,6 +1,6 @@
 nodeSelector:
-  nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: group6
+  default:
+    nodeGroupName: group6
 
 Lotus:
   env:

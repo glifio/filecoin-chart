@@ -1,6 +1,6 @@
 nodeSelector:
-  nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: group11
+  default:
+    nodeGroupName: group11
 
 IPFS:
   enabled: true

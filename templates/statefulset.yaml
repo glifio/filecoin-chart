@@ -208,7 +208,10 @@ spec:
 {{- end }}
 
       nodeSelector:
-        {{ .Values.nodeSelector.nodeSelectorKey }}: {{ .Values.nodeSelector.nodeSelectorValue }}
+     {{- $mergedNodeSelector := merge .Values.nodeSelector.custom .Values.nodeSelector.default -}}
+     {{ range $key, $value := $mergedNodeSelector }}
+       {{ $key }}: {{ $value | quote }}
+     {{- end }}
 {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
 {{- if .Values.Lotus.enabled }}

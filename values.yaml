@@ -6,8 +6,8 @@ replicaCount: 1
 
 nodeSelector:
   enabled: true
-  nodeSelectorKey: nodeGroupName
-  nodeSelectorValue: noGroup
+  default: {}
+  custom: {}
 
 image:
   repository: glif/lotus:1.18.0-rc5-calibnet
