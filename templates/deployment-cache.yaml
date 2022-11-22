@@ -39,5 +39,8 @@ spec:
           - key: config
             path: config.yaml
       nodeSelector:
-        {{ .Values.nodeSelector.nodeSelectorKey }}: {{ .Values.nodeSelector.nodeSelectorValue }}
+        {{- $mergedNodeSelector := merge .Values.nodeSelector.custom .Values.nodeSelector.default -}}
+        {{ range $key, $value := $mergedNodeSelector }}
+          {{ $key }}: {{ $value | quote }}
+          {{- end }}
 {{- end }}
