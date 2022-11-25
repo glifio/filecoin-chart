@@ -13,7 +13,7 @@ init:
       LOTUS_VM_ENABLE_TRACING: "true"
 
 image:
-  repository: glif/lotus:v1.16.0
+  repository: glif/lotus:v1.18.0
 
 Lotus:
   service:

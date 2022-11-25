@@ -9,11 +9,11 @@ Lotus:
       INFRA_LOTUS_GATEWAY: "true"
 init:
   importSnapshot:
-    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+    SNAPSHOTURL: "https://snapshots.mainnet.filops.net/minimal/latest"
     enabled: true
 
 image:
-  repository: glif/lotus:v1.16.0
+  repository: glif/lotus:v1.18.0
 
 resources:
   lotus:

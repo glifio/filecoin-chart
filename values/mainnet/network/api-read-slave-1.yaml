@@ -1,16 +1,16 @@
 nodeSelector:
   default:
-    nodeGroupName: group6
+    nodeGroupName: group8
 
 init:
   importSnapshot:
-    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.ca"
     enabled: true
   clearRestart:
     enabled: true
 
 image:
-  repository: glif/lotus:v1.16.0
+  repository: glif/lotus:v1.18.0
 
 Lotus:
   service:
