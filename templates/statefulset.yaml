@@ -210,7 +210,7 @@ spec:
       nodeSelector:
      {{- $mergedNodeSelector := merge .Values.nodeSelector.custom .Values.nodeSelector.default -}}
      {{ range $key, $value := $mergedNodeSelector }}
-       {{ $key }}: {{ $value | quote }}
+        {{ $key }}: {{ $value | quote }}
      {{- end }}
 {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:

@@ -32,7 +32,7 @@ persistence:
     lotusVolumeName: "vol-lotus-io2"
 
 image:
-  repository: glif/lotus:v1.16.0
+  repository: glif/lotus:v1.18.0
 
 resources:
   lotus:

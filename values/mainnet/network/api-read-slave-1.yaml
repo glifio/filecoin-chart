@@ -1,6 +1,6 @@
 nodeSelector:
   default:
-    nodeGroupName: group6
+    nodeGroupName: group8
 
 init:
   importSnapshot:
@@ -10,7 +10,7 @@ init:
     enabled: true
 
 image:
-  repository: glif/lotus:v1.16.0
+  repository: glif/lotus:v1.18.0
 
 Lotus:
   service:
