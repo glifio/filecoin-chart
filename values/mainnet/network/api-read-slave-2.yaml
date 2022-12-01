@@ -4,7 +4,7 @@ nodeSelector:
 
 init:
   importSnapshot:
-    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
+    SNAPSHOTURL: "https://snapshots.mainnet.filops.net/minimal/latest"
     enabled: true
   env:
     default:
