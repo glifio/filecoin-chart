@@ -58,12 +58,43 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["/bin/sh","-c"]
         args:
-          - mkdir -p /tmp/lotus /tmp/ipfs && chown -R 2000:2000 /tmp;
+          - mkdir -p /tmp/lotus /tmp/ipfs /tmp/snapshot && chown -R 2000:2000 /tmp;
         securityContext:
           runAsUser: 0
         volumeMounts:
           - name: {{ .Values.persistence.lotus.lotusVolumeName }}
             mountPath: /tmp
+      - name: download-zst-snapshot
+        image: alpine:3.17
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        workingDir: /home/lotus_user/snapshot
+        command:
+          - "/bin/sh"
+          - "-c"
+        args:
+          - RESTART={{ .Values.Lotus.env.default.INFRA_CLEAR_RESTART }};
+            if [ $RESTART = false ] && [ "$(ls -A /home/lotus_user/.lotus)" ]; then
+              echo "nothing to do here, lotus already have ledger";
+              exit 0;
+            fi;
+            echo "Downloading zst snapshot";
+            apk --no-cache add aria2=1.36.0-r1 zstd=1.5.2-r9 &&
+            aria2c --allow-overwrite --max-connection-per-server 5 --split 5
+              {{ .Values.init.importSnapshot.REMOTE_SNAPSHOT_URL }} -o latest.zst &&
+            pzstd -v --processes "$(nproc)" --force --rm --decompress latest.zst -o latest.car;
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+          - name: {{ .Values.persistence.lotus.lotusVolumeName }}
+            mountPath: /home/lotus_user/snapshot
+          {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+            subPath: snapshot
+          {{- end }}
+          - name: {{ .Values.persistence.lotus.lotusVolumeName }}
+            mountPath: /home/lotus_user/.lotus
+            {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
+            subPath: lotus
+      {{- end }}
 {{- end }}
 {{- end }}
       containers:
@@ -191,6 +222,9 @@ spec:
             mountPath: /home/lotus_user/.lotus
             {{- if and (not .Values.persistence.enabled) .Values.persistence.hostPath }}
             subPath: lotus
+          - name: {{ .Values.persistence.lotus.lotusVolumeName }}
+            mountPath: /home/lotus_user/snapshot
+            subPath: snapshot
             {{- end }}
             {{- if and (.Values.init.import.volume) (.Values.init.import.enabled) }}
           - name: {{ (index .Values.init.import.volume 0).name }}
