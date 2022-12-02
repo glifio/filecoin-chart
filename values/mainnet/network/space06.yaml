@@ -6,8 +6,9 @@ nodeSelector:
 
 init:
    importSnapshot:
-     SNAPSHOTURL: "https://snapshots.mainnet.filops.net/minimal/latest"
-     enabled: true
+    SNAPSHOTURL: "/home/lotus_user/snapshot/latest.car"
+    REMOTE_SNAPSHOT_URL: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+    enabled: true
    clearRestart:
      enabled: false
 
