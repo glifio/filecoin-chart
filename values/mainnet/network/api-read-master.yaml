@@ -3,6 +3,10 @@ nodeSelector:
     nodeGroupName: group6
 
 Lotus:
+  service:
+    annotations:
+      custom:
+        konghq.com/override: kong-ingress-timeout-10m
   env:
     custom:
       LOTUS_VM_ENABLE_TRACING: "true"
