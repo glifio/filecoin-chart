@@ -10,7 +10,7 @@ nodeSelector:
   custom: {}
 
 image:
-  repository: glif/lotus:1.18.0-calibnet
+  repository: glif/lotus:1.18.0-calibnet-arm
   pullPolicy: Always
 
 imagePullSecrets: []

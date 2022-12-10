@@ -1,10 +1,12 @@
 nodeSelector:
   default:
     nodeGroupName: group10
+  custom:
+    assign_to_space00_07_nodes: allow_any_pods
 
 init:
   importSnapshot:
-    SNAPSHOTURL: "https://snapshots.mainnet.filops.net/minimal/latest"
+    SNAPSHOTURL: "https://fil-chain-snapshots-fallback.s3.amazonaws.com/mainnet/minimal_finality_stateroots_latest.car"
     enabled: true
   clearRestart:
     enabled: true
@@ -26,7 +28,12 @@ image:
   repository: glif/lotus:v1.18.0
 
 persistence:
-  enabled: false
+  enabled: true
+  lotus:
+    size: "200Gi"
+    accessModes:
+      - ReadWriteOnce
+
 
 resources:
   lotus:
