@@ -29,12 +29,7 @@ image:
   repository: glif/lotus:v1.18.0
 
 persistence:
-  enabled: true
-  lotus:
-    size: "200Gi"
-    accessModes:
-      - ReadWriteOnce
-
+  enabled: false
 
 resources:
   lotus:
