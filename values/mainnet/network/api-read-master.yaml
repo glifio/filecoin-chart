@@ -1,8 +1,14 @@
 nodeSelector:
   default:
-    nodeGroupName: group6
+    nodeGroupName: group18
+  custom:
+    assign_to_space00_07_nodes: allow_any_pods
 
 Lotus:
+  service:
+    annotations:
+      custom:
+        konghq.com/override: kong-ingress-timeout-10m
   env:
     custom:
       LOTUS_VM_ENABLE_TRACING: "true"
@@ -14,7 +20,7 @@ init:
     enabled: true
 
 image:
-  repository: glif/lotus:v1.18.0
+  repository: glif/lotus:v1.18.0-arm
 
 resources:
   lotus:

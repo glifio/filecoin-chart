@@ -1,10 +1,12 @@
 # you have to put the group name from existing EKS working group names.
 nodeSelector:
   default:
-    nodeGroupName: group11
+    nodeGroupName: group14
+  custom:
+    assign_to_space00_07_nodes: allow_any_pods
 
 image:
-  repository: glif/lotus:wallaby_latest
+  repository: glif/lotus:wallaby_latest_arm
 
 IPFS:
   enabled: false
@@ -41,8 +43,8 @@ persistence:
 resources:
   lotus:
     requests:
-      cpu: 3
-      memory: 10Gi
+      cpu: 0.5
+      memory: 6Gi
     limits:
       cpu: 7
       memory: 60Gi

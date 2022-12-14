@@ -1,6 +1,8 @@
 nodeSelector:
   default:
-    nodeGroupName: group7
+    nodeGroupName: group17
+  custom:
+    assign_to_space00_07_nodes: allow_any_pods
 
 init:
   importSnapshot:
@@ -19,7 +21,7 @@ Lotus:
       INFRA_LOTUS_GATEWAY: "true"
 
 image:
-  repository: glif/lotus:v1.18.0
+  repository: glif/lotus:v1.18.0-arm
 
 resources:
   lotus:
@@ -27,8 +29,8 @@ resources:
       cpu: 15
       memory: 120Gi
     requests:
-      cpu: 12
-      memory: 80Gi
+      cpu: 10
+      memory: 60Gi
 
 persistence:
   enabled: false

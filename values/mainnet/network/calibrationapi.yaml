@@ -1,6 +1,8 @@
 nodeSelector:
   default:
-    nodeGroupName: group11
+    nodeGroupName: group14
+  custom:
+    assign_to_space00_07_nodes: allow_any_pods
 
 IPFS:
   enabled: true

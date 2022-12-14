@@ -1,6 +1,8 @@
 nodeSelector:
   default:
-    nodeGroupName: group2
+    nodeGroupName: group16
+  custom:
+    assign_to_space00_07_nodes: allow_any_pods
 
 init:
   importSnapshot:
@@ -19,7 +21,7 @@ Lotus:
       INFRA_LOTUS_GATEWAY: "true"
 
 image:
-  repository: glif/lotus:v1.18.0
+  repository: glif/lotus:v1.18.0-arm
 
 resources:
   lotus:

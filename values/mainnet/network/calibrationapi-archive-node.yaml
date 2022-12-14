@@ -1,7 +1,9 @@
 # you have to put the group name from existing EKS working group names.
 nodeSelector:
   default:
-    nodeGroupName: group12
+    nodeGroupName: group13
+  custom:
+    assign_to_space00_07_nodes: allow_any_pods
 
 IPFS:
   enabled: false
@@ -35,7 +37,7 @@ persistence:
 resources:
   lotus:
     requests:
-      cpu: 3
+      cpu: 1.5
       memory: 10Gi
     limits:
       cpu: 7
