@@ -1,7 +1,7 @@
 # you have to put the group name from existing EKS working group names.
 nodeSelector:
   default:
-    nodeGroupName: group14
+    nodeGroupName: group13
   custom:
     assign_to_space00_07_nodes: allow_any_pods
 
