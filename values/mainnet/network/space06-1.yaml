@@ -17,9 +17,6 @@ lotusEnv:
 
 lotusImageRepository: glif/lotus:v1.18.0
 
-persistence:
-  enabled: false
-
 lotusRequestsCpu: 7
 lotusRequestsMemory: 50Gi
 
