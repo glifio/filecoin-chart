@@ -1,24 +1,17 @@
 nodeSelector:
-  default:
-    lifecycle: ondemand
-  custom:
-    assign_to_space00_07_nodes: allow_any_pods
+  lifecycle: ondemand
+  assign_to_space00_07_nodes: allow_any_pods
 
 
 #self-managed cache-service integration
-cache:
-  enabled: true
-  replicas: 1
-  resources:
-    limits:
-      cpu: 5
-      memory: 35Gi
-    requests:
-      cpu: 500m
-      memory: 1Gi
+#self-managed cache-service integration
+createCache: true
+cacheDeploymentReplicas: 1
 
-Lotus:
-  statefulset:
-    enabled: false
-  service:
-    enabled: false
+cacheCpuLimit: 5
+cacheMemoryLimit: 35Gi
+cacheRequestsCpu: 500m
+cacheRequestsMemory: 1Gi
+
+createLotusService: false
+createLotusStatefulSet: false

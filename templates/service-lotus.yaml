@@ -1,4 +1,4 @@
-{{- if .Values.Lotus.service.enabled }}
+{{- if .Values.createLotusService }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,11 +6,8 @@ metadata:
   labels:
     app: lotus-node-app
   annotations:
-  {{- if .Values.Lotus.service.annotations }}
-    {{- $mergedAnnotations := merge .Values.Lotus.service.annotations.custom .Values.Lotus.service.annotations.default -}}
-    {{- range $key, $value := $mergedAnnotations }}
+  {{- range $key, $value := .Values.lotusServiceAnnotations }}
       {{ $key }}: {{ $value | quote }}
-    {{- end }}
   {{- end }}
 spec:
   type: ClusterIP
@@ -21,10 +18,10 @@ spec:
       port: 1234
       targetPort: 1234
       name: tcp-api
-  {{- if .Values.Lotus.env.custom.INFRA_LOTUS_GATEWAY }}
+    {{- if .Values.lotusEnv.INFRA_LOTUS_GATEWAY }}
     - protocol: TCP
       port: 2346
       targetPort: 2346
       name: gateway
-  {{- end}}
+    {{- end}}
 {{- end }}

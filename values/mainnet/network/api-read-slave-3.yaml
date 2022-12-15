@@ -1,36 +1,26 @@
 nodeSelector:
-  default:
-    nodeGroupName: group17
-  custom:
-    assign_to_space00_07_nodes: allow_any_pods
+  nodeGroupName: group17
+  assign_to_space00_07_nodes: allow_any_pods
 
-init:
-  importSnapshot:
-    SNAPSHOTURL: "/home/lotus_user/snapshot/latest.car"
-    REMOTE_SNAPSHOT_URL: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
-    enabled: true
+importSnapshot: true
+downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
-Lotus:
-  service:
-    enabled: false
-    is_slave: true
-    label: api-read-master
-  env:
-    custom:
-      LOTUS_VM_ENABLE_TRACING: "true"
-      INFRA_LOTUS_GATEWAY: "true"
+isSlaveNode: true
+createLotusService: false
+customReleaseName: api-read-master
 
-image:
-  repository: glif/lotus:v1.18.0-arm
+lotusEnv:
+  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_LOTUS_GATEWAY: "true"
 
-resources:
-  lotus:
-    limits:
-      cpu: 15
-      memory: 120Gi
-    requests:
-      cpu: 10
-      memory: 60Gi
+lotusImageRepository: glif/lotus:v1.18.0-arm
 
-persistence:
-  enabled: false
+lotusRequestsCpu: 10
+lotusRequestsMemory: 60Gi
+
+lotusCpuLimit: 15
+lotusMemoryLimit: 120Gi
+
+isSpotInstance: true
+createServiceRoleBinding: false

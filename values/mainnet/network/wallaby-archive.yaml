@@ -1,50 +1,27 @@
 # you have to put the group name from existing EKS working group names.
 nodeSelector:
-  default:
-    nodeGroupName: group14
-  custom:
-    assign_to_space00_07_nodes: allow_any_pods
+  nodeGroupName: group14
+  assign_to_space00_07_nodes: allow_any_pods
 
-image:
-  repository: glif/lotus:wallaby_latest_arm
+lotusImageRepository: glif/lotus:wallaby_latest_arm
 
-IPFS:
-  enabled: false
+lotusServiceAnnotations:
+  konghq.com/override: kong-ingress-timeout-30m
 
-Lotus:
-  service:
-    release: wallaby-archive
-    annotations:
-      custom:
-        konghq.com/override: kong-ingress-timeout-30m
-  env:
-    default:
-      INFRA_CLEAR_RESTART: "true"
-      INFRA_PERSISTNODEID: "true"
-    custom:
-      LOTUS_VM_ENABLE_TRACING: "true"
-      INFRA_LOTUS_GATEWAY: "true"
+lotusEnv:
+  INFRA_CLEAR_RESTART: "true"
+  INFRA_PERSISTNODEID: "true"
+  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_LOTUS_GATEWAY: "true"
 
-persistence:
-  snapshots:
-    enabled: false
-    automation:
-      creation:
-        enabled: false
-      deletion:
-        enabled: false
-        retention:
-          count: 2
-  lotus:
-    size: "50Gi"
-    accessModes:
-      - ReadWriteOnce
 
-resources:
-  lotus:
-    requests:
-      cpu: 0.5
-      memory: 6Gi
-    limits:
-      cpu: 7
-      memory: 60Gi
+lotusVolumeSize: "50Gi"
+lotusVolumeAccessModes:
+  - ReadWriteOnce
+
+lotusRequestsCpu: 0.5
+lotusRequestsMemory: 6Gi
+lotusCpuLimit: 7
+lotusMemoryLimit: 60Gi
+
+createServiceRoleBinding: false
