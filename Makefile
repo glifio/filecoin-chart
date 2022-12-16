@@ -38,8 +38,8 @@ all: lint package
 #NAMESPACE = network
 
 # Deploy calibrationapi-archive-node
-NODE = calibrationapi-archive-node
-ENV = dev
+NODE = wallaby-archive-private-0
+ENV = mainnet
 NAMESPACE = network
 
 ## Deploy calibnetapi-jwt

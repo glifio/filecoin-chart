@@ -1,72 +1,37 @@
 nodeSelector:
-  default:
-    nodeGroupName: group5
+  nodeGroupName: group15
 
-IPFS:
-  enabled: true
+useIpfs: true
+ipfsVolumeSize: "250Gi"
 
-Lotus:
-  env:
-    default:
-      INFRA_PERSISTNODEID: "true"
-    custom:
-      LOTUS_MAX_HEAP: "100GiB"
-  service:
-    annotations:
-      custom:
-        # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
-        #   the Lotus side.
-        # Due to this we found that it could be configured in the Kong ingress configuration and used by annotation on
-        #   the desired service.
-        # Ingress configuration placed here:
-        #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
-        konghq.com/override: kong-ingress-one-day-read-timeout
+lotusEnv:
+  INFRA_PERSISTNODEID: "true"
+  LOTUS_MAX_HEAP: "100GiB"
 
-image:
-  repository: glif/lotus:v1.18.0-bootstrap
+lotusServiceAnnotations:
+  # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
+  #   the Lotus side.
+  # Due to this we found that it could be configured in the Kong ingress configuration and used by annotation on
+  #   the desired service.
+  # Ingress configuration placed here:
+  #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
+  konghq.com/override: kong-ingress-one-day-read-timeout
 
-persistence:
-  autoResizer:
-    enabled: false
-  snapshots:
-    uploadToIpfs:
-      cron: "10 */12 * * *"
-      enabled: true
-      export: hot
-      shedPeriod: 6h
-      shareToGist:
-        enabled: true
-        address: git@gist.github.com:d03393d1f6e70e089e9e8d18922474f6.git
-        authorName: Protofire Bot
-        authorEmail: openworklabbot@gmail.com
-    # automation:
-    #   deletion:
-    #     retention:
-    #       count: 7
-    restore:
-      enabled: true
-      name: imported-aws-snapshot
-  lotus:
-    size: "32768Gi"
-    accessModes:
-      - ReadWriteOnce
-    storageClassName: "ebs-sc-io2"
-    lotusVolumeName: "vol-lotus-io2"
-  ipfs:
-    size: "250Gi"
+lotusImageRepository: glif/lotus:v1.18.0-bootstrap-arm
 
-resources:
-  lotus:
-    requests:
-      cpu: 23
-      memory: 160Gi
-    limits:
-      cpu: 40
-      memory: 350Gi
-  ipfs:
-    requests:
-      cpu: 2
-      memory: 10Gi
-    limits:
-      cpu: 20
-      memory: 15Gi
+restoreVolumeSnapshot: true
+volumeSnapshotName: imported-aws-snapshot
+
+# Lotus container mounts LVM from appHostPath
+useLocalStorage: true
+appHostPath: "/mnt/raid"
+
+lotusRequestsCpu: 23
+lotusRequestsMemory: 160Gi
+lotusCpuLimit: 40
+lotusMemoryLimit: 350Gi
+
+ipfsRequestsCpu: 2
+ipfsRequestsMemory: 10Gi
+ipfsCpuLimit: 20
+ipfsMemoryLimit: 15Gi

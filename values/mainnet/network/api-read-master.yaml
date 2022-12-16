@@ -1,35 +1,25 @@
 nodeSelector:
-  default:
-    nodeGroupName: group18
-  custom:
-    assign_to_space00_07_nodes: allow_any_pods
+  nodeGroupName: group18
+  assign_to_space00_07_nodes: allow_any_pods
 
-Lotus:
-  service:
-    annotations:
-      custom:
-        konghq.com/override: kong-ingress-timeout-10m
-  env:
-    custom:
-      LOTUS_VM_ENABLE_TRACING: "true"
-      INFRA_LOTUS_GATEWAY: "true"
-init:
-  importSnapshot:
-    SNAPSHOTURL: "/home/lotus_user/snapshot/latest.car"
-    REMOTE_SNAPSHOT_URL: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
-    enabled: true
+lotusServiceAnnotations:
+  konghq.com/override: kong-ingress-timeout-10m
 
-image:
-  repository: glif/lotus:v1.18.0-arm
+lotusEnv:
+  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_LOTUS_GATEWAY: "true"
 
-resources:
-  lotus:
-    limits:
-      cpu: 15
-      memory: 120Gi
-    requests:
-      cpu: 12
-      memory: 80Gi
+importSnapshot: true
+downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
-persistence:
-  enabled: false
+lotusImageRepository: glif/lotus:v1.18.0-arm
+
+lotusRequestsCpu: 12
+lotusRequestsMemory: 80Gi
+
+lotusCpuLimit: 15
+lotusMemoryLimit: 120Gi
+
+isSpotInstance: true
+createServiceRoleBinding: false

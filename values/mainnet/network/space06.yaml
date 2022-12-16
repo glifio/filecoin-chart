@@ -1,56 +1,30 @@
 nodeSelector:
-  default:
-    nodeGroupName: group3
+  nodeGroupName: group3
+
+importSnapshot: true
+snapshotLocation: "https://snapshots.mainnet.filops.net/minimal/latest"
+
+lotusEnv:
+  INFRA_LOTUS_GATEWAY: "true"
+  INFRA_CLEAR_RESTART: "false"
 
 
+lotusServiceAnnotations:
+  # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
+  #   the Lotus side.
+  # Due to this we found that it could be configured in the Kong ingress configuration and used by annotation on
+  #   the desired service.
+  # Ingress configuration placed here:
+  #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
+  konghq.com/override: kong-ingress-read-timeout
 
-init:
-   importSnapshot:
-    SNAPSHOTURL: "/home/lotus_user/snapshot/latest.car"
-    REMOTE_SNAPSHOT_URL: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
-    enabled: true
-   clearRestart:
-     enabled: false
+lotusImageRepository: glif/lotus:v1.18.0
 
-Lotus:
-  env:
-    custom:
-      INFRA_LOTUS_GATEWAY: "true"
-    default:
-      INFRA_CLEAR_RESTART: "false"
-  service:
-    annotations:
-      custom:
-        # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
-        #   the Lotus side.
-        # Due to this we found that it could be configured in the Kong ingress configuration and used by annotation on
-        #   the desired service.
-        # Ingress configuration placed here:
-        #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
-        konghq.com/override: kong-ingress-read-timeout
+lotusRequestsCpu: 12
+lotusRequestsMemory: 64Gi
 
-image:
-  repository: glif/lotus:v1.18.0
+lotusCpuLimit: 15
+lotusMemoryLimit: 120Gi
 
-nameOverride: ""
-
-persistence:
-  enabled: false
-  snapshots:
-    automation:
-      creation:
-        enabled: false
-      deletion:
-        enabled: false
-    enabled: false
-    restore:
-      enabled: false
-
-resources:
-  lotus:
-    limits:
-      cpu: 15
-      memory: 120Gi
-    requests:
-      cpu: 12
-      memory: 64Gi
+createServiceRoleBinding: false
+isSpotInstance: true
