@@ -1,5 +1,8 @@
 nodeSelector:
-  nodeGroupName: group4
+  nodeGroupName: group19
+
+lotusEnv:
+  LOTUS_MAX_HEAP: "100GiB"
 
 lotusServiceAnnotations:
   # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
@@ -9,17 +12,20 @@ lotusServiceAnnotations:
   # Ingress configuration placed here:
   #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
   konghq.com/override: kong-ingress-one-day-read-timeout
+lotusServiceAnnotations:
+  # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
+  #   the Lotus side.
+  # Due to this we found that it could be configured in the Kong ingress configuration and used by annotation on
+  #   the desired service.
+  # Ingress configuration placed here:
+  #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
+  konghq.com/override: kong-ingress-one-day-read-timeout
 
-restoreVolumeSnapshot: true
-volumeSnapshotName: imported-aws-snapshot
+lotusImageRepository: glif/lotus:v1.18.0-arm
 
-lotusVolumeSize: "32768Gi"
-lotusVolumeAccessModes:
-  - ReadWriteOnce
-lotusVolumeStorageClass: "ebs-sc-io2"
-lotusVolumeName: "vol-lotus-io2"
-
-lotusImageRepository: glif/lotus:v1.18.0
+# Lotus container mounts LVM from appHostPath
+useLocalStorage: true
+appHostPath: "/mnt/raid"
 
 lotusRequestsCpu: 23
 lotusRequestsMemory: 160Gi
