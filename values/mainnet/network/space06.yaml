@@ -1,12 +1,14 @@
 nodeSelector:
-  nodeGroupName: group3
+  nodeGroupName: group20
+  assign_to_space00_07_nodes: allow_any_pods
 
 importSnapshot: true
-snapshotLocation: "https://snapshots.mainnet.filops.net/minimal/latest"
+downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
 lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "false"
+  INFRA_CLEAR_RESTART: "true"
 
 
 lotusServiceAnnotations:
@@ -18,7 +20,7 @@ lotusServiceAnnotations:
   #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
   konghq.com/override: kong-ingress-read-timeout
 
-lotusImageRepository: glif/lotus:v1.18.0
+lotusImageRepository: glif/lotus:v1.18.0-arm
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 64Gi
