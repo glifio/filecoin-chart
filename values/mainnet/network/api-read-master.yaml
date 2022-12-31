@@ -8,6 +8,7 @@ lotusServiceAnnotations:
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
+  INFRA_CLEAR_RESTART: "true"
 
 importSnapshot: true
 downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
