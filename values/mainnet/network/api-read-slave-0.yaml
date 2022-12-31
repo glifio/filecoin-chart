@@ -13,6 +13,7 @@ customReleaseName: api-read-master
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
+  INFRA_CLEAR_RESTART: "true"
 
 lotusImageRepository: glif/lotus:v1.18.0-arm
 

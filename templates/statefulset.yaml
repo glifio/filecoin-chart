@@ -78,7 +78,7 @@ spec:
             if [ $RESTART = false ] && [ "$(ls -A /home/lotus_user/.lotus)" ]; then
               echo "nothing to do here, lotus already have ledger";
             elif [ $RESTART = true ] && [ "$(ls -A /home/lotus_user/.lotus)" ]; then 
-              rm -rf /home/lotus_user/*;
+              rm -rf /home/lotus_user/.lotus && rm -rf /home/lotus_user/snapshot;
             fi;
             echo "Downloading zst snapshot";
             apk --no-cache add aria2=1.36.0-r1 zstd=1.5.2-r9 &&
