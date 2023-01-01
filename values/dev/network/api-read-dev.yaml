@@ -1,36 +1,25 @@
 nodeSelector:
-  default:
-    nodeGroupName: group2
+  nodeGroupName: group2
 
-init:
-  importSnapshot:
-    SNAPSHOTURL: "/home/lotus_user/snapshot/latest.car"
-    REMOTE_SNAPSHOT_URL: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
-    enabled: true
-  clearRestart:
-    enabled: true
+importSnapshot: true
+snapshotLocation: "https://snapshots.mainnet.filops.net/minimal/latest"
 
-image:
-  repository: glif/lotus:v1.18.0
+lotusImageRepository: glif/lotus:v1.18.0
 
-Lotus:
-  service:
-    release: api-read-dev
-  env:
-    default:
-      INFRA_CLEAR_RESTART: "true"
-    custom:
-      INFRA_LOTUS_GATEWAY: "true"
-      LOTUS_MAX_HEAP: "30GiB"
+isSlaveNode: true
+createLotusService: false
+customReleaseName: api-read-dev
 
-resources:
-  lotus:
-    limits:
-      cpu: 3800m
-      memory: 56Gi
-    requests:
-      cpu: 1500m
-      memory: 16Gi
+lotusEnv:
+  INFRA_CLEAR_RESTART: "true"
+  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_LOTUS_GATEWAY: "true"
 
-persistence:
-  enabled: false
+lotusRequestsCpu: 12
+lotusRequestsMemory: 80Gi
+
+lotusCpuLimit: 15
+lotusMemoryLimit: 120Gi
+
+isSpotInstance: true
+createServiceRoleBinding: false
