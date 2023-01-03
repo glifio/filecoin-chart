@@ -2,7 +2,8 @@ nodeSelector:
   nodeGroupName: group2
 
 importSnapshot: true
-snapshotLocation: "https://snapshots.mainnet.filops.net/minimal/latest"
+downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
 lotusImageRepository: glif/lotus:v1.18.0
 
@@ -11,7 +12,6 @@ createLotusService: false
 customReleaseName: api-read-dev
 
 lotusEnv:
-  INFRA_CLEAR_RESTART: "true"
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
 
