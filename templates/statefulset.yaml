@@ -79,6 +79,7 @@ spec:
               echo "nothing to do here, lotus already have ledger";
               exit 0;
             fi;
+            rm -rf /home/lotus_user/.lotus && rm -rf /home/lotus_user/snapshot;
             echo "Downloading zst snapshot";
             apk --no-cache add aria2=1.36.0-r1 zstd=1.5.2-r9 &&
             aria2c --allow-overwrite --max-connection-per-server 5 --split 5
