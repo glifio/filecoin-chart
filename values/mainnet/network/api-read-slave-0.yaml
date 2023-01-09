@@ -14,6 +14,7 @@ lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "true"
+  GOLOG_LOG_FMT: "json"
 
 lotusImageRepository: glif/lotus:v1.18.0-arm
 

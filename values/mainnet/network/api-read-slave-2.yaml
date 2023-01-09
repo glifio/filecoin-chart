@@ -2,7 +2,8 @@ nodeSelector:
   nodeGroupName: group9
 
 importSnapshot: true
-snapshotLocation: "https://snapshots.mainnet.filops.net/minimal/latest"
+downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
 isSlaveNode: true
 createLotusService: false
@@ -11,12 +12,13 @@ customReleaseName: api-read-master
 lotusEnv:
   INFRA_CLEAR_RESTART: "true"
   INFRA_LOTUS_GATEWAY: "true"
+  GOLOG_LOG_FMT: "json"
 
 lotusImageRepository: glif/lotus:v1.18.0
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
 
-lotusCpuLimit: 15
+lotusCpuLimit: 25
 lotusMemoryLimit: 120Gi
 
 isSpotInstance: true
