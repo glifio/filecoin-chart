@@ -3,7 +3,7 @@ nodeSelector:
   nodeGroupName: group13
   assign_to_space00_07_nodes: allow_any_pods
 
-lotusImageRepository: glif/lotus:wallaby_latest_arm
+lotusImageRepository: glif/lotus:hyperspace-arm
 
 lotusServiceAnnotations:
   konghq.com/override: kong-ingress-timeout-30m

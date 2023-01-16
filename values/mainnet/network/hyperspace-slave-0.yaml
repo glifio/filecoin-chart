@@ -5,6 +5,10 @@ nodeSelector:
 
 lotusImageRepository: glif/lotus:hyperspace-arm
 
+isSlaveNode: true
+createLotusService: false
+customReleaseName: hyperspace
+
 lotusEnv:
   INFRA_CLEAR_RESTART: "true"
   LOTUS_VM_ENABLE_TRACING: "true"
