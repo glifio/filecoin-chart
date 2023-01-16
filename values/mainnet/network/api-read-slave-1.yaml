@@ -15,7 +15,6 @@ lotusEnv:
   INFRA_CLEAR_RESTART: "true"
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  GOLOG_LOG_FMT: "json"
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi

@@ -12,7 +12,6 @@ customReleaseName: api-read-master
 lotusEnv:
   INFRA_CLEAR_RESTART: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  GOLOG_LOG_FMT: "json"
 
 lotusImageRepository: glif/lotus:v1.18.0
 lotusRequestsCpu: 12

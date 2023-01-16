@@ -116,6 +116,7 @@ lotusEnv:
   INFRA_SECRETVOLUME: "true"
   INFRA_PERSISTNODEID: "false"
   ALLOWED_DELAY: 3
+  GOLOG_LOG_FMT: "json"
 
 createLotusService: true
 isSlaveNode: false
