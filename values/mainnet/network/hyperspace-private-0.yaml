@@ -1,0 +1,28 @@
+# you have to put the group name from existing EKS working group names.
+nodeSelector:
+  nodeGroupName: group13
+  assign_to_space00_07_nodes: allow_any_pods
+
+lotusImageRepository: glif/lotus:hyperspace-arm
+
+lotusServiceAnnotations:
+  konghq.com/override: kong-ingress-timeout-30m
+
+lotusEnv:
+  INFRA_CLEAR_RESTART: "true"
+  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_LOTUS_GATEWAY: "true"
+  # Filters are alive for 3 weeks, and three weeks of history are available
+  LOTUS_ACTOREVENT_MAXFILTERHEIGHTRANGE: "60480"
+  LOTUS_ACTOREVENT_FILTERTTL: "504h0m0s"
+
+lotusVolumeSize: "50Gi"
+lotusVolumeAccessModes:
+  - ReadWriteOnce
+
+lotusRequestsCpu: 0.5
+lotusRequestsMemory: 6Gi
+lotusCpuLimit: 7
+lotusMemoryLimit: 60Gi
+
+createServiceRoleBinding: false

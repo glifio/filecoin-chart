@@ -1,0 +1,27 @@
+# you have to put the group name from existing EKS working group names.
+nodeSelector:
+  nodeGroupName: group14
+  assign_to_space00_07_nodes: allow_any_pods
+
+lotusImageRepository: glif/lotus:hyperspace-arm
+
+isSlaveNode: true
+createLotusService: false
+customReleaseName: hyperspace
+
+lotusEnv:
+  INFRA_CLEAR_RESTART: "true"
+  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_LOTUS_GATEWAY: "true"
+
+
+lotusVolumeSize: "50Gi"
+lotusVolumeAccessModes:
+  - ReadWriteOnce
+
+lotusRequestsCpu: 0.5
+lotusRequestsMemory: 6Gi
+lotusCpuLimit: 7
+lotusMemoryLimit: 60Gi
+
+createServiceRoleBinding: false
