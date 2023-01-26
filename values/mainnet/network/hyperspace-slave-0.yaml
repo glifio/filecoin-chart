@@ -5,16 +5,22 @@ nodeSelector:
 
 lotusImageRepository: glif/lotus:hyperspace-arm
 
+lotusServiceAnnotations:
+  konghq.com/override: kong-ingress-timeout-30m
+
 isSlaveNode: true
 createLotusService: false
 customReleaseName: hyperspace
 
 lotusEnv:
-  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
   LOTUS_FEVM_ENABLEETHHASHTOFILECOINCIDMAPPING: "true"
   LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
+  LOTUS_FEVM_ENABLEETHRPC: "true"
+  LOTUS_FEVM_EVENTS_MAXFILTERHEIGHTRANGE: "60480"
+  LOTUS_FEVM_EVENTS_FILTERTTL: "504h0m0s"
 
 
 lotusVolumeSize: "50Gi"
