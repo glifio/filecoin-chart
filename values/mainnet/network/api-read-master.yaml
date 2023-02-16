@@ -8,13 +8,13 @@ lotusServiceAnnotations:
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
-#  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
 
 importSnapshot: true
 downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
 snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
-lotusImageRepository: glif/lotus:v1.18.0-arm
+lotusImageRepository: glif/lotus:v1.18.0-custom-arm
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
