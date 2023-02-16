@@ -15,7 +15,7 @@ lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"
 
-lotusImageRepository: glif/lotus:v1.18.0-arm
+lotusImageRepository: glif/lotus:v1.18.0-custom-arm
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
