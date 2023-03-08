@@ -9,12 +9,18 @@ lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"
+  # Filters are alive for 3 weeks, and three weeks of history are available
+  LOTUS_FEVM_ENABLEETHRPC: "true"
+  LOTUS_FEVM_EVENTS_MAXFILTERHEIGHTRANGE: "60480"
+  LOTUS_FEVM_EVENTS_FILTERTTL: "504h0m0s"
+  LOTUS_FEVM_ENABLEETHHASHTOFILECOINCIDMAPPING: "true"
+  LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
 
 importSnapshot: true
 downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
 snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
-lotusImageRepository: glif/lotus:v1.18.0-custom-arm
+lotusImageRepository: glif/lotus:1.20.0-mainnet-arm-custom
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
