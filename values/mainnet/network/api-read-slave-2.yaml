@@ -19,7 +19,7 @@ lotusEnv:
   LOTUS_FEVM_ENABLEETHHASHTOFILECOINCIDMAPPING: "true"
   LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
 
-lotusImageRepository: glif/lotus:1.20.0-mainnet-amd-custom
+lotusImageRepository: glif/lotus:1.20.1-mainnet-amd-custom
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
 

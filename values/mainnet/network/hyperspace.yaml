@@ -3,13 +3,13 @@ nodeSelector:
   nodeGroupName: group14
   assign_to_space00_07_nodes: allow_any_pods
 
-lotusImageRepository: glif/lotus:hyperspace-arm
+lotusImageRepository: glif/lotus:1.20.0-rc2-hyperspace-arm-custom
 
 lotusServiceAnnotations:
   konghq.com/override: kong-ingress-timeout-30m
 
 lotusEnv:
-  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
   LOTUS_FEVM_ENABLEETHHASHTOFILECOINCIDMAPPING: "true"

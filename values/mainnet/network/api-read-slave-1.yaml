@@ -5,7 +5,7 @@ importSnapshot: true
 downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
 snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
-lotusImageRepository: glif/lotus:1.20.0-mainnet-amd-custom
+lotusImageRepository: glif/lotus:1.20.1-mainnet-amd-custom
 
 isSlaveNode: true
 createLotusService: false
