@@ -3,7 +3,7 @@ nodeSelector:
   nodeGroupName: group13
   assign_to_space00_07_nodes: allow_any_pods
 
-lotusImageRepository: glif/lotus:1.20.0-rc2-hyperspace-arm-custom
+lotusImageRepository: glif/lotus:1.20.3-hyperspace-arm-custom
 
 lotusServiceAnnotations:
   konghq.com/override: kong-ingress-timeout-30m
@@ -16,11 +16,6 @@ lotusEnv:
   INFRA_CLEAR_RESTART: "false"
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  LOTUS_FEVM_ENABLEETHHASHTOFILECOINCIDMAPPING: "true"
-  LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
-  LOTUS_FEVM_ENABLEETHRPC: "true"
-  LOTUS_FEVM_EVENTS_MAXFILTERHEIGHTRANGE: "60480"
-  LOTUS_FEVM_EVENTS_FILTERTTL: "504h0m0s"
 
 
 lotusVolumeSize: "50Gi"
