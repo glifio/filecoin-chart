@@ -9,6 +9,7 @@ snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "true"
+  LOTUS_FEVM_ENABLEETHRPC: "false"
 
 
 lotusServiceAnnotations:
