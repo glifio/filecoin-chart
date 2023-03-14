@@ -9,7 +9,7 @@ lotusStatefulSetReplicas: 1
 nodeSelector: {}
 
 # lotusImageRepository is a repository to pull lotus image from
-lotusImageRepository: "glif/lotus:1.20.1-calibnet-arm-custom"
+lotusImageRepository: "glif/lotus:1.20.3-calibnet-arm-custom"
 # lotusImagePullPolicy indicates when to pull the image
 lotusImagePullPolicy: Always
 
