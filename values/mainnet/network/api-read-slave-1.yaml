@@ -5,16 +5,17 @@ importSnapshot: true
 downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
 snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
-lotusImageRepository: glif/lotus:1.20.3-mainnet-amd-custom
+lotusImageRepository: glif/lotus:1.20.3-mainnet-amd-custom-FFI-FIX
 
 isSlaveNode: true
 createLotusService: false
 customReleaseName: api-read-master
 
 lotusEnv:
-  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
+  LOTUS_FVM_CONCURRENCY: "32"
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
