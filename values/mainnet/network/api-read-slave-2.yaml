@@ -10,10 +10,11 @@ createLotusService: false
 customReleaseName: api-read-master
 
 lotusEnv:
-  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
   INFRA_LOTUS_GATEWAY: "true"
+  LOTUS_FVM_CONCURRENCY: "32"
 
-lotusImageRepository: glif/lotus:v1.18.0
+lotusImageRepository: glif/lotus:1.20.3-mainnet-amd-custom-FFI-FIX
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
 

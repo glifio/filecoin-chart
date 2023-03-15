@@ -1,5 +1,5 @@
 nodeSelector:
-  nodeGroupName: group17
+  nodeGroupName: group24
   assign_to_space00_07_nodes: allow_any_pods
 
 importSnapshot: true
@@ -16,7 +16,7 @@ lotusEnv:
   INFRA_CLEAR_RESTART: "false"
   LOTUS_FVM_CONCURRENCY: "32"
 
-lotusImageRepository: glif/lotus:1.20.3-mainnet-arm-custom-FFI-FIX
+lotusImageRepository: glif/lotus:1.20.3-mainnet-amd-custom-FFI-FIX
 
 lotusRequestsCpu: 10
 lotusRequestsMemory: 60Gi

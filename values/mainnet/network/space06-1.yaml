@@ -13,6 +13,7 @@ customReleaseName: space06
 lotusEnv:
   INFRA_CLEAR_RESTART: "true"
   INFRA_LOTUS_GATEWAY: "true"
+  LOTUS_FEVM_ENABLEETHRPC: "false"
 
 
 lotusImageRepository: glif/lotus:v1.18.0

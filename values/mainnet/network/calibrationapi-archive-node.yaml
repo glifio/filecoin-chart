@@ -3,6 +3,8 @@ nodeSelector:
   nodeGroupName: group13
   assign_to_space00_07_nodes: allow_any_pods
 
+lotusImageRepository: "glif/lotus:1.20.3-calibnet-arm"
+
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
 

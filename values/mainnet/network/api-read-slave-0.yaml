@@ -14,8 +14,9 @@ lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"
+  LOTUS_FVM_CONCURRENCY: "32"
 
-lotusImageRepository: glif/lotus:v1.18.0-custom-arm
+lotusImageRepository: glif/lotus:1.20.3-mainnet-arm-custom-FFI-FIX
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi

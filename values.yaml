@@ -9,7 +9,7 @@ lotusStatefulSetReplicas: 1
 nodeSelector: {}
 
 # lotusImageRepository is a repository to pull lotus image from
-lotusImageRepository: "glif/lotus:1.18.0-calibnet-arm"
+lotusImageRepository: "glif/lotus:1.20.3-calibnet-arm-custom"
 # lotusImagePullPolicy indicates when to pull the image
 lotusImagePullPolicy: Always
 
@@ -117,6 +117,12 @@ lotusEnv:
   INFRA_PERSISTNODEID: "false"
   ALLOWED_DELAY: 3
   GOLOG_LOG_FMT: "json"
+  LOTUS_FEVM_ENABLEETHRPC: "true"
+  LOTUS_FEVM_EVENTS_MAXFILTERHEIGHTRANGE: "60480"
+  LOTUS_FEVM_EVENTS_FILTERTTL: "504h0m0s"
+  LOTUS_FEVM_ENABLEETHHASHTOFILECOINCIDMAPPING: "true"
+  LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
+  LOTUS_CHAINSTORE_ENABLESPLITSTORE: "false"
 
 createLotusService: true
 isSlaveNode: false
