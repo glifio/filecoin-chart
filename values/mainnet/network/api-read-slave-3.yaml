@@ -21,7 +21,7 @@ lotusImageRepository: glif/lotus:1.20.3-mainnet-arm-custom-FFI-FIX
 lotusRequestsCpu: 10
 lotusRequestsMemory: 60Gi
 
-lotusCpuLimit: 15
+lotusCpuLimit: 25
 lotusMemoryLimit: 120Gi
 
 isSpotInstance: true

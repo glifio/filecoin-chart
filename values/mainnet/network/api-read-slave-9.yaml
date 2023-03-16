@@ -1,5 +1,5 @@
 nodeSelector:
-  nodeGroupName: group24
+  nodeGroupName: group27
   assign_to_space00_07_nodes: allow_any_pods
 
 importSnapshot: true
