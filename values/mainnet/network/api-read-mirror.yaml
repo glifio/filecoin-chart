@@ -1,5 +1,5 @@
 nodeSelector:
-  nodeGroupName: group18
+  nodeGroupName: group30
   assign_to_space00_07_nodes: allow_any_pods
 
 lotusServiceAnnotations:
@@ -25,7 +25,3 @@ lotusMemoryLimit: 120Gi
 
 isSpotInstance: true
 createServiceRoleBinding: false
-
-createMirroredService: true
-mirroredServiceSelectors:
-  statefulset.kubernetes.io/pod-name: api-read-master-lotus-0

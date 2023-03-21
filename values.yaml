@@ -136,3 +136,6 @@ ipfsImageRepository: "ipfs/go-ipfs"
 ipfsImagePullPolicy: Always
 
 useLocalStorage: false
+
+createMirroredService: false
+mirroredServiceSelectors:
