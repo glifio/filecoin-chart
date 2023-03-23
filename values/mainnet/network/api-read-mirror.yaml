@@ -25,3 +25,5 @@ lotusMemoryLimit: 120Gi
 
 isSpotInstance: true
 createServiceRoleBinding: false
+
+disableReadinessProbe: true

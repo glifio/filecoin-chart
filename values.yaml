@@ -139,3 +139,5 @@ useLocalStorage: false
 
 createMirroredService: false
 mirroredServiceSelectors:
+
+disableReadinessProbe: false
