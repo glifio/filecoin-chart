@@ -6,7 +6,7 @@ metadata:
   labels:
     app: lotus-node-app
   annotations:
-  {{- range $key, $value := .Values.lotusServiceAnnotations }}
+  {{- range $key, $value := .Values.mirroredServiceAnnotations }}
       {{ $key }}: {{ $value | quote }}
   {{- end }}
 spec:

@@ -3,7 +3,7 @@ nodeSelector:
   assign_to_space00_07_nodes: allow_any_pods
 
 lotusServiceAnnotations:
-  konghq.com/override: kong-ingress-timeout-10m
+  konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
@@ -28,4 +28,13 @@ createServiceRoleBinding: false
 
 createMirroredService: true
 mirroredServiceSelectors:
-  statefulset.kubernetes.io/pod-name: api-read-master-lotus-0
+  release: api-read-master
+mirroredServiceAnnotations:
+  konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions
+
+createCanaryService: true
+canaryServiceSelectors:
+  release: api-read-master
+  isCanary: "yes"
+canaryServiceAnnotations:
+  konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions

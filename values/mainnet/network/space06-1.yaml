@@ -12,11 +12,10 @@ customReleaseName: space06
 
 lotusEnv:
   INFRA_CLEAR_RESTART: "true"
-  INFRA_LOTUS_GATEWAY: "true"
-  LOTUS_FEVM_ENABLEETHRPC: "false"
+  INFRA_LOTUS_GATEWAY: "false"
 
 
-lotusImageRepository: glif/lotus:v1.18.0
+lotusImageRepository: glif/lotus:1.20.1-mainnet-amd-custom
 
 lotusRequestsCpu: 7
 lotusRequestsMemory: 50Gi

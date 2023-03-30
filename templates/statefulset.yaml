@@ -28,6 +28,9 @@ spec:
         {{- else }}
         release: {{ .Release.Name }}
         {{- end }}
+        {{- range $key, $value := .Values.customPodLabels }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
     spec:
       securityContext:
         runAsGroup: {{ .Values.runAsGroup }}

@@ -8,7 +8,7 @@ lotusServiceAnnotations:
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
   LOTUS_FVM_CONCURRENCY: "32"
   LOTUS_FVM_CONCURRENCY_RESERVED: "4"
 
@@ -16,7 +16,7 @@ importSnapshot: true
 downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
 snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
-lotusImageRepository: glif/lotus:v1.21.0-rpc-mirror-p01
+lotusImageRepository: glif/lotus:v1.21.0-rpc-p02-mainnet-amd64
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi

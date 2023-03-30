@@ -142,3 +142,14 @@ createMirroredService: false
 mirroredServiceSelectors:
 
 disableReadinessProbe: false
+
+createCanaryService: false
+canaryServiceSelectors:
+
+customPodLabels:
+
+mirroredServiceAnnotations:
+  prometheus.io/scrape: "false"
+
+canaryServiceAnnotations:
+  prometheus.io/scrape: "false"
