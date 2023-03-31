@@ -15,7 +15,7 @@ importSnapshot: true
 downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
 snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
-lotusImageRepository: glif/lotus:v1.21.0-rpc-p01-methods-mainnet-arm64
+lotusImageRepository: glif/lotus:v1.21.0-rpc-p01-custom-mainnet-arm64
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
@@ -34,7 +34,7 @@ mirroredServiceAnnotations:
 
 createCanaryService: true
 canaryServiceSelectors:
-  release: api-read-master
   isCanary: "yes"
+  release: "api-read-master"
 canaryServiceAnnotations:
   konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions

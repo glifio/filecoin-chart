@@ -16,7 +16,7 @@ lotusEnv:
   INFRA_CLEAR_RESTART: "false"
   LOTUS_FVM_CONCURRENCY: "32"
 
-lotusImageRepository: glif/lotus:v1.21.0-rpc-p01-methods-mainnet-arm64
+lotusImageRepository: glif/lotus:v1.21.0-rpc-p01-custom-mainnet-arm64
 
 lotusRequestsCpu: 10
 lotusRequestsMemory: 60Gi

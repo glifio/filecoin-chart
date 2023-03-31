@@ -14,7 +14,7 @@ lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
   LOTUS_FVM_CONCURRENCY: "32"
 
-lotusImageRepository: glif/lotus:v1.21.0-rpc-p01
+lotusImageRepository: glif/lotus:v1.21.0-rpc-p01-custom-mainnet-amd64
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
 
