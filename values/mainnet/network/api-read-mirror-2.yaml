@@ -1,0 +1,28 @@
+nodeSelector:
+  nodeGroupName: group35
+  assign_to_space00_07_nodes: allow_any_pods
+
+lotusServiceAnnotations:
+  konghq.com/override: kong-ingress-timeout-10m
+
+lotusEnv:
+  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_LOTUS_GATEWAY: "true"
+  INFRA_CLEAR_RESTART: "false"
+
+importSnapshot: true
+downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+snapshotLocation: "/home/lotus_user/snapshot/latest.car"
+
+lotusImageRepository: glif/lotus:v1.21.0-rpc-p02-mirror-rwmutexes-mainnet-mirror-amd64
+
+lotusRequestsCpu: 12
+lotusRequestsMemory: 80Gi
+
+lotusCpuLimit: 15
+lotusMemoryLimit: 120Gi
+
+isSpotInstance: true
+createServiceRoleBinding: false
+
+disableReadinessProbe: true

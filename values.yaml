@@ -123,6 +123,7 @@ lotusEnv:
   LOTUS_FEVM_ENABLEETHHASHTOFILECOINCIDMAPPING: "true"
   LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
   LOTUS_CHAINSTORE_ENABLESPLITSTORE: "false"
+  LOTUS_SKIP_APPLY_TS_MESSAGE_CALL_WITH_GAS: "1"
 
 createLotusService: true
 isSlaveNode: false
@@ -136,3 +137,19 @@ ipfsImageRepository: "ipfs/go-ipfs"
 ipfsImagePullPolicy: Always
 
 useLocalStorage: false
+
+createMirroredService: false
+mirroredServiceSelectors:
+
+disableReadinessProbe: false
+
+createCanaryService: false
+canaryServiceSelectors:
+
+customPodLabels:
+
+mirroredServiceAnnotations:
+  prometheus.io/scrape: "false"
+
+canaryServiceAnnotations:
+  prometheus.io/scrape: "false"

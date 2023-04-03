@@ -1,6 +1,6 @@
 # you have to put the group name from existing EKS working group names.
 nodeSelector:
-  nodeGroupName: group13
+  nodeGroupName: group34
   assign_to_space00_07_nodes: allow_any_pods
 
 lotusImageRepository: glif/lotus:1.20.3-hyperspace-arm-custom
@@ -13,7 +13,7 @@ createLotusService: false
 customReleaseName: hyperspace
 
 lotusEnv:
-  INFRA_CLEAR_RESTART: "false"
+  INFRA_CLEAR_RESTART: "true"
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
 
@@ -28,3 +28,6 @@ lotusCpuLimit: 7
 lotusMemoryLimit: 60Gi
 
 createServiceRoleBinding: false
+
+importSnapshot: true
+snapshotLocation: https://snapshots.hyperspace.yoga/hyperspace-latest-pruned.car

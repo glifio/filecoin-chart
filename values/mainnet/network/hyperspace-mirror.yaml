@@ -1,9 +1,9 @@
 # you have to put the group name from existing EKS working group names.
 nodeSelector:
-  nodeGroupName: group14
+  nodeGroupName: group30
   assign_to_space00_07_nodes: allow_any_pods
 
-lotusImageRepository: glif/lotus:1.20.3-hyperspace-arm-custom
+lotusImageRepository: glif/lotus:1.20.3-hyperspace-amd-custom
 
 lotusServiceAnnotations:
   konghq.com/override: kong-ingress-timeout-30m
@@ -25,6 +25,5 @@ lotusMemoryLimit: 60Gi
 
 createServiceRoleBinding: false
 
-createMirroredService: true
-mirroredServiceSelectors:
-  statefulset.kubernetes.io/pod-name: hyperspace-lotus-0
+importSnapshot: true
+snapshotLocation: https://snapshots.hyperspace.yoga/hyperspace-latest-pruned.car

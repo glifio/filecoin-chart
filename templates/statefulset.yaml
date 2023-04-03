@@ -28,6 +28,9 @@ spec:
         {{- else }}
         release: {{ .Release.Name }}
         {{- end }}
+        {{- range $key, $value := .Values.customPodLabels }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
     spec:
       securityContext:
         runAsGroup: {{ .Values.runAsGroup }}
@@ -171,18 +174,20 @@ spec:
         livenessProbe:
           tcpSocket:
             port: api
-          initialDelaySeconds: 10
-          periodSeconds: 10
+          initialDelaySeconds: 600
+          periodSeconds: 20
           successThreshold: 1
-          timeoutSeconds: 10
-        readinessProbe:
+          timeoutSeconds: 20
+        {{- if not .Values.disableReadinessProbe }}
+        readinessProbe: 
           exec:
             command:
             - healthcheck
-          initialDelaySeconds: 10
-          periodSeconds: 10
+          initialDelaySeconds: 600
+          periodSeconds: 60
           successThreshold: 1
           timeoutSeconds: 3
+        {{- end }}
         startupProbe:
           exec:
             command:

@@ -3,7 +3,7 @@ nodeSelector:
   assign_to_space00_07_nodes: allow_any_pods
 
 lotusServiceAnnotations:
-  konghq.com/override: kong-ingress-timeout-10m
+  konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
@@ -15,7 +15,7 @@ importSnapshot: true
 downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
 snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
-lotusImageRepository: glif/lotus:1.20.3-mainnet-arm-custom-FFI-FIX
+lotusImageRepository: glif/lotus:v1.21.0-rpc-p01-custom-mainnet-arm64
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
@@ -25,3 +25,16 @@ lotusMemoryLimit: 120Gi
 
 isSpotInstance: true
 createServiceRoleBinding: false
+
+createMirroredService: true
+mirroredServiceSelectors:
+  release: api-read-master
+mirroredServiceAnnotations:
+  konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions
+
+createCanaryService: true
+canaryServiceSelectors:
+  isCanary: "yes"
+  release: "api-read-master"
+canaryServiceAnnotations:
+  konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions

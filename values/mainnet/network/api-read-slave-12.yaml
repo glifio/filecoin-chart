@@ -1,5 +1,5 @@
 nodeSelector:
-  nodeGroupName: group26
+  nodeGroupName: group31
   assign_to_space00_07_nodes: allow_any_pods
 
 importSnapshot: true
@@ -16,7 +16,7 @@ lotusEnv:
   INFRA_CLEAR_RESTART: "false"
   LOTUS_FVM_CONCURRENCY: "32"
 
-lotusImageRepository: glif/lotus:v1.21.0-rpc-p01-custom-mainnet-amd64
+lotusImageRepository: glif/lotus:v1.21.0-rpc-p02-custom-mainnet-canary-amd64
 
 lotusRequestsCpu: 10
 lotusRequestsMemory: 60Gi
@@ -26,3 +26,6 @@ lotusMemoryLimit: 120Gi
 
 isSpotInstance: true
 createServiceRoleBinding: false
+
+customPodLabels:
+ isCanary: "yes"
