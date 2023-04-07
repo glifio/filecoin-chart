@@ -3,7 +3,7 @@ nodeSelector:
   assign_to_space00_07_nodes: allow_any_pods
 
 lotusServiceAnnotations:
-  konghq.com/override: kong-ingress-timeout-10m
+  konghq.com/read-timeout: 600000
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"

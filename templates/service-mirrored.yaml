@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-mirrored-lotus-service
   labels:
-    app: lotus-node-app
+    app: lotus-node-mirror
   annotations:
   {{- range $key, $value := .Values.mirroredServiceAnnotations }}
       {{ $key }}: {{ $value | quote }}

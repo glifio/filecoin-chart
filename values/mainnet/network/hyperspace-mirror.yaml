@@ -6,7 +6,7 @@ nodeSelector:
 lotusImageRepository: glif/lotus:1.20.3-hyperspace-amd-custom
 
 lotusServiceAnnotations:
-  konghq.com/override: kong-ingress-timeout-30m
+  konghq.com/read-timeout: 1800000
 
 lotusEnv:
   INFRA_CLEAR_RESTART: "false"

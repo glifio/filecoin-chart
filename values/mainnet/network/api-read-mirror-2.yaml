@@ -2,9 +2,6 @@ nodeSelector:
   nodeGroupName: group35
   assign_to_space00_07_nodes: allow_any_pods
 
-lotusServiceAnnotations:
-  konghq.com/override: kong-ingress-timeout-10m
-
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
