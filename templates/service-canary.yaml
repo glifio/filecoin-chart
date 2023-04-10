@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-canary-lotus-service
   labels:
-    app: lotus-node-app
+    app: lotus-node-canary
   annotations:
   {{- range $key, $value := .Values.canaryServiceAnnotations }}
       {{ $key }}: {{ $value | quote }}

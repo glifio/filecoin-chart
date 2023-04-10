@@ -5,9 +5,6 @@ nodeSelector:
 
 lotusImageRepository: glif/lotus:1.20.3-hyperspace-arm-custom
 
-lotusServiceAnnotations:
-  konghq.com/override: kong-ingress-timeout-30m
-
 isSlaveNode: true
 createLotusService: false
 customReleaseName: hyperspace
