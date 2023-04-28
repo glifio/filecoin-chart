@@ -5,7 +5,7 @@ nodeSelector:
 useIpfs: true
 ipfsVolumeSize: "20Gi"
 
-lotusImageRepository: "glif/lotus:1.20.3-calibnet-arm-custom"
+lotusImageRepository: glif/lotus:v1.22.0-rc4-calibntet-arm64
 
 lotusEnv:
   INFRA_CLEAR_RESTART: "false"
