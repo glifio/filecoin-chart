@@ -15,7 +15,7 @@ lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"
 
-lotusImageRepository: glif/lotus:v1.23.0-custom-mainnet-arm64
+lotusImageRepository: glif/lotus:1.23.0-brave-perf-p1-custom-mainnet-arm64-canary
 
 lotusRequestsCpu: 10
 lotusRequestsMemory: 60Gi
@@ -25,3 +25,6 @@ lotusMemoryLimit: 120Gi
 
 isSpotInstance: true
 createServiceRoleBinding: false
+
+customPodLabels:
+  isCanary: "yes"

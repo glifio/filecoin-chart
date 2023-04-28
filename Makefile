@@ -38,7 +38,7 @@ all: lint package
 #NAMESPACE = network
 
 # Deploy calibrationapi-archive-node
-NODE = api-read-slave-12
+NODE = api-read-slave-10
 ENV = mainnet
 NAMESPACE = network
 
