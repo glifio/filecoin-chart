@@ -5,10 +5,18 @@ nodeSelector:
 useIpfs: true
 ipfsVolumeSize: "20Gi"
 
-lotusImageRepository: glif/lotus:v1.22.0-rc4-calibntet-arm64
+importSnapshot: true
+downloadSnapshotUrl: "https://snapshots.calibrationnet.filops.net/minimal/latest.zst"
+snapshotLocation: "/home/lotus_user/snapshot/latest.car"
+
+lotusServiceAnnotations:
+  konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions
+  konghq.com/read-timeout: "600000"
+
+lotusImageRepository: glif/lotus:v1.23.0-custom-calibnet-arm64
 
 lotusEnv:
-  INFRA_CLEAR_RESTART: "false"
+  INFRA_CLEAR_RESTART: "true"
   INFRA_LOTUS_GATEWAY: "true"
   LOTUS_MAX_HEAP: "10GiB"
 
@@ -17,4 +25,4 @@ lotusRequestsMemory: 3Gi
 lotusCpuLimit: 3500m
 lotusMemoryLimit: 10Gi
 
-lotusVolumeSize: "150Gi"
+isSpotInstance: true
