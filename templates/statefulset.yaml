@@ -188,6 +188,7 @@ spec:
           successThreshold: 1
           timeoutSeconds: 3
         {{- end }}
+        {{- if not .Values.disableStartupProbe }}
         startupProbe:
           exec:
             command:
@@ -201,6 +202,7 @@ spec:
           periodSeconds: 200
           successThreshold: 1
           timeoutSeconds: 10
+        {{- end }}
         ports:
         - containerPort: 1234
           name: api
