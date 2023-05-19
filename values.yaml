@@ -143,6 +143,7 @@ createMirroredService: false
 mirroredServiceSelectors:
 
 disableReadinessProbe: false
+disableStartupProbe: false
 
 createCanaryService: false
 canaryServiceSelectors:
