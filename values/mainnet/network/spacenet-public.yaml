@@ -1,0 +1,26 @@
+nodeSelector:
+  nodepool: spacenet
+
+lotusImageRepository: glif/lotus:v0.2.0-spacenet-amd64
+
+lotusEnv:
+  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_LOTUS_GATEWAY: "true"
+  INFRA_CLEAR_RESTART: "false"
+  LOTUS_FVM_CONCURRENCY : 8
+
+lotusRequestsCpu: 10
+lotusRequestsMemory: 50Gi
+
+lotusCpuLimit: 16
+lotusMemoryLimit: 60Gi
+
+createServiceRoleBinding: false
+
+lotusVolumeSize: "50Gi"
+lotusVolumeAccessModes:
+  - ReadWriteOnce
+lotusVolumeStorageClass: csi-cinder-high-speed
+
+disableReadinessProbe: true
+disableStartupProbe: true
