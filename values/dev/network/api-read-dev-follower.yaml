@@ -13,15 +13,16 @@ customReleaseName: api-read-dev
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
-  INFRA_LOTUS_GATEWAY: "true"
+  INFRA_LOTUS_FOLLOWER: "true"
   INFRA_CLEAR_RESTART: "true"
   LOTUS_CASSANDRA_UNIVERSAL_STORE: "yb-tserver-service.network.svc.cluster.local:9042"
+  FULLNODE_API_INFO: "api-read-dev-lotus-service.network.svc.cluster.local:1234"
 
-lotusRequestsCpu: 12
-lotusRequestsMemory: 80Gi
+lotusRequestsCpu: 5
+lotusRequestsMemory: 50Gi
 
-lotusCpuLimit: 15
-lotusMemoryLimit: 120Gi
+lotusCpuLimit: 6
+lotusMemoryLimit: 60Gi
 
 isSpotInstance: true
 createServiceRoleBinding: false
