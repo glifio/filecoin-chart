@@ -10,7 +10,7 @@ lotusServiceAnnotations:
   konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions
   konghq.com/read-timeout: "600000"
 
-lotusImageRepository: glif/lotus:v1.23.0-custom-calibnet-arm64
+lotusImageRepository: glif/lotus:v1.23.0-eth-subscribe-calibnet-arm64
 
 lotusEnv:
   INFRA_CLEAR_RESTART: "false"
