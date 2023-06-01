@@ -1,16 +1,16 @@
 nodeSelector:
-  nodeGroupName: calibnet-0
+  nodeGroupName: calibnet-1
   assign_to_space00_07_nodes: allow_any_pods
 
 importSnapshot: true
 downloadSnapshotUrl: "https://snapshots.calibrationnet.filops.net/minimal/latest.zst"
 snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
-lotusServiceAnnotations:
-  konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions
-  konghq.com/read-timeout: "600000"
+isSlaveNode: true
+createLotusService: false
+customReleaseName: calibrationapi-0
 
-lotusImageRepository: glif/lotus:v1.23.0-eth-subscribe-calibnet-arm64
+lotusImageRepository: glif/lotus:v1.23.0-eth-subscribe-calibnet-amd64
 
 lotusEnv:
   INFRA_CLEAR_RESTART: "false"
