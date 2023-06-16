@@ -1,31 +1,33 @@
 nodeSelector:
-  nodeGroupName: group2
+  app: api-read-dev
+  purpose: worker
 
-lotusImageRepository: glif/lotus:cluster-mainnet-amd64
-
-isSlaveNode: true
-createLotusService: false
-customReleaseName: api-read-dev
+importSnapshot: true
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"
   LOTUS_CASSANDRA_UNIVERSAL_STORE: "yb-tserver-service.network.svc.cluster.local:9042"
+  FULLNODE_API_INFO: "http://api-read-dev-lotus-service.network.svc.cluster.local:1234"
   INFRA_IMPORT_SNAPSHOT: "false"
+  INFRA_SYNC: "false"
+
+lotusImageRepository: glif/lotus:cluster-mainnet-amd64
 
 lotusRequestsCpu: 12
-lotusRequestsMemory: 50Gi
+lotusRequestsMemory: 80Gi
 
 lotusCpuLimit: 15
-lotusMemoryLimit: 60Gi
+lotusMemoryLimit: 120Gi
 
 isSpotInstance: true
 createServiceRoleBinding: false
+
+lotusStatefulSetReplicas: 2
 
 disableReadinessProbe: true
 disableStartupProbe: true
 disableLivenessProbe: true
 
-importSnapshot: true
 isDummy: true

@@ -144,6 +144,7 @@ mirroredServiceSelectors:
 
 disableReadinessProbe: false
 disableStartupProbe: false
+disableLivenessProbe: false
 
 createCanaryService: false
 canaryServiceSelectors:
@@ -155,3 +156,5 @@ mirroredServiceAnnotations:
 
 canaryServiceAnnotations:
   prometheus.io/scrape: "false"
+
+isDummy: false
