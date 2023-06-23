@@ -1,3 +1,148 @@
+
+lotusContainer:
+  image: "glif/lotus:1.20.3-calibnet-arm-custom"
+  imagePullPolicy: Always
+  command: ["/etc/lotus/docker/run"]
+  preStopCommand: ["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]
+
+
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 600
+  periodSeconds: 20
+  successThreshold: 1
+  timeoutSeconds: 20
+
+readinessProbe:
+  enabled: true
+  command: ["healthcheck"]
+  initialDelaySeconds: 600
+  periodSeconds: 60
+  successThreshold: 1
+  timeoutSeconds: 3
+
+startupProbe:
+  enabled: true
+  failureThreshold: 1000
+  periodSeconds: 200
+  successThreshold: 1
+  timeoutSeconds: 10
+
+lotusVolume:
+  name: vol-lotus
+  hostPath:
+    enabled: true 
+    path: /nvme/disk
+
+lotusSetPermissions: true
+
+downloadSnapshot:
+  enabled: true
+  url: null
+  unpack: true
+  checkLedger: true
+  dependecies:
+    aria2: "1.36.0-r1"
+    zstd: "1.5.5-r0"
+
+lotusEnv:
+  # DOCKER SCRIPTS RELATED ENVIRONMENT VARIABLES
+  INFRA_LOTUS_DAEMON: "true"
+  INFRA_LOTUS_HOME: "/home/lotus_user"
+  INFRA_CLEAR_RESTART: "false"
+  INFRA_SYNC: "true"
+  INFRA_SECRETVOLUME: "true"
+  INFRA_PERSISTNODEID: "false"
+  INFRA_IMPORT_SNAPSHOT: "false"
+  SNAPSHOTURL: null
+  ALLOWED_DELAY: 3
+  GOLOG_LOG_FMT: "json"
+  LOTUS_FEVM_ENABLEETHRPC: "true"
+  LOTUS_FEVM_EVENTS_MAXFILTERHEIGHTRANGE: "60480"
+  LOTUS_FEVM_EVENTS_FILTERTTL: "504h0m0s"
+  LOTUS_FEVM_ENABLEETHHASHTOFILECOINCIDMAPPING: "true"
+  LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
+  LOTUS_CHAINSTORE_ENABLESPLITSTORE: "false"
+  LOTUS_SKIP_APPLY_TS_MESSAGE_CALL_WITH_GAS: "1"
+  LOTUS_FVM_CONCURRENCY : 24
+
+lotus:
+  sts:
+    create: true
+    labels:
+      app: lotus
+      release: stable
+      network: mainnet
+      availability: public
+    replicas: 1
+    volumes:
+      # TODO: Connect to INFRA_SECRETVOLUME somehow?
+      lotusSecret:
+        create: true
+        name: lotus-secret-vol
+      lotus:
+        create: true
+        name: vol-lotus
+        # TODO: Is there other options?
+        hostPath:
+          create: true
+          path: /nvme/disk
+          type: Directory
+          mountPath: /home/lotus_user/.lotus
+          subPath: lotus # Applies only to spot instances?
+        volumeClaim:
+          create: true
+          accessModes: ["ReadWriteOnce"]
+          storage: 16Gi
+          storageClassName: ebs-sc-gp2
+    initContainers:
+      setPermissions:
+        create: true
+      downloadSnapshot:
+        create: true
+    containers:
+      lotus:
+        create: true
+        image: "" # Leave blank so Helm will throw error when not specified
+        imagePullPolicy: Always
+        command: ["/etc/lotus/docker/run"]
+        preStopCommand: ["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]
+        livenessProbe:
+          create: true
+          initialDelaySeconds: 600
+          periodSeconds: 20
+          successThreshold: 1
+          timeoutSeconds: 20
+        readinessProbe:
+          create: true
+          command: ["healthcheck"]
+          initialDelaySeconds: 600
+          periodSeconds: 60
+          successThreshold: 1
+          timeoutSeconds: 3
+        startupProbe:
+          create: true
+          command: # Varies depending on INFRA_IMPORT_SNAPSHOT
+          failureThreshold: 1000
+          periodSeconds: 200
+          successThreshold: 1
+          timeoutSeconds: 10
+        resources:
+          requests:
+            cpu: 500m
+            memory: 3Gi
+          limits:
+            cpu: 1900m
+            memory: 5Gi
+        nodeSelector: {}
+  service:
+    create: true
+    labels:
+      app: lotus-node-app
+    annotations: {}
+    
+    
+
 # createLotusStatefulSet indicates if StatefulSet has to be created
 createLotusStatefulSet: true
 # lotusStatefulSetReplicas indicates how many replicas should be

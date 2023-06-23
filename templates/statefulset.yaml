@@ -1,20 +1,19 @@
-{{- if .Values.createLotusStatefulSet }}
+{{- if .Values.lotus.sts.create }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-lotus
   labels:
-    app: lotus-node-app
+    {{- range $key, $value := .Values.lotus.sts.labels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
 spec:
-  replicas: {{ .Values.lotusStatefulSetReplicas }}
+  replicas: {{ .Values.lotus.sts.replicas }}
   serviceName: {{ .Release.Name }}-lotus-service
   selector:
     matchLabels:
-      {{- if .Values.isSlaveNode }}
-      release: {{ .Values.customReleaseName }}
-      release-fork: {{ .Release.Name }}
-      {{- else }}
-      release: {{ .Release.Name }}
+      {{- range $key, $value := .Values.lotus.sts.labels }}
+      {{ $key }}: {{ $value | quote }}
       {{- end }}
   template:
     metadata:
@@ -22,206 +21,168 @@ spec:
         chart: {{ .Chart.Version }}
         appVersion: {{ .Chart.AppVersion }}
         heritage: {{ .Release.Service }}
-        {{- if .Values.isSlaveNode }}
-        release: {{ .Values.customReleaseName }}
-        release-fork: {{ .Release.Name }}
-        {{- else }}
-        release: {{ .Release.Name }}
-        {{- end }}
-        {{- range $key, $value := .Values.customPodLabels }}
+        {{- range $key, $value := .Values.lotus.sts.labels }}
         {{ $key }}: {{ $value | quote }}
         {{- end }}
     spec:
       securityContext:
-        runAsGroup: {{ .Values.runAsGroup }}
-        runAsUser: {{ .Values.runAsUser }}
-        fsGroup: {{ .Values.fsGroup }}
+        runAsGroup: 2000
+        runAsUser: 2000
+        fsGroup: 2000
       volumes:
-      {{- if .Values.useLotusSecret }}
+      {{- if .Values.lotusEnv.INFRA_SECRETVOLUME }}
         - name: lotus-secret-vol
           secret:
             secretName: {{ .Release.Name }}-lotus-secret
             defaultMode: 384 # permission 0600
       {{- end}}
-      {{- if or .Values.isSpotInstance .Values.useLocalStorage}}
-        - name: {{ .Values.lotusVolumeName }}
+      {{- if or .Values.lotusVolume.hostPath.enabled }}
+        - name: {{ .Values.lotusVolume.name }}
           hostPath:
-            path: {{ .Values.appHostPath }}
+            path: {{ .Values.lotusVolume.hostPath.path }}
             type: Directory
       {{- end }}
-      {{- if  and .Values.isSpotInstance .Values.useIpfs}}
-        - name: {{ .Values.ipfsVolumeName }}
-          hostPath:
-            path: {{ .Values.appHostPath }}
-            type: Directory
-      {{- end}}
       initContainers:
-      {{- if .Values.importSnapshot }}
+      {{- if .Values.lotusSetPermissions }}
       - name: hostpath-permission
         image: busybox
         imagePullPolicy: Always
         command: ["/bin/sh","-c"]
         args:
-          - mkdir -p /tmp/lotus /tmp/ipfs /tmp/snapshot && chown -R 2000:2000 /tmp;
+          - mkdir -p /tmp/lotus /tmp/snapshot && chown -R 2000:2000 /tmp;
         securityContext:
           runAsUser: 0
         volumeMounts:
-          - name: {{ .Values.lotusVolumeName }}
+          - name: {{ .Values.lotusVolume.name }}
             mountPath: /tmp
-      {{- if .Values.downloadSnapshotUrl }}
+      {{- end }}
+      {{- if .Values.downloadSnapshot.enabled }}
       - name: download-zst-snapshot
         image: alpine:3.17
         imagePullPolicy: Always
         workingDir: /home/lotus_user/snapshot
+        env:
+          - name: INFRA_CLEAR_RESTART
+            value: {{ .Values.lotusEnv.INFRA_CLEAR_RESTART }}
+          - name: SNAPSHOTURL
+            value: {{ .Values.lotusEnv.SNAPSHOTURL }}
+          - name: DOWNLOAD_FROM
+            value: {{ .Values.downloadSnapshot.url }}
+          - name: ENABLE_UNPACK
+            value: {{ .Values.downloadSnapshot.unpack }}
+          - name: ENABLE_CHECK_LEDGER
+            value: {{ .Values.downloadSnapshot.checkLedger }}
+          - name: INFRA_LOTUS_HOME
+            value: {{ .Values.lotusEnv.INFRA_LOTUS_HOME }}
+          - name: ARIA2_VERSION
+            value: {{ .Values.downloadSnapshot.dependecies.aria2 }}
+          - name: ZSTD_VERSION
+            value: {{ .Values.downloadSnapshot.dependecies.zstd }}
         command:
           - "/bin/sh"
           - "-c"
         args:
           - set -euo pipefail;
-            RESTART={{ .Values.lotusEnv.INFRA_CLEAR_RESTART }};
-            if [ $RESTART = false ] && [ "$(ls -A /home/lotus_user/.lotus)" ]; then
-              echo "nothing to do here, lotus already have ledger";
+            echo "Installing dependencies...";
+            apk --no-cache add aria2="$ARIA2_VERSION" zstd="$ZSTD_VERSION";
+            if [ $INFRA_CLEAR_RESTART = false ]; then
+              echo "Ledger deletion is disabled. Exiting...";
               exit 0;
             fi;
-            rm -rf /home/lotus_user/.lotus/* && rm -rf /home/lotus_user/snapshot/*;
+            LOTUS_PATH="$INFRA_LOTUS_HOME/.lotus";
+            if [ $ENABLE_CHECK_LEDGER = true ] && [ "$(ls -A $LOTUS_PATH)" ]; then
+              echo "Ledger check is enabled, and the ledger already exists. Exiting...";
+              exit 0;
+            fi
+            echo "Deliting the ledger...";
+            rm -rf /home/lotus_user/.lotus/*;
+            echo "Deleting the previous snapshots...";
+            rm -rf /home/lotus_user/snapshot/*;
             echo "Downloading zst snapshot";
-            apk --no-cache add aria2=1.36.0-r1 zstd=1.5.5-r0 &&
-            aria2c --allow-overwrite --max-connection-per-server 5 --split 5
-              {{ .Values.downloadSnapshotUrl }} -o latest.zst &&
-            pzstd -v --processes "$(nproc)" --force --rm --decompress latest.zst -o latest.car;
+            aria2c --allow-overwrite --max-connection-per-server 5 --split 5 "$DOWNLOAD_FROM" -o "/tmp/snapshot.zst";
+            if [ $ENABLE_UNPACK = false ]; then
+                echo "Unpack is disabled. Copying to the destination as is...";
+                cp "/tmp/snapshot.zst" "$SNAPSHOTURL";
+            else
+                pzstd -v --processes "$(nproc)" --force --rm --decompress "/tmp/snapshot.zst" -o "$SNAPSHOTS";
+            fi
         securityContext:
           runAsUser: 0
         volumeMounts:
-          - name: {{ .Values.lotusVolumeName }}
+          - name: {{ .Values.lotusVolume.name }}
             mountPath: /home/lotus_user/snapshot
             subPath: snapshot
-          - name: {{ .Values.lotusVolumeName }}
+          - name: {{ .Values.lotusVolume.name }}
             mountPath: /home/lotus_user/.lotus
             subPath: lotus
       {{- end }}
-      {{- end }}
       containers:
-      {{- if .Values.useIpfs }}
-      - name: {{ .Chart.Name }}-ipfs
-        imagePullPolicy: {{ .Values.ipfsImagePullPolicy }}
-        image: {{ .Values.ipfsImageRepository }}
-        livenessProbe:
-          httpGet:
-            path: /webui
-            port: 5001
-          initialDelaySeconds: 200
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 6
-        securityContext:
-          runAsUser: 0
-        ports:
-        - containerPort: 4001
-        - containerPort: 5001
-        - containerPort: 8080
-          name: rpc
-        volumeMounts:
-          - name: vol-ipfs
-            mountPath: /data/ipfs
-            {{- if .Values.isSpotInstance }}
-            subPath: ipfs
-            {{- end }}
-        resources:
-          requests:
-            cpu: {{ .Values.ipfsRequestsCpu }}
-            memory: {{ .Values.ipfsRequestsMemory }}
-          limits:
-            cpu: {{ .Values.ipfsCpuLimit }}
-            memory: {{ .Values.ipfsMemoryLimit }}
-      {{- end }}
       - name: {{ .Chart.Name }}
-        image: {{ .Values.lotusImageRepository }}
-        imagePullPolicy: {{ .Values.lotusImagePullPolicy }}
-        command: ["/etc/lotus/docker/run"]
+        image: {{ .Values.lotusContainer.image }}
+        imagePullPolicy: {{ .Values.lotusContainer.imagePullPolicy }}
+        command: {{ .Values.lotusContainer.command }}
         lifecycle:
           preStop:
             exec:
-              command: ["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]
+              command: {{ .Values.lotusContainer.preStopCommand }}
         env:
         {{- range $key, $value := .Values.lotusEnv }}
         - name: {{ $key }}
           value: {{ $value | quote }}
         {{- end }}
-        {{- if .Values.importSnapshot }}
-        {{- if .Values.snapshotLocation }}
-        - name: INFRA_IMPORT_SNAPSHOT
-          value: "true"
-        - name: SNAPSHOTURL
-          value: {{ .Values.snapshotLocation }}
-        {{- end }}
-        {{- if and .Values.ipfsGateway .Values.snapshotCid }}
-        - name: INFRA_IMPORT_SNAPSHOT_FROM_IPFS
-          value: "true"
-        - name: SNAPSHOT_CID
-          value: {{ .Values.snapshotCid }}
-        - name: IPFS_GW
-          value: {{ .Values.ipfsGateway }}
-        {{- end }}
-        {{- end }}
-        {{- if .Values.useIpfs }}
-        - name: LOTUS_CLIENT_USEIPFS
-          value: "true"
-        - name: LOTUS_CLIENT_IPFSUSEFORRETRIEVAL
-          value: "true"
-        - name: LOTUS_CLIENT_IPFSMADDR
-          value: "/ip4/127.0.0.1/tcp/5001"
-        {{- end }}
+        {{- if .Values.livenessProbe.enabled }}
         livenessProbe:
           tcpSocket:
             port: api
-          initialDelaySeconds: 600
-          periodSeconds: 20
-          successThreshold: 1
-          timeoutSeconds: 20
-        {{- if not .Values.disableReadinessProbe }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+        {{- end }}
+        {{- if .Values.readinessProbe.enabled }}
         readinessProbe: 
           exec:
             command:
-            - healthcheck
-          initialDelaySeconds: 600
-          periodSeconds: 60
-          successThreshold: 1
-          timeoutSeconds: 3
+            {{ toYaml .Values.readinessProbe.command | indent 12 }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
         {{- end }}
-        {{- if not .Values.disableStartupProbe }}
+        {{- if .Values.startupProbe.enabled }}
         startupProbe:
           exec:
             command:
             - cat
-            {{- if .Values.importSnapshot }}
+            {{- if .Values.lotusEnv.INFRA_IMPORT_SNAPSHOT }}
             - /home/lotus_user/.lotus/import-complete
             {{- else }}
             - /home/lotus_user/.lotus/sync-complete
             {{- end }}
-          failureThreshold: 1000
-          periodSeconds: 200
-          successThreshold: 1
-          timeoutSeconds: 10
+          failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+          periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+          successThreshold: {{ .Values.startupProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
         {{- end }}
         ports:
         - containerPort: 1234
           name: api
         - containerPort: 1235
           name: p2p
-        {{- if .Values.lotusEnv.INFRA_LOTUS_GATEWAY }}
         - containerPort: 2346
           name: gateway
-        {{- end }}
         volumeMounts:
-          {{- if .Values.useLotusSecret }}
+          - name: {{ .Values.lotusVolumeName }}
+            mountPath: /home/lotus_user/.lotus
+            {{- if .Values.lotusVolume.hostPath.enabled }}
+            subPath: lotus
+            {{- end }}
+          {{- if .Values.lotusEnv.INFRA_SECRETVOLUME }}
           - name: lotus-secret-vol
             mountPath: /keystore
           {{- end }}
-          - name: {{ .Values.lotusVolumeName }}
-            mountPath: /home/lotus_user/.lotus
-            {{- if .Values.isSpotInstance }}
-            subPath: lotus
-            {{- end }}
+          
+          # TODO: ???
           {{- if and .Values.importSnapshot .Values.downloadSnapshotUrl }}
           - name: {{ .Values.lotusVolumeName }}
             mountPath: /home/lotus_user/snapshot
