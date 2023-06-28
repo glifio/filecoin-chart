@@ -1,18 +1,18 @@
-{{- if .Values.lotus.sts.create }}
+{{- if .Values.lotusStsCreate }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-lotus
   labels:
-    {{- range $key, $value := .Values.lotus.sts.labels }}
+    {{- range $key, $value := .Values.lotusStsLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
 spec:
-  replicas: {{ .Values.lotus.sts.replicas }}
+  replicas: {{ .Values.lotusStsReplicas }}
   serviceName: {{ .Release.Name }}-lotus-service
   selector:
     matchLabels:
-      {{- range $key, $value := .Values.lotus.sts.labels }}
+      {{- range $key, $value := .Values.lotusStsLabels }}
       {{ $key }}: {{ $value | quote }}
       {{- end }}
   template:
@@ -21,7 +21,7 @@ spec:
         chart: {{ .Chart.Version }}
         appVersion: {{ .Chart.AppVersion }}
         heritage: {{ .Release.Service }}
-        {{- range $key, $value := .Values.lotus.sts.labels }}
+        {{- range $key, $value := .Values.lotusStsLabels }}
         {{ $key }}: {{ $value | quote }}
         {{- end }}
     spec:
@@ -67,7 +67,7 @@ spec:
           - name: SNAPSHOTURL
             value: {{ .Values.lotusEnv.SNAPSHOTURL }}
           - name: DOWNLOAD_FROM
-            value: {{ .Values.downloadSnapshot.url }}
+            value: {{ .Values.downloadSnapshotUrl }}
           - name: ENABLE_UNPACK
             value: {{ .Values.downloadSnapshot.unpack }}
           - name: ENABLE_CHECK_LEDGER
@@ -143,7 +143,7 @@ spec:
         readinessProbe: 
           exec:
             command:
-            {{ toYaml .Values.readinessProbe.command | indent 12 }}
+            {{ toYaml .Values.readinessProbe.command }}
           initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
           successThreshold: {{ .Values.readinessProbe.successThreshold }}
@@ -172,32 +172,19 @@ spec:
         - containerPort: 2346
           name: gateway
         volumeMounts:
+           {{- if .Values.lotusEnv.INFRA_SECRETVOLUME }}
+          - name: lotus-secret-vol
+            mountPath: /keystore
+          {{- end }}
           - name: {{ .Values.lotusVolumeName }}
             mountPath: /home/lotus_user/.lotus
             {{- if .Values.lotusVolume.hostPath.enabled }}
             subPath: lotus
             {{- end }}
-          {{- if .Values.lotusEnv.INFRA_SECRETVOLUME }}
-          - name: lotus-secret-vol
-            mountPath: /keystore
-          {{- end }}
-          
-          # TODO: ???
-          {{- if and .Values.importSnapshot .Values.downloadSnapshotUrl }}
+          {{- if and .Values.lotusEnv.INFRA_IMPORT_SNAPSHOT }}
           - name: {{ .Values.lotusVolumeName }}
             mountPath: /home/lotus_user/snapshot
             subPath: snapshot
-          {{- end }}
-          {{- if .Values.importVolume }}
-          - name: {{ .Values.importVolumeName }}
-            mountPath: /chain
-          {{- end }}
-          {{- if and .Values.useIpfs }}
-          - name: vol-ipfs
-            mountPath: /data/ipfs
-            {{- if .Values.isSpotInstance }}
-            subPath: ipfs
-            {{- end }}
           {{- end }}
         resources:
           limits:
@@ -211,9 +198,8 @@ spec:
       {{- range $key, $value := .Values.nodeSelector }}
         {{ $key }}: {{ $value | quote }}
       {{- end }}
-  {{- if not .Values.isSpotInstance }}
+  {{- if not .Values.lotusVolume.hostPath.enabled }}
   volumeClaimTemplates:
-    {{- if not .Values.useLocalStorage }}
     - metadata:
         name: {{ .Values.lotusVolumeName }}
       spec:
@@ -232,18 +218,4 @@ spec:
           apiGroup: snapshot.storage.k8s.io
         {{- end }}
     {{- end }}
-    {{- if .Values.useIpfs }}
-    - metadata:
-        name: {{ .Values.ipfsVolumeName }}
-      spec:
-        accessModes:
-          {{- range .Values.ipfsVolumeAccessModes }}
-            - {{ . | quote }}
-          {{- end }}
-        resources:
-            requests:
-                storage: {{ .Values.ipfsVolumeSize | quote }}
-        storageClassName: {{ .Values.ipfsVolumeStorageClass | quote }}
-    {{- end }}
-  {{- end }}
 {{- end }}
