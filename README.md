@@ -151,46 +151,114 @@ When CSI driver is installed charts provides additional features:
 
 
 
-## Configuration options
+## Configuration variables for stateful set
 
 These are our emphasized config options. For a full list, see the [values files](https://github.com/openworklabs/filecoin-chart/blob/master/values-spacerace.yaml).
 
-| Parameter | Description | Default |
-|-----------|-----------------------------------------|---------|
-| `cache.enabled` | Enable cache service. | `false` |
-| `cache.image` | Cache service image. | `protofire/filecoin-rpc-proxy:0.0.1` |
-| `cache.nodeSelector.nodeLabel` | Run cache on node with nodeSelector | `role: worker` |
-| `IPFS.enabled` | Enable IPFS on the pod. | `false` |
-| `ipfsDNS` | Overrides the IPFS endpoint when using services in separate pods | `` |
-| `image.repository` | Lotus Docker Image. | `openworklabs/lotus` |
-| `ingress.annotations` | Defines annotations for general ingress | See values-{namespace}.yaml |
-| `ingress.enabled` | Enables ingress for this particular release | `true` |
-| `ingress.host` | Defines DNS name that is used by NGINX to recognize valid requests | `node.glif.io` |
-| `ingress.lotus.gateway` | Enable ingress lotus-gateway | `false` |
-| `ingress.<service>.enabled` | Enables ingress for particular service. | `true` |
-| `ingress.<service>.annotations` | Defines annotations for particular service. Please read comments in `values.yaml` file to check the annotations that should be set to enable firewall-based access instead of JWT-based. | `<unset>` |
-| `healthcheck.enabled` | If you want to use custom lotus storage node healthcheck. | `<true>` |
-| `healthcheck.network` | Defines Filecoin network. Should be listed in [network specification repo](https://raw.githubusercontent.com/filecoin-project/network-info/master/static/networks) | `mainnet` |
-| `lotusDNS` | Overrides the lotus endpoint when using services in separate pods | `` |
-| `Lotus.maxheapsize` | Enable and set [LOTUS_MAX_HEAP](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#environment-variables) variable | `false` |
-| `Lotus.service.gateway` | Enable lotus-gateway service | `false` |
-| `Lotus.service.release` | Defines master endpoint in lotusAPI schema | `api-read` |
-| `replicaCount` | The number of Lotus replicas to run. | 1 |
-| `resources.<service>.requests.cpu` | The amount of vCPU (per service). | `<unset>` |
-| `resources.<service>.requests.memory` | The amount of memory (per service). | `<unset>` |
-| `resources.<service>.limit.cpu` | The ceiling amount of vCPU (per service). | `<unset>` |
-| `resources.<service>.limit.memory` | The ceiling amount of memory (per service). | `<unset>` |
-| `persistence.enabled` | Enable PVC instead of using hostPath.  | `true` |
-| `persistence.hostPath` | Set the hostPath where data will be stored. Chart will store data of the each server in the dedicated subfolders under `hostPath` path.  | `` |
-| `persistence.<service>.size` | Persistent volume storage size (per service). | `"200Gi"` |
-| `persistence.<service>.storageClassName` | Storage provisioner (per service). | `gp2` |
-| `persistence.<service>.accessModes` | Persistent volume access mode (per service). | `"ReadWriteOnce"` |
-| `persistence.snapshots.*` | Described at [Snapshots](#snapshots) section |                                |
-| `podAntiAffinity.enabled` | Enable do not run lotus nodes on the same eks worker(instance) | `false` |
-| `secretVolume.enabled` | If you want to reuse token across installations. See [here](#Lotus-JWT) for more details. | `false` |
-| `secretVolume.persistNodeID` | If you want to persist nodeID - append the `nodeid` key to the secret created for the [JWT token](#Lotus-JWT). Used only if secretVolume is enabled. | `false` |
-| `serviceAccount.create` | Create service account. Must be enabled when enabling snapshot automation. | `true` |
-| `serviceAccount.name` | Must be set when `serviceAccount.create` is `true`. Will be prefixed with release name. | `acc` |
+| Parameter                          | Description                                                                                   | Default                                                                                       |
+|------------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| lotusStsCreate                     | Indicates if StatefulSet has to be created.                                                   | `true`                                                                                        |
+| lotusStsLabels                     | Indicates the matching Pod Selector.                                                          | `app: lotus-node-app`<br/>`availability: public`<br/>`network: mainnet`<br/>`release: stable` |
+| lotusStsReplicas                   | Indicates how many replicas should be in the StatefulSet.                                     | `1 `                                                                                          |
+| nodeSelector                       | Contains all conditions that a node has to satisfy for the pod to be scheduled.               | `{}`                                                                                          |
+| lotusVolume.name                   | Indicates name of Lotus volume.                                                               | `vol-lotus  `                                                                                 |
+| lotusVolume.hostPath.path          | Indicates a local path to where the app Lotus is stored.                                      | `/nvme/disk`                                                                                  | 
+| lotusVolume.hostPath.enabled       | If true, then `vol-lotus` is mounted by the to the path `/nvme/disk`.                         |`true`|
+| InitContainerPermissions           | If true, then runs the init-container is created and directory `lotus/ snapshot/`.            | `true`                                                                            |
+| downloadSnapshot.enabled           | If true, then downloads snapshot to zst format to the workingDir `/home/lotus_user/snapshot`. | `true`                                                                               |
+| downloadSnapshot.unpack            | If true, then unpacks `snapshot.zst` and copying to the destination value `$SNAPSHOTURL`      | `true`                                                                                        |
+| downloadSnapshot.checkLedger       | If true,  Ledger check the directory `/home/lotus_user/.lotus`.                               | `true `                                                                                             |
+| downloadSnapshot.dependecies.aria2 | If $INFRA_CLEAR_RESTART = true, then Installing aria2.                                        | `1.36.0-r1`                                                                                            |
+| downloadSnapshot.dependecies.zstd  | If $INFRA_CLEAR_RESTART = true, then Installing zstd.                                         | `1.5.5-r0`                                                                                    |
+| lotusContainer.image               | Is a repository to pull lotus image from.                                                     | `glif/lotus:${IMAGE_TAG}`                                                                       |
+| lotusContainer.imagePullPolicy     | Indicates when to pull the image.                                                             | `Always`                                                                                      |
+| lotusContainer.command             | Runs the scripts.                                                                             |`["/etc/lotus/docker/run"]`|
+| lotusContainer.preStopCommand      |                                                                                               |`["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]`|
+
+
+## lotus env variables
+| Parameter             | Description                                                                                                                                                                                                                                                                   | Default                                                                                       |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| INFRA_LOTUS_DAEMON    | Set it to TRUE to start the lotus daemon only.                                                                                                                                                                                                                                | `true`      |
+| INFRA_LOTUS_HOME      | Defines where in the container’s filesystem the `.lotus` folder will be created.                                                                                                                                                                                              | `/home/lotus_user`                             |
+| INFRA_CLEAR_RESTART   | Set it to TRUE to remove the lotus folder with chainstore and statestore. Useful when resetting the node. ! CAUTION THIS VALUE WILL DROP ALL THE CHAIN STATE ON THE START, PLEASE PUT IT TO TRUE IF YOU UNDERSTAND CONSEQUENCES.                                              | `false`                                                                          |
+| INFRA_SYNC            | Set it to TRUE for the Lotus blockchain sync before the actual Lotus Daemon starts. Example of usage - Liveness probe in the k8s - you are waiting for the file $INFRA_LOTUS_HOME/.lotus/sync-complete and only after the file creation you add Lotus pod to the k8s service. | `true`                                                                                                                                                                                                                          |
+| INFRA_SECRETVOLUME    | If TRUE, that the Kubernetes secret has been mounted to `/keystore` as a directory. That allows using the same authentication token despite the node being reset over and over again.                                                                                         |`true`|
+| INFRA_PERSISTNODEID   | Set it to TRUE to copy the node ID from `/keystore/nodeid` to `$LOTUS_PATH/keystore/NRUWE4BSOAWWQ33TOQ`. This is needed for bootstrap node.                                                                                                                                   |`false`|
+| INFRA_IMPORT_SNAPSHOT | If TRUE, then downloads snapshot from value $DOWNLOAD_FROM, unpacks  and copies to path from value $SNAPSHOTURL.                                                                                                                                                              | `true `                                                                                                                                                                                                                                                                         |
+| DOWNLOAD_FROM         | Downloads snapshot from the path.                                                                                                                                                                                                                                             | "https://snapshots.mainnet.filops.net/minimal/latest.zst"<br/> "https://snapshots.calibrationnet.filops.net/minimal/latest.zst"                                                                                                                                               |
+| SNAPSHOTURL           | Path in the container’s filesystem where copies unpacked snapshot                                                                                                                                                                                                             |`/home/lotus_user/snapshot/latest.car`|
+| ALLOWED_DELAY         | The number 3 has been chosen because the epoch in Filecoin lasts 30 seconds; the average time to catch up a tipset is ~12 seconds.                                                                                                                                            | `3`                                                                                                                                                                                                                                                                            |
+
+
+[//]: # ()
+[//]: # (| `cache.enabled` | Enable cache service.                                                                                                                                                                    | `false` |)
+
+[//]: # (| `cache.image` | Cache service image.                                                                                                                                                                     | `protofire/filecoin-rpc-proxy:0.0.1` |)
+
+[//]: # (| `cache.nodeSelector.nodeLabel` | Run cache on node with nodeSelector                                                                                                                                                      | `role: worker` |)
+
+[//]: # (| `IPFS.enabled` | Enable IPFS on the pod.                                                                                                                                                                  | `false` |)
+
+[//]: # (| `ipfsDNS` | Overrides the IPFS endpoint when using services in separate pods                                                                                                                         | `` |)
+
+[//]: # (| `image.repository` | Lotus Docker Image.                                                                                                                                                                      | `openworklabs/lotus` |)
+
+[//]: # (| `ingress.annotations` | Defines annotations for general ingress                                                                                                                                                  | See values-{namespace}.yaml |)
+
+[//]: # (| `ingress.enabled` | Enables ingress for this particular release                                                                                                                                              | `true` |)
+
+[//]: # (| `ingress.host` | Defines DNS name that is used by NGINX to recognize valid requests                                                                                                                       | `node.glif.io` |)
+
+[//]: # (| `ingress.lotus.gateway` | Enable ingress lotus-gateway                                                                                                                                                             | `false` |)
+
+[//]: # (| `ingress.<service>.enabled` | Enables ingress for particular service.                                                                                                                                                  | `true` |)
+
+[//]: # (| `ingress.<service>.annotations` | Defines annotations for particular service. Please read comments in `values.yaml` file to check the annotations that should be set to enable firewall-based access instead of JWT-based. | `<unset>` |)
+
+[//]: # (| `healthcheck.enabled` | If you want to use custom lotus storage node healthcheck.                                                                                                                                | `<true>` |)
+
+[//]: # (| `healthcheck.network` | Defines Filecoin network. Should be listed in [network specification repo]&#40;https://raw.githubusercontent.com/filecoin-project/network-info/master/static/networks&#41;                       | `mainnet` |)
+
+[//]: # (| `lotusDNS` | Overrides the lotus endpoint when using services in separate pods                                                                                                                        | `` |)
+
+[//]: # (| `Lotus.maxheapsize` | Enable and set [LOTUS_MAX_HEAP]&#40;https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#environment-variables&#41; variable                                             | `false` |)
+
+[//]: # (| `Lotus.service.gateway` | Enable lotus-gateway service                                                                                                                                                             | `false` |)
+
+[//]: # (| `Lotus.service.release` | Defines master endpoint in lotusAPI schema                                                                                                                                               | `api-read` |)
+
+[//]: # (| `replicaCount` | The number of Lotus replicas to run.                                                                                                                                                     | 1 |)
+
+[//]: # (| `resources.<service>.requests.cpu` | The amount of vCPU &#40;per service&#41;.                                                                                                                                                        | `<unset>` |)
+
+[//]: # (| `resources.<service>.requests.memory` | The amount of memory &#40;per service&#41;.                                                                                                                                                      | `<unset>` |)
+
+[//]: # (| `resources.<service>.limit.cpu` | The ceiling amount of vCPU &#40;per service&#41;.                                                                                                                                                | `<unset>` |)
+
+[//]: # (| `resources.<service>.limit.memory` | The ceiling amount of memory &#40;per service&#41;.                                                                                                                                              | `<unset>` |)
+
+[//]: # (| `persistence.enabled` | Enable PVC instead of using hostPath.                                                                                                                                                    | `true` |)
+
+[//]: # (| `persistence.hostPath` | Set the hostPath where data will be stored. Chart will store data of the each server in the dedicated subfolders under `hostPath` path.                                                  | `` |)
+
+[//]: # (| `persistence.<service>.size` | Persistent volume storage size &#40;per service&#41;.                                                                                                                                            | `"200Gi"` |)
+
+[//]: # (| `persistence.<service>.storageClassName` | Storage provisioner &#40;per service&#41;.                                                                                                                                                       | `gp2` |)
+
+[//]: # (| `persistence.<service>.accessModes` | Persistent volume access mode &#40;per service&#41;.                                                                                                                                             | `"ReadWriteOnce"` |)
+
+[//]: # (| `persistence.snapshots.*` | Described at [Snapshots]&#40;#snapshots&#41; section                                                                                                                                             |                                |)
+
+[//]: # (| `podAntiAffinity.enabled` | Enable do not run lotus nodes on the same eks worker&#40;instance&#41;                                                                                                                           | `false` |)
+
+[//]: # (| `secretVolume.enabled` | If you want to reuse token across installations. See [here]&#40;#Lotus-JWT&#41; for more details.                                                                                                | `false` |)
+
+[//]: # (| `secretVolume.persistNodeID` | If you want to persist nodeID - append the `nodeid` key to the secret created for the [JWT token]&#40;#Lotus-JWT&#41;. Used only if secretVolume is enabled.                                     | `false` |)
+
+[//]: # (| `serviceAccount.create` | Create service account. Must be enabled when enabling snapshot automation.                                                                                                               | `true` |)
+
+[//]: # (| `serviceAccount.name` | Must be set when `serviceAccount.create` is `true`. Will be prefixed with release name.                                                                                                  | `acc` |)
 
 ## Snapshots
 
@@ -246,7 +314,3 @@ Generally - there are two way of deploying Lotus node with dependent services:
     2 - deployed in the separate pods (multiple helm charts). In that case you will need to set `lotusDNS` when deploying IPFS, StateDiff and `ipfsDNS` when deploying Lotus
 
   *NOTE*: Internal snapshotting are currently available for the single pod deployment option only!
-
-## License
-
-This project is licensed under the [Apache 2.0](https://github.com/openworklabs/filecoin-chart/blob/master/LICENSE) license.

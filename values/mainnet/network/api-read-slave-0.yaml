@@ -3,10 +3,8 @@ nodeSelector:
   assign_to_space00_07_nodes: allow_any_pods
 
 lotusStsLabels:
-  app: lotus-node-app
-  availability: "public"
-  network: "mainnet"
   release: api-read-master
+  release-fork: api-read-slave-0
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
@@ -20,12 +18,10 @@ lotusEnv:
 lotusContainer:
   image: glif/lotus:v1.23.0-custom-mainnet-arm64-test
 
-
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
 
 lotusCpuLimit: 25
 lotusMemoryLimit: 120Gi
 
-#isSpotInstance: true
 createServiceRoleBinding: false

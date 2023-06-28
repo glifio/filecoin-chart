@@ -5,7 +5,7 @@ metadata:
   name: {{ .Release.Name }}-lotus
   labels:
     {{- range $key, $value := .Values.lotusStsLabels }}
-    {{ $key }}: {{ $value | quote }}
+    {{ $key }}: {{ $value }}
     {{- end }}
 spec:
   replicas: {{ .Values.lotusStsReplicas }}
@@ -13,7 +13,7 @@ spec:
   selector:
     matchLabels:
       {{- range $key, $value := .Values.lotusStsLabels }}
-      {{ $key }}: {{ $value | quote }}
+      {{ $key }}: {{ $value }}
       {{- end }}
   template:
     metadata:
@@ -22,7 +22,7 @@ spec:
         appVersion: {{ .Chart.AppVersion }}
         heritage: {{ .Release.Service }}
         {{- range $key, $value := .Values.lotusStsLabels }}
-        {{ $key }}: {{ $value | quote }}
+        {{ $key }}: {{ $value }}
         {{- end }}
     spec:
       securityContext:
@@ -43,7 +43,7 @@ spec:
             type: Directory
       {{- end }}
       initContainers:
-      {{- if .Values.lotusSetPermissions }}
+      {{- if .Values.InitContainerPermissions }}
       - name: hostpath-permission
         image: busybox
         imagePullPolicy: Always
