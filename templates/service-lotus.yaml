@@ -5,6 +5,9 @@ metadata:
   name: {{ .Release.Name }}-lotus-service
   labels:
     app: lotus-node-app
+    availability: public
+    network: mainnet
+    release: api-read-master
   annotations:
   {{- range $key, $value := .Values.lotusServiceAnnotations }}
       {{ $key }}: {{ $value | quote }}

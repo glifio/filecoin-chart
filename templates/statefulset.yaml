@@ -67,7 +67,7 @@ spec:
           - name: SNAPSHOTURL
             value: {{ .Values.lotusEnv.SNAPSHOTURL }}
           - name: DOWNLOAD_FROM
-            value: {{ .Values.downloadSnapshotUrl }}
+            value: {{ .Values.lotusEnv.DOWNLOAD_FROM }}
           - name: ENABLE_UNPACK
             value: {{ .Values.downloadSnapshot.unpack }}
           - name: ENABLE_CHECK_LEDGER

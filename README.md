@@ -1,11 +1,35 @@
-# filecoin-chart
 
-[![CircleCI](https://circleci.com/gh/glifio/filecoin-chart.svg?style=svg)](https://app.circleci.com/pipelines/github/glifio/filecoin-chart)
+<p align="center">
+  <a href="https://api.node.glif.io/" title="Glif Node Hosting">
+    <img src="./png/glif-protofire-logo.png" alt="Glif-Protofire-logo" width="244" />
+  </a>
+</p>
+
+<h1 align="center">filecoin-charts</h1>
+
+<p align="center">
+	<a href="https://filecoinproject.slack.com/archives/C023K7D9GAX">
+		<img src="https://img.shields.io/badge/Contact_Us-AA_AA?style=for-the-badge&logo=slack&logoColor=white" />
+	</a>
+	<a href="https://hub.docker.com/r/glif/lotus/tags">
+		<img src="https://img.shields.io/badge/Docker_hub-IMAGES_AA?style=for-the-badge&logo=docker&logoColor=white&color=118df2" />
+	</a>
+	<a href="https://github.com/openworklabs/filecoin-chart/blob/master/LICENSE">
+		<img src="https://img.shields.io/badge/Apache_2.0-_AA?style=for-the-badge&logo=apache&logoColor=white&color=11c5f2" />
+	</a>
+	<a href="https://discord.gg/5qsJjsP3Re">
+		<img src="https://img.shields.io/badge/Join_Us-_AA?style=for-the-badge&logo=discord&logoColor=white&color=af10f3" />
+	</a>
+	<br />
+</p>
+
+## About
+Glif helm chart are managed by <a href="https://protofire.io">Protofire</a>.
 
 Filecoin chart is a helm chart for hosting Lotus Node clients. [Lotus](https://github.com/filecoin-project/lotus) is an implementation of the [Filecoin spec](https://filecoin-project.github.io/specs/).
 
-## Goals
-
+## Summary
+Expects of the installation of our charts:
 1. Deploy one or more instances of Lotus client nodes.
 2. Deploy additional software such as [IPFS](https://github.com/ipfs/ipfs).
 3. Expose Lotus, IPFS APIs through HTTP endpoints.
@@ -13,13 +37,75 @@ Filecoin chart is a helm chart for hosting Lotus Node clients. [Lotus](https://g
 5. Provide flexible configuration options to suit your needs.
 
 For monitoring and graphing, see [filecoin-k8s](https://github.com/openworklabs/filecoin-k8s).
-For customizing the Lotus Docker configuration, see [filecoin-docker](https://github.com/openworklabs/filecoin-docker).
+For customizing the Lotus Docker configuration, see [filecoin-docker](https://github.com/openworklabs/filecoin-docker)
 
 This repository has not yet been used for managing Filecoin miners.
 
+
+## Installation
+- The chart can be installed (and upgraded) via Helm.
+-  The chart can be installed (and upgraded) via Makefile.
+
+
+#### The chart can be installed (and upgraded) via Helm
+To install the chart with the namespace `filecoin`, run these commands:
+
+Clone this repository:
+```shell
+git clone https://github.com/openworklabs/filecoin-chart
+cd filecoin-chart
+```
+
+Create a new `filecoin` namespace:
+
+```shell
+kubectl create ns filecoin
+```
+
+Deploy a new stateful set `node01` to the `filecoin` namespace:
+
+The [values file](https://github.com/openworklabs/filecoin-chart/blob/master/values.yaml) contains all the configuration options.
+```shell
+helm upgrade --install --namespace filecoin -f values.yaml node01 .
+```
+
+
+#### The chart can be installed (and upgraded) via Makefile
+
+Before running any commands provided by the [Makefile](Makefile), you have to specify the build arguments.
+
+- **NODE** is the name new pod that you want to creation, value(name your yaml file).
+- **ENV** is the cluster environment where you want to deploy a pod, value (production env - mainnet; dev env - dev).
+- **NAMESPACE** is the Kubernetes namespace where you want to deploy a pod, value (network, monitoring, logging).
+
+Example:
+````
+- NODE = api-read-master
+- ENV = mainnet 
+- NAMESPACE = network
+````
+Deploy a new stateful set:\
+The [values file](https://github.com/openworklabs/filecoin-chart/blob/master/values.yaml) contains all the configuration options.
+
+```shell
+make nodeInstall
+```
+
+##### The Makefile provides the commands
+
+| run command         | Description                                                                        |
+|---------------------|------------------------------------------------------------------------------------|
+| make nodeInstall    | The pod is updated and redeployed with the same `Statefulset`.                     |
+| make nodeReinit     | The pod is removed with the current `Statefulset` and redeployed with the new one. | 
+| make nodeDelete     | The pod is deleted with the Statefulset without pvc volume.                        |
+| make nodeDeleteFull | The pod is removed with the Statefulset and is deleted pvc volume.                 |
+| make diff           | Output between the current pod state and the new  state.                           |
+
+
+
 ## Prerequisites
 
-### Kubernetes cluster (required)
+####  Kubernetes cluster (required)
 
 This is the only required prerequisite. The rest of the prerequisites are optionally enabled.
 
@@ -27,7 +113,7 @@ Information on [getting started](https://kubernetes.io/docs/setup/) with Kuberne
 
 #### Minimum Machine Requirements
 
-In our experience, we have had good results on Lotus testnet/2 using these settings:
+In our experience, we have had good results on Lotus mainnet using these settings:
 
 ```
 requests:
@@ -50,36 +136,20 @@ For more details on installation, see [NGINX Installation Guide](https://kuberne
 
 **Note** - NGINX Ingress Controller is _different_ from [NGINX Kubernetes Ingress Controller](https://www.nginx.com/products/nginx/kubernetes-ingress-controller/) (which we are not using). 
 
-### CSI Driver (optional)
+#### CSI Driver (optional)
+
 
 When CSI driver is installed charts provides additional features:
 
+
 1. Automatic creation of Lotus node snapshots
+
 2. Automatic cleanup of existing snapshots with customizable retain number
+
 
 **Note:** CSI driver should support snapshot feature. Our charts is currently supporting EBS CSI Driver by default with it's `ebs-sc` storage class, but one may override this class by setting `.Values.persistence.lotus.storageClassName` variable.
 
-## Installation
 
-The chart can be installed (and upgraded) via Helm. To install the chart with the with the namespace `filecoin`, run these commands:
-
-Clone this repository:
-```shell
-git clone https://github.com/openworklabs/filecoin-chart
-cd filecoin-chart
-```
-
-Create a new `filecoin` namespace:
-
-```shell
-kubectl create ns filecoin
-```
-
-Deploy a new stateful set `node01` to the `filecoin` namespace:
-```shell
-helm upgrade --install --namespace filecoin -f values.yaml node01 .
-```
-The [values file](https://github.com/openworklabs/filecoin-chart/blob/master/values.yaml) contains all the configuration options.
 
 ## Configuration options
 
@@ -124,24 +194,31 @@ These are our emphasized config options. For a full list, see the [values files]
 
 ## Snapshots
 
-To start building Snapshots your persistent volume usually should be created using special CSI-compatible class. In most cases you can migrate your existing workloads, so please refer to the driver documentation for more details.
+[//]: # (To start building Snapshots your persistent volume usually should be created using special CSI-compatible class. In most cases you can migrate your existing workloads, so please refer to the driver documentation for more details.)
 
-We are supporting [AWS EBS CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) out of the box. To create persistent volumes make sure you have the `ebs-sc` storage class installed. To perform installation go to the [examples folder](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/examples/kubernetes/snapshot) and complete the first step of instruction. After then set `persistence.snapshots.enabled` to `true` so the Charts will automatically create volumes of  the `ebs-sc` class. To override this behavior one can set `persistence.<service>.storageClassName` for each of the services. In this case Charts will create PV of the specified custom class.
+[//]: # ()
+[//]: # (We are supporting [AWS EBS CSI driver]&#40;https://github.com/kubernetes-sigs/aws-ebs-csi-driver&#41; out of the box. To create persistent volumes make sure you have the `ebs-sc` storage class installed. To perform installation go to the [examples folder]&#40;https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/examples/kubernetes/snapshot&#41; and complete the first step of instruction. After then set `persistence.snapshots.enabled` to `true` so the Charts will automatically create volumes of  the `ebs-sc` class. To override this behavior one can set `persistence.<service>.storageClassName` for each of the services. In this case Charts will create PV of the specified custom class.)
 
-To automate snapshot operations operator can set `persistence.snapshots.automation` parameters. If `creation` is set to `true` Charts will deploy a Cron job that will create snapshots on a daily basis.  If `deletion` is set to `true`  Charts will deploy a Cron job that will delete a snapshots for specific release if the number of snapshots is more than `retain.count`.
+[//]: # ()
+[//]: # (To automate snapshot operations operator can set `persistence.snapshots.automation` parameters. If `creation` is set to `true` Charts will deploy a Cron job that will create snapshots on a daily basis.  If `deletion` is set to `true`  Charts will deploy a Cron job that will delete a snapshots for specific release if the number of snapshots is more than `retain.count`.)
 
-In case you want to create the new release based on existing snapshot one can set `persistence.snapshots.automation.restore.enabled` to `true`. In that case Lotus PV will be created based on snapshot named `persistence.snapshots.automation.restore.name`. Note that Snapshot should exist in the very same namespace where the release is deployed.
+[//]: # ()
+[//]: # (In case you want to create the new release based on existing snapshot one can set `persistence.snapshots.automation.restore.enabled` to `true`. In that case Lotus PV will be created based on snapshot named `persistence.snapshots.automation.restore.name`. Note that Snapshot should exist in the very same namespace where the release is deployed.)
 
 ### Internal snapshots and IPFS system
 
-One can setup `persistence.snapshots.uploadToIpfs.enabled` to `true` to make an automated cronjob that will take chain snapshots on a daily basis and sharing them through IPFS. There are two ways of making snapshots: hot and cold. Hot takes a while but does not require Lotus node to stop. Cold is way more fast, but implies some downwtime.
+[//]: # (One can setup `persistence.snapshots.uploadToIpfs.enabled` to `true` to make an automated cronjob that will take chain snapshots on a daily basis and sharing them through IPFS. There are two ways of making snapshots: hot and cold. Hot takes a while but does not require Lotus node to stop. Cold is way more fast, but implies some downwtime.)
 
-To setup hot snapshotting system set `persistence.snapshots.uploadToIpfs.export` to `hot`. It will use `lotus chain export` command, and import the exported `.car` file into IPFS system. Note that IPFS must be running for snapshotting system to take any effect.
-To setup cold snapshotting system set `persistence.snapshots.uploadToIpfs.export` to `cold`. It will use `lotus-shed export` command. When using cold snapshotting it is important to set both `.Values.persistence.snapshots.uploadToIpfs.shedPeriod` and `.Values.persistence.snapshots.uploadToIpfs.cron` variables. First defines the period of `lotus-shed export` command execution in period format (1s, 1m, 1h, 1d), second defines a snapshot file sharing update period in cron format (X X X X X).
+[//]: # ()
+[//]: # (To setup hot snapshotting system set `persistence.snapshots.uploadToIpfs.export` to `hot`. It will use `lotus chain export` command, and import the exported `.car` file into IPFS system. Note that IPFS must be running for snapshotting system to take any effect.)
 
-Also `persistence.snapshots.uploadToIpfs.shareToGist` can be configured to automatically refresh the IPFS hash of the exported `.car` at the GitHub Gist. Note that the job will need an access to this Gist. To provide the job with the credentials use secret described in the [persistent secrets](#persistent-secret) section and add `ssh` key to Kubernetes Secret with base64-encoded private key content.
+[//]: # (To setup cold snapshotting system set `persistence.snapshots.uploadToIpfs.export` to `cold`. It will use `lotus-shed export` command. When using cold snapshotting it is important to set both `.Values.persistence.snapshots.uploadToIpfs.shedPeriod` and `.Values.persistence.snapshots.uploadToIpfs.cron` variables. First defines the period of `lotus-shed export` command execution in period format &#40;1s, 1m, 1h, 1d&#41;, second defines a snapshot file sharing update period in cron format &#40;X X X X X&#41;.)
 
-Note: You must use SSH URL in `persistence.snapshots.uploadToIpfs.shareToGist.address` so the `git push` command used inside of the job could use the provided ssh key to access the Gist.
+[//]: # ()
+[//]: # (Also `persistence.snapshots.uploadToIpfs.shareToGist` can be configured to automatically refresh the IPFS hash of the exported `.car` at the GitHub Gist. Note that the job will need an access to this Gist. To provide the job with the credentials use secret described in the [persistent secrets]&#40;#persistent-secret&#41; section and add `ssh` key to Kubernetes Secret with base64-encoded private key content.)
+
+[//]: # ()
+[//]: # (Note: You must use SSH URL in `persistence.snapshots.uploadToIpfs.shareToGist.address` so the `git push` command used inside of the job could use the provided ssh key to access the Gist.)
 
 ## Persistent Secrets
 
