@@ -120,11 +120,11 @@ spec:
       - name: {{ .Chart.Name }}
         image: {{ .Values.lotusContainer.image }}
         imagePullPolicy: {{ .Values.lotusContainer.imagePullPolicy }}
-        command: {{ .Values.lotusContainer.command }}
+        command: {{ toJson .Values.lotusContainer.command }}
         lifecycle:
           preStop:
             exec:
-              command: {{ .Values.lotusContainer.preStopCommand }}
+              command: {{ toJson .Values.lotusContainer.preStopCommand }}
         env:
         {{- range $key, $value := .Values.lotusEnv }}
         - name: {{ $key }}
@@ -176,13 +176,13 @@ spec:
           - name: lotus-secret-vol
             mountPath: /keystore
           {{- end }}
-          - name: {{ .Values.lotusVolumeName }}
+          - name: {{ .Values.lotusVolume.name }}
             mountPath: /home/lotus_user/.lotus
             {{- if .Values.lotusVolume.hostPath.enabled }}
             subPath: lotus
             {{- end }}
           {{- if and .Values.lotusEnv.INFRA_IMPORT_SNAPSHOT }}
-          - name: {{ .Values.lotusVolumeName }}
+          - name: {{ .Values.lotusVolume.name }}
             mountPath: /home/lotus_user/snapshot
             subPath: snapshot
           {{- end }}
@@ -201,7 +201,7 @@ spec:
   {{- if not .Values.lotusVolume.hostPath.enabled }}
   volumeClaimTemplates:
     - metadata:
-        name: {{ .Values.lotusVolumeName }}
+        name: {{ .Values.lotusVolume.name }}
       spec:
         accessModes:
           {{- range .Values.lotusVolumeAccessModes }}
@@ -211,11 +211,5 @@ spec:
             requests:
                 storage: {{ .Values.lotusVolumeSize | quote }}
         storageClassName: {{ .Values.lotusVolumeStorageClass | quote }}
-        {{- if .Values.restoreVolumeSnapshot }}
-        dataSource:
-          name: {{ .Values.volumeSnapshotName }}
-          kind: VolumeSnapshot
-          apiGroup: snapshot.storage.k8s.io
-        {{- end }}
     {{- end }}
 {{- end }}

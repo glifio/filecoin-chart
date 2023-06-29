@@ -1,27 +1,72 @@
+## METADATA
 
-# createLotusStatefulSet indicates if StatefulSet has to be created
+# Create the lotus statefulset if true.
 lotusStsCreate: true
 
-# lotusStsLabels indicates the matching Pod Selector
+# A dictionary of the statefulset labels. Can be used as a service selector to provide a universal endpoint to the pods.
 lotusStsLabels:
-  app: "lotus"
-  availability: "public"
-  network: "mainnet"
-  release: "stable"
+  app: lotus-node-app
+  release: api-read-master
 
-# lotusStatefulSetReplicas indicates how many replicas should be in the StatefulSet
+# The replicas number for the statefulset to create.
 lotusStsReplicas: 1
 
+## VOLUME
 
-# nodeSelector contains all conditions that a node
-# has to satisfy for the pod to be scheduled
-nodeSelector: {}
+# Path on the local disk that’s represented in the container as INFRA_LOTUS_HOME
+# If true, the vol-lotus volume is mounted as the  /nvme/disk path from the local disk.
+lotusVolume:
+  name: vol-lotus
+  hostPath:
+    enabled: true
+    path: /nvme/disk
 
-# lotusContainer.image is a repository to pull lotus image from
-# lotusContainer.imagePullPolicy indicates when to pull the image
-# lotusContainer.command  indicates when to run the scripts .run
-# lotusContainer.preStopCommand indicates when to run the scripts .run
+## INIT CONTAINERS
 
+#If true, create an InitContainer that creates default folders (for lotus and for snapshots) and sets filesystem permissions.
+InitContainerPermissions: true
+
+# Set of parameters to init-container
+# If downloadSnapshot.enabled: true, create an InitContainer that downloads the chain snapshot
+downloadSnapshot:
+  enabled: true
+  url: null
+  unpack: true
+  checkLedger: true
+  dependecies:
+    aria2: "1.36.0-r1"
+    zstd: "1.5.5-r0"
+
+## ENVIRONMENT VARIABLES
+
+lotusEnv:
+  # DOCKER SCRIPTS RELATED ENVIRONMENT VARIABLES
+  INFRA_LOTUS_DAEMON: "true"
+  INFRA_LOTUS_HOME: "/home/lotus_user"
+  INFRA_CLEAR_RESTART: "false"
+  INFRA_SYNC: "true"
+  INFRA_SECRETVOLUME: "true"
+  INFRA_PERSISTNODEID: "false"
+  INFRA_IMPORT_SNAPSHOT: "false"
+  DOWNLOAD_FROM: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
+  ALLOWED_DELAY: 3
+  GOLOG_LOG_FMT: "json"
+  # LOTUS RELATED ENVIRONMENT VARIABLES
+  LOTUS_FEVM_ENABLEETHRPC: "true"
+  LOTUS_FEVM_EVENTS_MAXFILTERHEIGHTRANGE: "60480"
+  LOTUS_FEVM_EVENTS_FILTERTTL: "504h0m0s"
+  LOTUS_FEVM_ENABLEETHHASHTOFILECOINCIDMAPPING: "true"
+  LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
+  LOTUS_CHAINSTORE_ENABLESPLITSTORE: "false"
+  LOTUS_SKIP_APPLY_TS_MESSAGE_CALL_WITH_GAS: "1"
+  LOTUS_FVM_CONCURRENCY: 24
+  LOTUS_VM_ENABLE_TRACING: "true"
+
+
+## LOTUS CONTAINER
+
+# Lotus Docker image
 lotusContainer:
   image: "glif/lotus:1.20.3-calibnet-arm-custom"
   imagePullPolicy: Always
@@ -51,180 +96,41 @@ startupProbe:
   successThreshold: 1
   timeoutSeconds: 10
 
-lotusVolume:
-  name: vol-lotus
-  hostPath:
-    enabled: true
-    path: /nvme/disk
+# Constraints for scheduling pods to nodes
+nodeSelector: { }
 
-lotusSetPermissions: true
+### volumeClaimTemplates:
 
-downloadSnapshot:
-  enabled: true
-  url: null
-  unpack: true
-  checkLedger: true
-  dependecies:
-    aria2: "1.36.0-r1"
-    zstd: "1.5.5-r0"
-
-lotusEnv:
-  # DOCKER SCRIPTS RELATED ENVIRONMENT VARIABLES
-  INFRA_LOTUS_DAEMON: "true"
-  INFRA_LOTUS_HOME: "/home/lotus_user"
-  INFRA_CLEAR_RESTART: "false"
-  INFRA_SYNC: "true"
-  INFRA_SECRETVOLUME: "true"
-  INFRA_PERSISTNODEID: "false"
-  INFRA_IMPORT_SNAPSHOT: "false"
-  DOWNLOAD_FROM: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
-  SNAPSHOTURL: "/home/lotus_user/snapshot/latest.car"
-  ALLOWED_DELAY: 3
-  GOLOG_LOG_FMT: "json"
-  LOTUS_FEVM_ENABLEETHRPC: "true"
-  LOTUS_FEVM_EVENTS_MAXFILTERHEIGHTRANGE: "60480"
-  LOTUS_FEVM_EVENTS_FILTERTTL: "504h0m0s"
-  LOTUS_FEVM_ENABLEETHHASHTOFILECOINCIDMAPPING: "true"
-  LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
-  LOTUS_CHAINSTORE_ENABLESPLITSTORE: "false"
-  LOTUS_SKIP_APPLY_TS_MESSAGE_CALL_WITH_GAS: "1"
-  LOTUS_FVM_CONCURRENCY : 24
-
-#lotus:
-#  sts:
-#    create: true
-#    labels:
-#      app: lotus
-#      release: stable
-#      network: mainnet
-#      availability: public
-#    replicas: 1
-#    volumes:
-#      # TODO: Connect to INFRA_SECRETVOLUME somehow?
-#      lotusSecret:
-#        create: true
-#        name: lotus-secret-vol
-#      lotus:
-#        create: true
-#        name: vol-lotus
-#        # TODO: Is there other options?
-#        hostPath:
-#          create: true
-#          path: /nvme/disk
-#          type: Directory
-#          mountPath: /home/lotus_user/.lotus
-#          subPath: lotus # Applies only to spot instances?
-#        volumeClaim:
-#          create: true
-#          accessModes: ["ReadWriteOnce"]
-#          storage: 16Gi
-#          storageClassName: ebs-sc-gp2
-#    initContainers:
-#      setPermissions:
-#        create: true
-#      downloadSnapshot:
-#        create: true
-#    containers:
-#      lotus:
-#        create: true
-#        image: "" # Leave blank so Helm will throw error when not specified
-#        imagePullPolicy: Always
-#        command: ["/etc/lotus/docker/run"]
-#        preStopCommand: ["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]
-#        livenessProbe:
-#          create: true
-#          initialDelaySeconds: 600
-#          periodSeconds: 20
-#          successThreshold: 1
-#          timeoutSeconds: 20
-#        readinessProbe:
-#          create: true
-#          command: ["healthcheck"]
-#          initialDelaySeconds: 600
-#          periodSeconds: 60
-#          successThreshold: 1
-#          timeoutSeconds: 3
-#        startupProbe:
-#          create: true
-#          command: # Varies depending on INFRA_IMPORT_SNAPSHOT
-#          failureThreshold: 1000
-#          periodSeconds: 200
-#          successThreshold: 1
-#          timeoutSeconds: 10
-#        resources:
-#          requests:
-#            cpu: 500m
-#            memory: 3Gi
-#          limits:
-#            cpu: 1900m
-#            memory: 5Gi
-#        nodeSelector: {}
-#  service:
-#    create: true
-#    labels:
-#      app: lotus-node-app
-#    annotations: {}
-#
+# lotusVolumeSize is a volume size of lotus
+lotusVolumeSize: "50Gi"
+# the volume can be mounted as read-write by a single node.
+# ReadWriteOnce access mode can allow multiple pods to access the volume when the pods are running on the same node.
+lotusVolumeAccessModes:
+  - ReadWriteOnce
+#Amazon EBS provides the volume type for our storage
+lotusVolumeStorageClass: "ebs-sc-gp2"
 
 
+## SERVICE
 
-# createServiceAccount indicates if ServiceAccount has to be created
-createServiceAccount: true
-# serviceAccountName is a name of the service account
-serviceAccountName: "acc"
-createServiceRoleBinding: true
+# Create the Lotus service if true.
+createLotusService: true
 
-## runAsUser is a user ID to run all processes with
-#runAsUser: 2000
-## runAsGroup is a group ID to run all processes with
-#runAsGroup: 2000
-## fsGroup is a suplimentary group that will own all the
-## files created in volumes
-#fsGroup: 2000
+# Set of the specify annotations
+lotusServiceAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "1234"
+  prometheus.io/path: "/debug/metrics"
+
+
+## CACHE
 
 # createCache indecates if cache deployment has to be created
 createCache: false
 # cacheImageRepository is a repository to pull cache image from
 cacheImageRepository: "protofire/filecoin-rpc-proxy:0.0.3"
-# cacheDeploymentReplicas indicates how many replicas should be
-# in the deployment
+# cacheDeploymentReplicas indicates how many replicas should be in the deployment
 cacheDeploymentReplicas: 2
-
-## importSnapshot indicates if a snapshot has to be imported
-## before the pod starts
-#importSnapshot: false
-## snapshotLocation is a path to the snapshot
-## downloaded from snapshotUrl
-#snapshotLocation:
-## snapshotUrl is a URL to the snapshot
-#downloadSnapshotUrl:
-## snapshotCid is a CID of the snapshot in IPFS
-#snapshotCid:
-## ipfsGateway is a URL of the IPFS Gateway
-#ipfsGateway:
-
-importVolume: false
-importVolumeName: ""
-
-# lotusRequestsCpu is the amount of CPU lotus pod requests on schedule
-lotusRequestsCpu: 500m
-# lotusRequestsMemory is the amount of memory lotus pod requests on schedule
-lotusRequestsMemory: 3Gi
-
-# lotusRequestsCpu is the amount of CPU lotus pod is limited to
-lotusCpuLimit: 1900m
-# lotusRequestsCpu is the amount of memory lotus pod is limited to
-lotusMemoryLimit: 5Gi
-
-# ipfsRequestsCpu is the amount of CPU IPFS pod requests on schedule
-ipfsRequestsCpu: 500m
-# ipfsRequestsMemory is the amount of memory IPFS pod requests on schedule
-ipfsRequestsMemory: 1Gi
-
-# ipfsCpuLimit is the amount of CPU IPFS pod is limited to
-ipfsCpuLimit: 3000m
-# ipfsMemoryLimit is the amount of memory IPFS pod is limited to
-ipfsMemoryLimit: 3Gi
 
 # cacheRequestsCpu is the amount of CPU cache pod requests on schedule
 cacheRequestsCpu: 500m
@@ -235,78 +141,3 @@ cacheRequestsMemory: 1Gi
 cacheCpuLimit: 3000m
 # cacheMemoryLimit is the amount of memory cache pod is limited to
 cacheMemoryLimit: 3Gi
-
-# isSpotInstance indicates if app is deployed on a spot instance
-isSpotInstance: false
-# appHostPath is a local path to where the app is stored
-appHostPath: "/nvme/disk"
-
-# useLotusSecret indicates if Kubernetes secret of lotus has to be mounted
-useLotusSecret: true
-
-# lotusVolumeName is a volume name of lotus
-lotusVolumeName: vol-lotus
-# lotusVolumeSize is a volume size of lotus
-lotusVolumeSize: "50Gi"
-# lotusVolumeSize is a volume size of lotus
-lotusVolumeAccessModes:
-  - ReadWriteOnce
-lotusVolumeStorageClass: "ebs-sc-gp2"
-
-restoreVolumeSnapshot: false
-volumeSnapshotName: ""
-
-#useIpfs: false
-#ipfsVolumeName: vol-ipfs
-#ipfsVolumeSize: "16Gi"
-#ipfsVolumeAccessModes:
-#  - ReadWriteOnce
-#ipfsVolumeStorageClass: "ebs-sc-gp2"
-
-#lotusEnv:
-#  INFRA_LOTUS_DAEMON: "true"
-#  INFRA_LOTUS_HOME: "/home/lotus_user"
-#  INFRA_CLEAR_RESTART: "false"
-#  INFRA_SYNC: "true"
-#  INFRA_SECRETVOLUME: "true"
-#  INFRA_PERSISTNODEID: "false"
-#  ALLOWED_DELAY: 3
-#  GOLOG_LOG_FMT: "json"
-#  LOTUS_FEVM_ENABLEETHRPC: "true"
-#  LOTUS_FEVM_EVENTS_MAXFILTERHEIGHTRANGE: "60480"
-#  LOTUS_FEVM_EVENTS_FILTERTTL: "504h0m0s"
-#  LOTUS_FEVM_ENABLEETHHASHTOFILECOINCIDMAPPING: "true"
-#  LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
-#  LOTUS_CHAINSTORE_ENABLESPLITSTORE: "false"
-#  LOTUS_SKIP_APPLY_TS_MESSAGE_CALL_WITH_GAS: "1"
-#  LOTUS_FVM_CONCURRENCY : 24
-
-createLotusService: true
-#isSlaveNode: false
-#customReleaseName:
-lotusServiceAnnotations:
-  prometheus.io/scrape: "true"
-  prometheus.io/port: "1234"
-  prometheus.io/path: "/debug/metrics"
-
-#ipfsImageRepository: "ipfs/go-ipfs"
-#ipfsImagePullPolicy: Always
-#
-#useLocalStorage: false
-
-createMirroredService: false
-mirroredServiceSelectors:
-
-disableReadinessProbe: false
-disableStartupProbe: false
-
-createCanaryService: false
-canaryServiceSelectors:
-
-customPodLabels:
-
-mirroredServiceAnnotations:
-  prometheus.io/scrape: "false"
-
-canaryServiceAnnotations:
-  prometheus.io/scrape: "false"
