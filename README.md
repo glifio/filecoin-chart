@@ -149,7 +149,7 @@ The CSI Driver is configured separately (refer to this repository for [code exam
 | cacheMemoryLimit                   | The amount of memory cache pod is limited to.                                                                                                                                                                                     | `3Gi`                                                                                                                                                                                                                             |
 
 
-## Usage value example 
+## Usage example 
 ````yaml
 nodeSelector:
 nodeGroupName: group16
