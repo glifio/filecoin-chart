@@ -78,11 +78,11 @@ make nodeInstall
 
 ## Prerequisites
 
-####  Kubernetes cluster (required)
+###  Kubernetes cluster (required)
 
 Information on [getting started](https://kubernetes.io/docs/setup/) with Kubernetes. For most use cases, we'd advise starting with Kubernetes running in the cloud.
 
-#### Minimum Machine Requirements
+### Minimum Machine Requirements
 
 Refer to the official Lotus documentation for the [minimal system requirements](https://lotus.filecoin.io/lotus/install/prerequisites/). In our experience you may want to set these values to almost the full capacity of the host node. Adjust the `LOTUS_FVM_CONCURRENCY` environment variable for better performance (refer to the [environment variables](https://lotus.filecoin.io/lotus/configure/ethereum-rpc/#environment-variables) section of the official documentation).
 
@@ -92,7 +92,7 @@ Refer to the official Lotus documentation for the [minimal system requirements](
 By default the Lotus nodes are not exposed to the Internet. You can use any ingress controller of your choice for this purpose.
 We at Glif use the Kong Ingress Controller (refer to the official [Kong documentation](https://docs.konghq.com/kubernetes-ingress-controller/latest/). You can find our code examples [here](https://github.com/glifio/filecoin-iac/blob/main/k8s/konghq.tf).
 
-#### CSI Driver (optional)
+### CSI Driver (optional)
 
 We create persistent volumes through the ebs-cs storage class configured via the EBS CSI Driver. That allows the Chart to create persistent volumes in Kubernetes backed by EBS volumes of AWS.
 The CSI Driver is configured separately (refer to this repository for [code examples](https://github.com/glifio/filecoin-iac/blob/main/k8s/ebs_csi_driver.tf)).
@@ -119,18 +119,18 @@ The CSI Driver is configured separately (refer to this repository for [code exam
 | lotusContainer.image               | Lotus Docker image.                                                                                                                                                                                                               | `glif/lotus:1.20.3-calibnet-arm-custom `                                                                                        |
 | lotusContainer.command             | Entrypoint of the Lotus container (refer to the [filecoin-docker](https://github.com/glifio/filecoin-docker) repo for more details).                                                                                              | `["/etc/lotus/docker/run"]`                                                                                                     |
 | lotusContainer.preStopCommand      | Delete the `$INFRA_LOTUS_HOME/.lotus/sync-complete` if the container stops. Refer to the [filecoin-docker](https://github.com/glifio/filecoin-docker) repo for more details.                                                      | `["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]`                                                               |
-| livenessProbe.enabled              | If true, livenessProbe runs.                                                                                                                                                                                                      | `true`                                                                                                                          |
+| livenessProbe.enabled              | If true, enable livenessProbe.                                                                                                                                                                                               | `true`                                                                                                                          |
 | livenessProbe.initialDelaySeconds  | The field tells the kubelet that it should wait 600 seconds before performing the first probe.                                                                                                                                    | `600`                                                                                                                           |
 | livenessProbe.periodSeconds        | The field specifies that the kubelet should perform a liveness probe every 20 seconds.                                                                                                                                            | `20`                                                                                                                            |
 | livenessProbe.successThreshold     | Minimum consecutive successes for the probe to be considered successful after having failed.                                                                                                                                      | `1`                                                                                                                             |
 | livenessProbe.timeoutSeconds       | Number of seconds after which the probe times out.                                                                                                                                                                                | `20`                                                                                                                            |
-| readinessProbe.enabled             | If true, ReadinessProbe runs.                                                                                                                                                                                                     | `true`                                                                                                                          |
+| readinessProbe.enabled             | If true, enable ReadinessProbe.                                                                                                                                                                                                   | `true`                                                                                                                          |
 | readinessProbe.command             | To perform a probe, the kubelet executes the script in the target container (refer to the [filecoin-docker/sctipts/healthcheck](https://github.com/glifio/filecoin-docker/blob/master/scripts/healthcheck) file for more details. | `["healthcheck"]`                                                                                                               |
 | readinessProbe.initialDelaySeconds | Number of seconds after the container has started before readiness probes are initiated.                                                                                                                                          | `600`                                                                                                                           |
 | readinessProbe.periodSeconds       | How often (in seconds) to perform the probe.                                                                                                                                                                                      | `60`                                                                                                                            |
 | readinessProbe.successThreshold    | Minimum consecutive successes for the probe to be considered successful after having failed.                                                                                                                                      | `1`                                                                                                                             |
 | readinessProbe.timeoutSeconds      | Number of seconds after which the probe times out.                                                                                                                                                                                | `3`                                                                                                                             |
-| startupProbe.enabled               | If true, StartupProbe runs.                                                                                                                                                                                                       | `true`                                                                                                                          |
+| startupProbe.enabled               | If true, enable StartupProbe.                                                                                                                                                                                                     | `true`                                                                                                                          |
 | startupProbe.failureThreshold      | After a probe fails times in a row, Kubernetes considers that the overall check has failed: the container is not ready/healthy/live.                                                                                              | `1000`                                                                                                                          |
 | startupProbe.periodSeconds         | How often (in seconds) to perform the probe.                                                                                                                                                                                      | `200`                                                                                                                           |
 | startupProbe.successThreshold      | Minimum consecutive successes for the probe to be considered successful after having failed. Must be 1 for liveness and startup Probes.                                                                                           | `1`                                                                                                                             |
@@ -152,20 +152,20 @@ The CSI Driver is configured separately (refer to this repository for [code exam
 ## Usage example 
 ````yaml
 nodeSelector:
-nodeGroupName: group16
-assign_to_space00_07_nodes: allow_any_pods
+  nodeGroupName: group16
+  assign_to_space00_07_nodes: allow_any_pods
 
 lotusEnv:
-LOTUS_VM_ENABLE_TRACING: "true"
-INFRA_IMPORT_SNAPSHOT: "true"
-INFRA_LOTUS_GATEWAY: "true"
-INFRA_CLEAR_RESTART: "false"
-DOWNLOAD_FROM: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
-SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
+  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_IMPORT_SNAPSHOT: "true"
+  INFRA_LOTUS_GATEWAY: "true"
+  INFRA_CLEAR_RESTART: "false"
+  DOWNLOAD_FROM: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
 
 
 lotusContainer:
-image: glif/lotus:v1.23.0-custom-mainnet-arm64-test
+  image: glif/lotus:v1.23.0-custom-mainnet-arm64-test
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
