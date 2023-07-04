@@ -63,15 +63,15 @@ spec:
         workingDir: /home/lotus_user/snapshot
         env:
           - name: INFRA_CLEAR_RESTART
-            value: {{ .Values.lotusEnv.INFRA_CLEAR_RESTART }}
+            value: {{ .Values.lotusEnv.INFRA_CLEAR_RESTART | quote }}
           - name: SNAPSHOTURL
             value: {{ .Values.lotusEnv.SNAPSHOTURL }}
           - name: DOWNLOAD_FROM
             value: {{ .Values.lotusEnv.DOWNLOAD_FROM }}
           - name: ENABLE_UNPACK
-            value: {{ .Values.downloadSnapshot.unpack }}
+            value: {{ .Values.downloadSnapshot.unpack | quote }}
           - name: ENABLE_CHECK_LEDGER
-            value: {{ .Values.downloadSnapshot.checkLedger }}
+            value: {{ .Values.downloadSnapshot.checkLedger | quote }}
           - name: INFRA_LOTUS_HOME
             value: {{ .Values.lotusEnv.INFRA_LOTUS_HOME }}
           - name: ARIA2_VERSION
@@ -82,30 +82,27 @@ spec:
           - "/bin/sh"
           - "-c"
         args:
-          - set -euo pipefail;
-            echo "Installing dependencies...";
+          - echo "Installing dependencies...";
             apk --no-cache add aria2="$ARIA2_VERSION" zstd="$ZSTD_VERSION";
-            if [ $INFRA_CLEAR_RESTART = false ]; then
-              echo "Ledger deletion is disabled. Exiting...";
-              exit 0;
-            fi;
-            LOTUS_PATH="$INFRA_LOTUS_HOME/.lotus";
-            if [ $ENABLE_CHECK_LEDGER = true ] && [ "$(ls -A $LOTUS_PATH)" ]; then
-              echo "Ledger check is enabled, and the ledger already exists. Exiting...";
-              exit 0;
-            fi
-            echo "Deliting the ledger...";
+            if [ "$INFRA_CLEAR_RESTART" = true ]; then
+            echo "Deleting the ledger...";
             rm -rf /home/lotus_user/.lotus/*;
             echo "Deleting the previous snapshots...";
             rm -rf /home/lotus_user/snapshot/*;
+            fi;
+            LOTUS_PATH="$INFRA_LOTUS_HOME/.lotus";
+            if [ "$ENABLE_CHECK_LEDGER" = true ] && [ "$(ls -A $LOTUS_PATH)" ]; then
+            echo "Ledger check is enabled, and the ledger already exists. Exiting...";
+            exit 0;
+            fi;
             echo "Downloading zst snapshot";
-            aria2c --allow-overwrite --max-connection-per-server 5 --split 5 "$DOWNLOAD_FROM" -o "/tmp/snapshot.zst";
-            if [ $ENABLE_UNPACK = false ]; then
-                echo "Unpack is disabled. Copying to the destination as is...";
-                cp "/tmp/snapshot.zst" "$SNAPSHOTURL";
+            aria2c --allow-overwrite --max-connection-per-server 5 --split 5 "$DOWNLOAD_FROM" -o "downloaded_snapshot.zst";
+            if [ "$ENABLE_UNPACK" = false ]; then
+            echo "Unpack is disabled. Copying to the destination as is...";
+            mv "downloaded_snapshot.zst" "$SNAPSHOTURL";
             else
-                pzstd -v --processes "$(nproc)" --force --rm --decompress "/tmp/snapshot.zst" -o "$SNAPSHOTS";
-            fi
+            pzstd -v --processes "$(nproc)" --force --rm --decompress "downloaded_snapshot.zst" -o "$SNAPSHOTURL";
+            fi;
         securityContext:
           runAsUser: 0
         volumeMounts:

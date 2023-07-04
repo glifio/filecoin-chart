@@ -1,26 +1,41 @@
 nodeSelector:
   nodeGroupName: group2
 
-downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
-snapshotLocation: "/home/lotus_user/snapshot/latest.car"
+lotusStsLabels:
+  release: api-read-dev-syncer
+  release-fork: api-read-dev
 
-lotusContainerImage: glif/lotus:v1.23.0-custom-mainnet-amd64
+lotusContainer:
+  image: glif/lotus:cluster-mainnet-amd64
+  command: ["tail", "-f", "/dev/null"]
 
-isSlaveNode: true
-createLotusService: false
-customReleaseName: api-read-dev
+downloadSnapshot:
+  enabled: true
+  unpack: false
+  checkLedger: false
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "true"
-  INFRA_IMPORT_SNAPSHOT: "true"
+  INFRA_CLEAR_RESTART: "false"
+  INFRA_IMPORT_SNAPSHOT: "false"
+  DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
+  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
+  LOTUS_CASSANDRA_UNIVERSAL_STORE: "yb-tserver-service.network.svc.cluster.local:9042"
+
+livenessProbe:
+  enabled: false
+
+readinessProbe:
+  enabled: false
+
+startupProbe:
+  enabled: false
 
 lotusRequestsCpu: 12
-lotusRequestsMemory: 80Gi
+lotusRequestsMemory: 50Gi
 
 lotusCpuLimit: 15
-lotusMemoryLimit: 120Gi
+lotusMemoryLimit: 60Gi
 
-isSpotInstance: true
-createServiceRoleBinding: false
+createLotusService: false
