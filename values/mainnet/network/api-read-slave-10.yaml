@@ -2,20 +2,19 @@ nodeSelector:
   nodeGroupName: group28
   assign_to_space00_07_nodes: allow_any_pods
 
-importSnapshot: true
-downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
-snapshotLocation: "/home/lotus_user/snapshot/latest.car"
-
-isSlaveNode: true
-createLotusService: false
-customReleaseName: api-read-master
+lotusStsLabels:
+  release-fork: api-read-slave-10
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"
+  DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
+  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
 
-lotusImageRepository: glif/lotus:1.23.0-brave-perf-p1-custom-mainnet-arm64-canary
+lotusContainer:
+  image: glif/lotus:1.23.0-brave-perf-p1-custom-mainnet-arm64-canary
 
 lotusRequestsCpu: 10
 lotusRequestsMemory: 60Gi
@@ -23,8 +22,4 @@ lotusRequestsMemory: 60Gi
 lotusCpuLimit: 25
 lotusMemoryLimit: 120Gi
 
-isSpotInstance: true
-createServiceRoleBinding: false
-
-customPodLabels:
-  isCanary: "yes"
+createLotusService: false

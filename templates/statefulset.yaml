@@ -91,7 +91,7 @@ spec:
             rm -rf /home/lotus_user/snapshot/*;
             fi;
             LOTUS_PATH="$INFRA_LOTUS_HOME/.lotus";
-            if [ "$ENABLE_CHECK_LEDGER" = true ] && [ "$(ls -A $LOTUS_PATH)" ]; then
+            if [ "$INFRA_CLEAR_RESTART" = false ] && [ "$ENABLE_CHECK_LEDGER" = true ] && [ "$(ls -A $LOTUS_PATH)" ]; then
             echo "Ledger check is enabled, and the ledger already exists. Exiting...";
             exit 0;
             fi;

@@ -48,7 +48,7 @@ lotusEnv:
   INFRA_SECRETVOLUME: "true"
   INFRA_PERSISTNODEID: "false"
   INFRA_IMPORT_SNAPSHOT: "false"
-  DOWNLOAD_FROM: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+  DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
   ALLOWED_DELAY: 3
   GOLOG_LOG_FMT: "json"

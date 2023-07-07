@@ -5,23 +5,26 @@ lotusStsLabels:
   release: api-read-dev-syncer
   release-fork: api-read-dev
 
-lotusContainer:
-  image: glif/lotus:cluster-mainnet-amd64
-  command: ["tail", "-f", "/dev/null"]
-
-downloadSnapshot:
-  enabled: true
-  unpack: false
-  checkLedger: false
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "false"
-  INFRA_IMPORT_SNAPSHOT: "false"
+  INFRA_CLEAR_RESTART: "true"
   DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
   LOTUS_CASSANDRA_UNIVERSAL_STORE: "yb-tserver-service.network.svc.cluster.local:9042"
+
+
+lotusContainer:
+  image: glif/lotus:cluster-mainnet-amd64
+  command: ["tail","-f","/dev/null"]
+
+lotusRequestsCpu: 12
+lotusRequestsMemory: 50Gi
+
+lotusCpuLimit: 15
+lotusMemoryLimit: 60Gi
 
 livenessProbe:
   enabled: false
@@ -31,11 +34,5 @@ readinessProbe:
 
 startupProbe:
   enabled: false
-
-lotusRequestsCpu: 12
-lotusRequestsMemory: 50Gi
-
-lotusCpuLimit: 15
-lotusMemoryLimit: 60Gi
 
 createLotusService: false

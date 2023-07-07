@@ -2,12 +2,15 @@ nodeSelector:
   nodeGroupName: group16
   assign_to_space00_07_nodes: allow_any_pods
 
+lotusStsLabels:
+  release-fork: api-read-slave-0
+
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"
-  DOWNLOAD_FROM: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+  DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
 
 
