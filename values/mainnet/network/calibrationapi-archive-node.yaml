@@ -12,12 +12,11 @@ lotusContainer:
 
 
 lotusEnv:
-  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_IMPORT_SNAPSHOT: "false"
 
 lotusVolume:
-  name: vol-lotus
   hostPath:
-    enabled: true
+    enabled: false
 
 lotusVolumeSize: "300Gi"
 lotusVolumeAccessModes:
