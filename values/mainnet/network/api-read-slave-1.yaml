@@ -6,7 +6,6 @@ lotusStsLabels:
   release-fork: api-read-slave-1
 
 lotusEnv:
-  LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"

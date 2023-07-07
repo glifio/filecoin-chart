@@ -12,7 +12,7 @@ lotusContainer:
 
 
 lotusEnv:
-  INFRA_IMPORT_SNAPSHOT: "false"
+  INFRA_IMPORT_SNAPSHOT: false
 
 lotusVolume:
   hostPath:

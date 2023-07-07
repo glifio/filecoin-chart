@@ -6,9 +6,6 @@ lotusStsLabels:
   release: calibrationapi-0
   release-fork: calibrationapi-1
 
-importSnapshot: true
-downloadSnapshotUrl: "https://snapshots.calibrationnet.filops.net/minimal/latest.zst"
-snapshotLocation: "/home/lotus_user/snapshot/latest.car"
 
 lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "true"

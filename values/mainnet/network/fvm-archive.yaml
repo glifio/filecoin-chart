@@ -1,9 +1,6 @@
 nodeSelector:
   nodeGroupName: fvm-archive
 
-lotusEnv:
-  LOTUS_MAX_HEAP: "100GiB"
-
 lotusServiceAnnotations:
   # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
   #   the Lotus side.
@@ -13,7 +10,22 @@ lotusServiceAnnotations:
   #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
   konghq.com/read-timeout: "600000"
 
-lotusImageRepository: glif/lotus:v1.23.0-custom-mainnet-arm64 
+
+lotusStsLabels:
+  release: fvm-archive
+
+lotusEnv:
+  LOTUS_MAX_HEAP: "100GiB"
+  SNAPSHOTURL: /home/lotus_user/.lotus/snapshot/snapshot_2681280_2684170_1679099023.car
+
+
+lotusContainer:
+  image: glif/lotus:v1.23.0-custom-mainnet-arm64
+
+lotusVolume:
+  hostPath:
+    path: /mnt/raid
+
 
 # Lotus container mounts LVM from appHostPath
 useLocalStorage: true
