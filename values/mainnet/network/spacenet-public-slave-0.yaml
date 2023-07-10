@@ -1,7 +1,7 @@
 nodeSelector:
   nodepool: spacenet
 
-lotusImageRepository: glif/lotus:dev-spacenet-amd64
+lotusImageRepository: glif/lotus:v0.3.1-custom-spacenet-amd64
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
@@ -9,11 +9,11 @@ lotusEnv:
   INFRA_CLEAR_RESTART: "true"
   LOTUS_FVM_CONCURRENCY : 8
 
-lotusRequestsCpu: 10
-lotusRequestsMemory: 50Gi
+lotusRequestsCpu: 2
+lotusRequestsMemory: 8Gi
 
-lotusCpuLimit: 16
-lotusMemoryLimit: 60Gi
+lotusCpuLimit: 3
+lotusMemoryLimit: 10Gi
 
 createServiceRoleBinding: false
 
@@ -27,4 +27,4 @@ createLotusService: false
 customReleaseName: spacenet-public
 
 disableReadinessProbe: true
-disableStartupProbe: true
+disableStartupProbe: false
