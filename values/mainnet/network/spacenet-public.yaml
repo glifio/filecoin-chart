@@ -1,12 +1,12 @@
 nodeSelector:
   nodepool: spacenet
 
-lotusImageRepository: glif/lotus:v0.3.1-custom-spacenet-amd64
+lotusImageRepository: glif/lotus:v0.4.0-spacenet-amd64
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "false"
+  INFRA_CLEAR_RESTART: "true"
   LOTUS_FVM_CONCURRENCY : 8
 
 lotusRequestsCpu: 2
