@@ -6,13 +6,18 @@ nodeSelector:
 lotusStsLabels:
   release: calibrationapi-archive-node
 
+downloadSnapshot:
+  enabled: false
+
+InitContainerPermissions: false
 
 lotusContainer:
   image: glif/lotus:v1.23.0-custom-calibnet-arm64
 
-
 lotusEnv:
-  INFRA_IMPORT_SNAPSHOT: false
+  INFRA_IMPORT_SNAPSHOT: "false"
+  SNAPSHOTURL: null
+  DOWNLOAD_FROM: null
 
 lotusVolume:
   hostPath:

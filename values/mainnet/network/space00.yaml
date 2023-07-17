@@ -1,8 +1,8 @@
 nodeSelector:
   nodeGroupName: group15
 
-useIpfs: true
-ipfsVolumeSize: "250Gi"
+lotusStsLabels:
+  release: space00
 
 lotusEnv:
   INFRA_PERSISTNODEID: "true"
@@ -23,21 +23,18 @@ lotusServiceAnnotations:
   #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
   konghq.com/override: kong-ingress-one-day-read-timeout
 
-lotusImageRepository: glif/lotus:v1.23.0-custom-mainnet-arm64
-
-restoreVolumeSnapshot: true
-volumeSnapshotName: imported-aws-snapshot
+lotusContainer:
+  image: glif/lotus:v1.23.0-custom-mainnet-arm64
 
 # Lotus container mounts LVM from appHostPath
-useLocalStorage: true
-appHostPath: "/mnt/raid"
+
+lotusVolume:
+  hostPath:
+    path: "/mnt/raid"
 
 lotusRequestsCpu: 23
 lotusRequestsMemory: 160Gi
 lotusCpuLimit: 40
 lotusMemoryLimit: 350Gi
 
-ipfsRequestsCpu: 2
-ipfsRequestsMemory: 10Gi
-ipfsCpuLimit: 20
-ipfsMemoryLimit: 15Gi
+

@@ -9,7 +9,6 @@ lotusServiceAnnotations:
 lotusStsLabels:
   release: coinfirm
 
-
 lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"

@@ -151,7 +151,7 @@ spec:
           exec:
             command:
             - cat
-            {{- if .Values.lotusEnv.INFRA_IMPORT_SNAPSHOT }}
+            {{- if eq .Values.lotusEnv.INFRA_IMPORT_SNAPSHOT "true" }}
             - /home/lotus_user/.lotus/import-complete
             {{- else }}
             - /home/lotus_user/.lotus/sync-complete
