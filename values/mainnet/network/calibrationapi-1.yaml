@@ -16,12 +16,12 @@ lotusEnv:
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
 
 lotusContainer:
-  image: glif/lotus:v1.23.0-eth-subscribe-calibnet-amd64
+  image: glif/lotus:v1.23.0-eth-subscribe-calibnet-arm64
 
 
 lotusRequestsCpu: 12
-lotusRequestsMemory: 80Gi
+lotusRequestsMemory: 15Gi
 lotusCpuLimit: 15
-lotusMemoryLimit: 120Gi
+lotusMemoryLimit: 30Gi
 
 createLotusService: false

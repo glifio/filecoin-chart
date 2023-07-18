@@ -1,7 +1,6 @@
 nodeSelector:
   nodeGroupName: group8
 
-
 lotusStsLabels:
   release-fork: api-read-slave-1
 

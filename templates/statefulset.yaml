@@ -5,7 +5,7 @@ metadata:
   name: {{ .Release.Name }}-lotus
   labels:
     {{- range $key, $value := .Values.lotusStsLabels }}
-    {{ $key }}: {{ $value }}
+    {{ $key }}: {{ $value | quote }}
     {{- end }}
 spec:
   replicas: {{ .Values.lotusStsReplicas }}

@@ -24,6 +24,6 @@ lotusContainer:
 
 
 lotusRequestsCpu: 12
-lotusRequestsMemory: 80Gi
+lotusRequestsMemory: 10Gi
 lotusCpuLimit: 15
-lotusMemoryLimit: 120Gi
+lotusMemoryLimit: 25Gi

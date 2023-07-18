@@ -18,9 +18,9 @@ all: lint package
 # Calibration nodes
 
 # Deploy calibrationapi
-#NODE = calibrationapi
-#ENV = mainnet
-#NAMESPACE = network
+# NODE = calibrationapi-0
+# ENV = mainnet
+# NAMESPACE = network
 
 # # Deploy calibrationapi-archive-node
 # NODE = calibrationapi-archive-node
@@ -49,9 +49,9 @@ all: lint package
 #NAMESPACE = network
 
 ### Deploy api_read_slave_2_node
-NODE = fvm-archive
-ENV = mainnet
-NAMESPACE = network
+# NODE = api-read-slave-10
+# ENV = mainnet
+# NAMESPACE = network
 
 ### Deploy api_read_slave_3_node
 # NODE = api-read-slave-3
@@ -59,7 +59,7 @@ NAMESPACE = network
 # NAMESPACE = network
 
 # #### Deploy space00
-# NODE = space06
+# NODE = space00
 # ENV = mainnet
 # NAMESPACE = network
 
@@ -74,9 +74,9 @@ NAMESPACE = network
 #NAMESPACE = network
 
 #### Deploy space06-1
-# NODE = space07
-# ENV = mainnet
-# NAMESPACE = network
+NODE = space06
+ENV = mainnet
+NAMESPACE = network
 
 #### Deploy space07
 #NODE = space07
@@ -88,9 +88,13 @@ NAMESPACE = network
 #ENV = mainnet
 #NAMESPACE = network
 
-
 ### Deploy blockscout-0
 # NODE = blockscout-0
+# ENV = mainnet
+# NAMESPACE = network
+
+### Deploy fvm-archive
+# NODE = fvm-archive
 # ENV = mainnet
 # NAMESPACE = network
 

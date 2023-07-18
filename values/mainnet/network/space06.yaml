@@ -4,10 +4,6 @@ nodeSelector:
 lotusStsLabels:
   release: space06
 
-#importSnapshot: true
-#downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
-#snapshotLocation: "/home/lotus_user/snapshot/latest.car"
-
 lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"
@@ -34,6 +30,3 @@ lotusRequestsMemory: 64Gi
 
 lotusCpuLimit: 15
 lotusMemoryLimit: 120Gi
-
-#createServiceRoleBinding: false
-#isSpotInstance: true
