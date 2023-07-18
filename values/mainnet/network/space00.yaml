@@ -32,6 +32,8 @@ lotusVolume:
   hostPath:
     path: "/mnt/raid"
 
+enableLotusP2pPort: true
+
 lotusRequestsCpu: 23
 lotusRequestsMemory: 160Gi
 lotusCpuLimit: 40

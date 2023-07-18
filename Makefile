@@ -49,9 +49,9 @@ all: lint package
 #NAMESPACE = network
 
 ### Deploy api_read_slave_2_node
-# NODE = fvm-archive
-# ENV = mainnet
-# NAMESPACE = network
+NODE = fvm-archive
+ENV = mainnet
+NAMESPACE = network
 
 ### Deploy api_read_slave_3_node
 # NODE = api-read-slave-3
@@ -59,7 +59,7 @@ all: lint package
 # NAMESPACE = network
 
 # #### Deploy space00
-# NODE = space00
+# NODE = space06
 # ENV = mainnet
 # NAMESPACE = network
 
@@ -88,6 +88,12 @@ all: lint package
 #ENV = mainnet
 #NAMESPACE = network
 
+
+### Deploy blockscout-0
+# NODE = blockscout-0
+# ENV = mainnet
+# NAMESPACE = network
+
 # OVH environment
 
 #### Deploy spacenet
@@ -96,9 +102,9 @@ all: lint package
 # NAMESPACE = network
 
 #### Deploy spacenet-slave
-NODE = spacenet-public-slave-0
-ENV = mainnet
-NAMESPACE = network
+# NODE = spacenet-public-slave-0
+# ENV = mainnet
+# NAMESPACE = network
 
 
 nodeInstall:

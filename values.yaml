@@ -122,6 +122,8 @@ lotusServiceAnnotations:
   prometheus.io/port: "1234"
   prometheus.io/path: "/debug/metrics"
 
+enableLotusP2pPort: false
+
 
 ## CACHE
 
