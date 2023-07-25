@@ -39,10 +39,6 @@ lotusVolumeAccessModes:
   - ReadWriteOnce
 lotusVolumeStorageClass: csi-cinder-high-speed
 
-isSlaveNode: true
-createLotusService: false
-customReleaseName: spacenet-public
-
 
 readinessProbe:
   enabled: false

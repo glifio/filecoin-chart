@@ -20,7 +20,7 @@ InitContainerPermissions: false
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "false"
+  INFRA_CLEAR_RESTART: "true"
   LOTUS_FVM_CONCURRENCY : 8
   SNAPSHOTURL: null
   DOWNLOAD_FROM: null
