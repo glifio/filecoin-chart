@@ -1,6 +1,7 @@
 nodeSelector:
   nodepool: spacenet
 
+
 lotusStsLabels:
   release: spacenet-public
   release-fork: spacenet-public-slave-0
@@ -16,6 +17,7 @@ InitContainerPermissions: false
 
 lotusContainer:
   image: glif/lotus:v0.4.0-spacenet-amd64
+
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
@@ -41,8 +43,10 @@ isSlaveNode: true
 createLotusService: false
 customReleaseName: spacenet-public
 
+
 readinessProbe:
   enabled: false
 
 startupProbe:
   enable: false
+

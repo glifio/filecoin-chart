@@ -21,8 +21,10 @@ lotusServiceAnnotations:
 lotusContainer:
   image: glif/lotus:master-mainnet-arm64
 
+
 lotusRequestsCpu: 12
 lotusRequestsMemory: 64Gi
 
 lotusCpuLimit: 15
 lotusMemoryLimit: 120Gi
+
