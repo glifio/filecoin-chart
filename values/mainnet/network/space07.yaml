@@ -4,8 +4,16 @@ nodeSelector:
 lotusStsLabels:
   release: space07
 
+
+InitContainerPermissions: true
+
+downloadSnapshot:
+  enabled: false
+
 lotusEnv:
   LOTUS_MAX_HEAP: "100GiB"
+  SNAPSHOTURL: null
+  DOWNLOAD_FROM: null
 
 lotusServiceAnnotations:
   # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
@@ -14,7 +22,7 @@ lotusServiceAnnotations:
   #   the desired service.
   # Ingress configuration placed here:
   #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
-  konghq.com/override: kong-ingress-one-day-read-timeout
+  konghq.com/read-timeout: "86400000"
 
 lotusContainer:
   image: glif/lotus:v1.23.0-custom-mainnet-arm64
@@ -22,9 +30,10 @@ lotusContainer:
 # Lotus container mounts LVM from appHostPath
 lotusVolume:
   hostPath:
+    enableSubPath: false
     path: "/mnt/raid"
 
 lotusRequestsCpu: 23
-lotusRequestsMemory: 160Gi
+lotusRequestsMemory: 230Gi
 lotusCpuLimit: 35
-lotusMemoryLimit: 290Gi
+lotusMemoryLimit: 250Gi

@@ -19,7 +19,11 @@ lotusVolume:
   name: vol-lotus
   hostPath:
     enabled: true
+    enableSubPath: true
     path: /nvme/disk
+
+#
+isArchival: false
 
 ## INIT CONTAINERS
 

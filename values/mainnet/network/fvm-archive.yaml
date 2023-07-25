@@ -8,7 +8,7 @@ lotusServiceAnnotations:
   #   the desired service.
   # Ingress configuration placed here:
   #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
-  konghq.com/read-timeout: "600000"
+  konghq.com/read-timeout: "86400000"
 
 InitContainerPermissions: true
 
@@ -32,10 +32,11 @@ lotusContainer:
 
 lotusVolume:
   hostPath:
+    enableSubPath: false
     path: /mnt/raid
 
 
-lotusRequestsCpu: 23
-lotusRequestsMemory: 160Gi
-lotusCpuLimit: 29
-lotusMemoryLimit: 240Gi
+lotusRequestsCpu: 4
+lotusRequestsMemory: 30Gi
+lotusCpuLimit: 6
+lotusMemoryLimit: 40Gi

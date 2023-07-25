@@ -11,7 +11,7 @@ lotusStsLabels:
 
 lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "false"
+  INFRA_CLEAR_RESTART: "true"
   INFRA_IMPORT_SNAPSHOT: "true"
   DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car

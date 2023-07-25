@@ -14,8 +14,6 @@ downloadSnapshot:
 
 InitContainerPermissions: false
 
-
-
 lotusContainer:
   image: glif/lotus:v0.4.0-spacenet-amd64
 

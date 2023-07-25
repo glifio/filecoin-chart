@@ -175,7 +175,7 @@ spec:
           {{- end }}
           - name: {{ .Values.lotusVolume.name }}
             mountPath: /home/lotus_user/.lotus
-            {{- if .Values.lotusVolume.hostPath.enabled }}
+            {{- if .Values.lotusVolume.hostPath.enableSubPath }}
             subPath: lotus
             {{- end }}
           {{- if and .Values.lotusEnv.INFRA_IMPORT_SNAPSHOT }}

@@ -9,7 +9,7 @@ lotusStsLabels:
 downloadSnapshot:
   enabled: false
 
-InitContainerPermissions: false
+InitContainerPermissions: true
 
 lotusContainer:
   image: glif/lotus:v1.23.0-custom-calibnet-arm64
@@ -21,6 +21,7 @@ lotusEnv:
 
 lotusVolume:
   hostPath:
+    enableSubPath: false
     enabled: false
 
 lotusVolumeSize: "300Gi"

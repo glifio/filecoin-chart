@@ -18,7 +18,7 @@ all: lint package
 # Calibration nodes
 
 # Deploy calibrationapi
-# NODE = calibrationapi-0
+# NODE = calibrationapi-1
 # ENV = mainnet
 # NAMESPACE = network
 
@@ -79,9 +79,9 @@ ENV = mainnet
 NAMESPACE = network
 
 #### Deploy space07
-#NODE = space07
-#ENV = mainnet
-#NAMESPACE = network
+# NODE = space00
+# ENV = mainnet
+# NAMESPACE = network
 
 #### Deploy space07-cache
 #NODE = space07-cache
@@ -93,6 +93,13 @@ NAMESPACE = network
 # ENV = mainnet
 # NAMESPACE = network
 
+
+### Deploy coinfirm
+# NODE = coinfirm
+# ENV = mainnet
+# NAMESPACE = network
+
+
 ### Deploy fvm-archive
 # NODE = fvm-archive
 # ENV = mainnet
@@ -100,7 +107,7 @@ NAMESPACE = network
 
 # OVH environment
 
-#### Deploy spacenet
+### Deploy spacenet
 # NODE = spacenet-public
 # ENV = mainnet
 # NAMESPACE = network

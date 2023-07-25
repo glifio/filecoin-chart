@@ -20,7 +20,7 @@ lotusServiceAnnotations:
   #   the desired service.
   # Ingress configuration placed here:
   #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
-  konghq.com/override: kong-ingress-read-timeout
+  konghq.com/read-timeout: "86400000"
 
 lotusContainer:
   image: glif/lotus:v1.23.0-custom-mainnet-arm64
