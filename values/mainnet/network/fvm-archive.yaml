@@ -1,9 +1,6 @@
 nodeSelector:
   nodeGroupName: fvm-archive
 
-lotusEnv:
-  LOTUS_MAX_HEAP: "100GiB"
-
 lotusServiceAnnotations:
   # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
   #   the Lotus side.
@@ -11,15 +8,35 @@ lotusServiceAnnotations:
   #   the desired service.
   # Ingress configuration placed here:
   #   https://github.com/glifio/filecoin-iac/blob/main/k8s/kong_ingress_timeout.tf
-  konghq.com/read-timeout: "600000"
+  konghq.com/read-timeout: "86400000"
 
-lotusImageRepository: glif/lotus:v1.23.0-custom-mainnet-arm64 
+InitContainerPermissions: true
 
-# Lotus container mounts LVM from appHostPath
-useLocalStorage: true
-appHostPath: "/mnt/raid"
+# Set of parameters to init-container
+# If downloadSnapshot.enabled: true, create an InitContainer that downloads the chain snapshot
+downloadSnapshot:
+  enabled: false
 
-lotusRequestsCpu: 23
-lotusRequestsMemory: 160Gi
-lotusCpuLimit: 29
-lotusMemoryLimit: 240Gi
+
+lotusStsLabels:
+  release: fvm-archive
+
+lotusEnv:
+  LOTUS_MAX_HEAP: "100GiB"
+  SNAPSHOTURL: null
+  INFRA_IMPORT_SNAPSHOT: null
+  DOWNLOAD_FROM: null
+
+lotusContainer:
+  image: glif/lotus:v1.23.0-custom-mainnet-arm64
+
+lotusVolume:
+  hostPath:
+    enableSubPath: false
+    path: /mnt/raid
+
+
+lotusRequestsCpu: 4
+lotusRequestsMemory: 30Gi
+lotusCpuLimit: 6
+lotusMemoryLimit: 40Gi

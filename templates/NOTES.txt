@@ -1,4 +1,0 @@
-1. Get the application URL by running these commands:
-
-IPFS, StateDiff and Lotus node will be available by /ipfs, /StateDiff and /lotus paths accordingly if enabled.
-

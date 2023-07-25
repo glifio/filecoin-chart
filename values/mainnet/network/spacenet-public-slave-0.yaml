@@ -1,13 +1,31 @@
 nodeSelector:
   nodepool: spacenet
 
-lotusImageRepository: glif/lotus:v0.4.0-spacenet-amd64
+
+lotusStsLabels:
+  release: spacenet-public
+  release-fork: spacenet-public-slave-0
+
+lotusVolume:
+  hostPath:
+    enabled: false
+
+downloadSnapshot:
+  enabled: false
+
+InitContainerPermissions: false
+
+lotusContainer:
+  image: glif/lotus:v0.4.0-spacenet-amd64
+
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "true"
   LOTUS_FVM_CONCURRENCY : 8
+  SNAPSHOTURL: null
+  DOWNLOAD_FROM: null
 
 lotusRequestsCpu: 2
 lotusRequestsMemory: 8Gi
@@ -15,16 +33,16 @@ lotusRequestsMemory: 8Gi
 lotusCpuLimit: 3
 lotusMemoryLimit: 10Gi
 
-createServiceRoleBinding: false
 
 lotusVolumeSize: "50Gi"
 lotusVolumeAccessModes:
   - ReadWriteOnce
 lotusVolumeStorageClass: csi-cinder-high-speed
 
-isSlaveNode: true
-createLotusService: false
-customReleaseName: spacenet-public
 
-disableReadinessProbe: true
-disableStartupProbe: false
+readinessProbe:
+  enabled: false
+
+startupProbe:
+  enable: false
+

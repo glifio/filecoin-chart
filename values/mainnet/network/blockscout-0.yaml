@@ -1,21 +1,26 @@
 nodeSelector:
   nodeGroupName: blockscout-0
 
-importSnapshot: true
-downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
-snapshotLocation: "/home/lotus_user/snapshot/latest.car"
+lotusStsLabels:
+  release: blockscout-0
+
 
 lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"
   LOTUS_FEVM_ENABLEETHRPC: "true"
+  INFRA_IMPORT_SNAPSHOT: "true"
+  DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
+  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
 
 
 lotusServiceAnnotations:
   konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions
   konghq.com/read-timeout: "600000"
 
-lotusImageRepository: glif/lotus:master-mainnet-arm64
+lotusContainer:
+  image: glif/lotus:master-mainnet-arm64
+
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 64Gi
@@ -23,5 +28,3 @@ lotusRequestsMemory: 64Gi
 lotusCpuLimit: 15
 lotusMemoryLimit: 120Gi
 
-createServiceRoleBinding: false
-isSpotInstance: true

@@ -1,175 +1,177 @@
-# filecoin-chart
 
-[![CircleCI](https://circleci.com/gh/glifio/filecoin-chart.svg?style=svg)](https://app.circleci.com/pipelines/github/glifio/filecoin-chart)
+<p align="center">
+  <a href="https://api.node.glif.io/" title="Glif Node Hosting">
+    <img src="./png/glif-protofire-logo.png" alt="Glif-Protofire-logo" width="244" />
+  </a>
+</p>
 
-Filecoin chart is a helm chart for hosting Lotus Node clients. [Lotus](https://github.com/filecoin-project/lotus) is an implementation of the [Filecoin spec](https://filecoin-project.github.io/specs/).
+<h1 align="center">filecoin-charts</h1>
 
-## Goals
+<p align="center">
+	<a href="https://filecoinproject.slack.com/archives/C023K7D9GAX">
+		<img src="https://img.shields.io/badge/Contact_Us-AA_AA?style=for-the-badge&logo=slack&logoColor=white" />
+	</a>
+	<a href="https://hub.docker.com/r/glif/lotus/tags">
+		<img src="https://img.shields.io/badge/Docker_hub-IMAGES_AA?style=for-the-badge&logo=docker&logoColor=white&color=118df2" />
+	</a>
+	<a href="https://github.com/openworklabs/filecoin-chart/blob/master/LICENSE">
+		<img src="https://img.shields.io/badge/Apache_2.0-_AA?style=for-the-badge&logo=apache&logoColor=white&color=11c5f2" />
+	</a>
+	<a href="https://discord.gg/5qsJjsP3Re">
+		<img src="https://img.shields.io/badge/Join_Us-_AA?style=for-the-badge&logo=discord&logoColor=white&color=af10f3" />
+	</a>
+	<br />
+</p>
 
-1. Deploy one or more instances of Lotus client nodes.
-2. Deploy additional software such as [IPFS](https://github.com/ipfs/ipfs).
-3. Expose Lotus, IPFS APIs through HTTP endpoints.
-4. Enable importing chain data for faster syncs.
-5. Provide flexible configuration options to suit your needs.
+## About
 
-For monitoring and graphing, see [filecoin-k8s](https://github.com/openworklabs/filecoin-k8s).
-For customizing the Lotus Docker configuration, see [filecoin-docker](https://github.com/openworklabs/filecoin-docker).
+This repository is managed by <a href="https://protofire.io">Protofire</a>.
 
-This repository has not yet been used for managing Filecoin miners.
+Filecoin chart is a Helm chart for hosting Lotus Nodes. [Lotus](https://github.com/filecoin-project/lotus) is an implementation of the [Filecoin spec](https://filecoin-project.github.io/specs/).
 
-## Prerequisites
 
-### Kubernetes cluster (required)
+## Summary
+The Chart can do the following:
+- Deploy Lotus RPC nodes.
+- Expose Lotus through HTTP endpoints.
+- Enable importing chain snapshots.
+- Provide flexible configuration options to suit your needs.
 
-This is the only required prerequisite. The rest of the prerequisites are optionally enabled.
 
-Information on [getting started](https://kubernetes.io/docs/setup/) with Kubernetes. For most use cases, we'd advise starting with Kubernetes running in the cloud. As far as we're aware, if you want to use this repository to run a Lotus miner node, you will need to use a bare metal install of Kubernetes, so you get access to a GPU.
+For customizing the Lotus Docker configuration, see [filecoin-docker](https://github.com/openworklabs/filecoin-docker)
 
-#### Minimum Machine Requirements
-
-In our experience, we have had good results on Lotus testnet/2 using these settings:
-
-```
-requests:
-    cpu: 1000m
-    memory: 4Gi
-limits:
-    cpu: 3000m
-    memory: 12Gi
-```
-
-These specs are subject to change, so use this as a jumping off point.
-
-It can take a couple of tries to get the node synced with the network.
-
-### NGINX Ingress Controller (optional)
-
-By default, a Lotus node running inside a Kubernetes cluster is not exposed to the public. The NGINX Ingress Controller is one configuration option that, when enabled, can expose your Lotus node via an HTTP endpoint.
-
-For more details on installation, see [NGINX Installation Guide](https://kubernetes.github.io/ingress-nginx/deploy/).
-
-**Note** - NGINX Ingress Controller is _different_ from [NGINX Kubernetes Ingress Controller](https://www.nginx.com/products/nginx/kubernetes-ingress-controller/) (which we are not using). 
-
-### CSI Driver (optional)
-
-When CSI driver is installed charts provides additional features:
-
-1. Automatic creation of Lotus node snapshots
-2. Automatic cleanup of existing snapshots with customizable retain number
-
-**Note:** CSI driver should support snapshot feature. Our charts is currently supporting EBS CSI Driver by default with it's `ebs-sc` storage class, but one may override this class by setting `.Values.persistence.lotus.storageClassName` variable.
 
 ## Installation
 
-The chart can be installed (and upgraded) via Helm. To install the chart with the with the namespace `filecoin`, run these commands:
+#### The chart can be installed (and upgraded) via Makefile
 
-Clone this repository:
-```shell
-git clone https://github.com/openworklabs/filecoin-chart
-cd filecoin-chart
-```
+Before running any commands provided by the [Makefile](Makefile), you have to specify the build arguments.
 
-Create a new `filecoin` namespace:
+- **NODE** is the name of the  values file located at *values/ENV/NAMESPACE/NODE.yaml* (and consequently the Helm release name) that you want to deploy.
+- **ENV** is a subfolder of the values folder (conceptually that’s an environment, e.g. dev or mainnet).
+- **NAMESPACE** is a subfolder of the ENV folder (conceptually that’s a Kubernetes namespace where you want to deploy the release).
 
-```shell
-kubectl create ns filecoin
-```
+Example:
+````
+- NODE = api-read-master
+- ENV = mainnet 
+- NAMESPACE = network
+````
 
-Deploy a new stateful set `node01` to the `filecoin` namespace:
-```shell
-helm upgrade --install --namespace filecoin -f values.yaml node01 .
-```
-The [values file](https://github.com/openworklabs/filecoin-chart/blob/master/values.yaml) contains all the configuration options.
-
-## Configuration options
-
-These are our emphasized config options. For a full list, see the [values files](https://github.com/openworklabs/filecoin-chart/blob/master/values-spacerace.yaml).
-
-| Parameter | Description | Default |
-|-----------|-----------------------------------------|---------|
-| `cache.enabled` | Enable cache service. | `false` |
-| `cache.image` | Cache service image. | `protofire/filecoin-rpc-proxy:0.0.1` |
-| `cache.nodeSelector.nodeLabel` | Run cache on node with nodeSelector | `role: worker` |
-| `IPFS.enabled` | Enable IPFS on the pod. | `false` |
-| `ipfsDNS` | Overrides the IPFS endpoint when using services in separate pods | `` |
-| `image.repository` | Lotus Docker Image. | `openworklabs/lotus` |
-| `ingress.annotations` | Defines annotations for general ingress | See values-{namespace}.yaml |
-| `ingress.enabled` | Enables ingress for this particular release | `true` |
-| `ingress.host` | Defines DNS name that is used by NGINX to recognize valid requests | `node.glif.io` |
-| `ingress.lotus.gateway` | Enable ingress lotus-gateway | `false` |
-| `ingress.<service>.enabled` | Enables ingress for particular service. | `true` |
-| `ingress.<service>.annotations` | Defines annotations for particular service. Please read comments in `values.yaml` file to check the annotations that should be set to enable firewall-based access instead of JWT-based. | `<unset>` |
-| `healthcheck.enabled` | If you want to use custom lotus storage node healthcheck. | `<true>` |
-| `healthcheck.network` | Defines Filecoin network. Should be listed in [network specification repo](https://raw.githubusercontent.com/filecoin-project/network-info/master/static/networks) | `mainnet` |
-| `lotusDNS` | Overrides the lotus endpoint when using services in separate pods | `` |
-| `Lotus.maxheapsize` | Enable and set [LOTUS_MAX_HEAP](https://docs.filecoin.io/get-started/lotus/configuration-and-advanced-usage/#environment-variables) variable | `false` |
-| `Lotus.service.gateway` | Enable lotus-gateway service | `false` |
-| `Lotus.service.release` | Defines master endpoint in lotusAPI schema | `api-read` |
-| `replicaCount` | The number of Lotus replicas to run. | 1 |
-| `resources.<service>.requests.cpu` | The amount of vCPU (per service). | `<unset>` |
-| `resources.<service>.requests.memory` | The amount of memory (per service). | `<unset>` |
-| `resources.<service>.limit.cpu` | The ceiling amount of vCPU (per service). | `<unset>` |
-| `resources.<service>.limit.memory` | The ceiling amount of memory (per service). | `<unset>` |
-| `persistence.enabled` | Enable PVC instead of using hostPath.  | `true` |
-| `persistence.hostPath` | Set the hostPath where data will be stored. Chart will store data of the each server in the dedicated subfolders under `hostPath` path.  | `` |
-| `persistence.<service>.size` | Persistent volume storage size (per service). | `"200Gi"` |
-| `persistence.<service>.storageClassName` | Storage provisioner (per service). | `gp2` |
-| `persistence.<service>.accessModes` | Persistent volume access mode (per service). | `"ReadWriteOnce"` |
-| `persistence.snapshots.*` | Described at [Snapshots](#snapshots) section |                                |
-| `podAntiAffinity.enabled` | Enable do not run lotus nodes on the same eks worker(instance) | `false` |
-| `secretVolume.enabled` | If you want to reuse token across installations. See [here](#Lotus-JWT) for more details. | `false` |
-| `secretVolume.persistNodeID` | If you want to persist nodeID - append the `nodeid` key to the secret created for the [JWT token](#Lotus-JWT). Used only if secretVolume is enabled. | `false` |
-| `serviceAccount.create` | Create service account. Must be enabled when enabling snapshot automation. | `true` |
-| `serviceAccount.name` | Must be set when `serviceAccount.create` is `true`. Will be prefixed with release name. | `acc` |
-
-## Snapshots
-
-To start building Snapshots your persistent volume usually should be created using special CSI-compatible class. In most cases you can migrate your existing workloads, so please refer to the driver documentation for more details.
-
-We are supporting [AWS EBS CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) out of the box. To create persistent volumes make sure you have the `ebs-sc` storage class installed. To perform installation go to the [examples folder](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/examples/kubernetes/snapshot) and complete the first step of instruction. After then set `persistence.snapshots.enabled` to `true` so the Charts will automatically create volumes of  the `ebs-sc` class. To override this behavior one can set `persistence.<service>.storageClassName` for each of the services. In this case Charts will create PV of the specified custom class.
-
-To automate snapshot operations operator can set `persistence.snapshots.automation` parameters. If `creation` is set to `true` Charts will deploy a Cron job that will create snapshots on a daily basis.  If `deletion` is set to `true`  Charts will deploy a Cron job that will delete a snapshots for specific release if the number of snapshots is more than `retain.count`.
-
-In case you want to create the new release based on existing snapshot one can set `persistence.snapshots.automation.restore.enabled` to `true`. In that case Lotus PV will be created based on snapshot named `persistence.snapshots.automation.restore.name`. Note that Snapshot should exist in the very same namespace where the release is deployed.
-
-### Internal snapshots and IPFS system
-
-One can setup `persistence.snapshots.uploadToIpfs.enabled` to `true` to make an automated cronjob that will take chain snapshots on a daily basis and sharing them through IPFS. There are two ways of making snapshots: hot and cold. Hot takes a while but does not require Lotus node to stop. Cold is way more fast, but implies some downwtime.
-
-To setup hot snapshotting system set `persistence.snapshots.uploadToIpfs.export` to `hot`. It will use `lotus chain export` command, and import the exported `.car` file into IPFS system. Note that IPFS must be running for snapshotting system to take any effect.
-To setup cold snapshotting system set `persistence.snapshots.uploadToIpfs.export` to `cold`. It will use `lotus-shed export` command. When using cold snapshotting it is important to set both `.Values.persistence.snapshots.uploadToIpfs.shedPeriod` and `.Values.persistence.snapshots.uploadToIpfs.cron` variables. First defines the period of `lotus-shed export` command execution in period format (1s, 1m, 1h, 1d), second defines a snapshot file sharing update period in cron format (X X X X X).
-
-Also `persistence.snapshots.uploadToIpfs.shareToGist` can be configured to automatically refresh the IPFS hash of the exported `.car` at the GitHub Gist. Note that the job will need an access to this Gist. To provide the job with the credentials use secret described in the [persistent secrets](#persistent-secret) section and add `ssh` key to Kubernetes Secret with base64-encoded private key content.
-
-Note: You must use SSH URL in `persistence.snapshots.uploadToIpfs.shareToGist.address` so the `git push` command used inside of the job could use the provided ssh key to access the Gist.
-
-## Persistent Secrets
-
-### Lotus JWT
-
-If you need to do a full reinstall (uninstall chart, delete persistent volume, reinstall chart) of a Lotus node, the node's data will be erased. This means your node will lose its JWT, which will break existing clients relying on the API. To persist your Lotus JWT for reuse through multiple installations, enable `secretVolume.enabled`, and put the node's JWT into a secret:
+Configure the deployment options through the [values](values.yaml) file and deploy the Chart:
 
 ```shell
-## Cat node01's JWT into a file
-kubectl -n filecoin exec -it node01-lotus-0 cat root/.lotus/token > token
-## Take the file and put it into a secret
-kubectl -n filecoin create secret generic node01-lotus-secret --from-file=token=token
+make nodeInstall
 ```
 
-More information on generating a JWT for authenticating requests [here](https://docs.lotu.sh/en+api-scripting-support).
+##### The Makefile provides the following commands
 
-### SSH
+| Command             | Description                                                                        |
+|---------------------|------------------------------------------------------------------------------------|
+| make nodeInstall    | Install or upgrade the Helm release.                                               |
+| make nodeReinit     | Delete the previously installed Helm release and deploys the new one from scratch. | 
+| make nodeDelete     | Delete the Helm release.                                                           |
+| make nodeDeleteFull | Delete the Helm release and also the persistent volume claims associated with it.  |
+| make diff           | Run helm diff against the nodeInstall command. Requires the helm diff plugin.<br/> Refer to the official helm diff documentation for more detail.                          |
 
-You can also include your private `ssh` key into the installed persistent secret to allow Charts to authorize and push update about exported snapshot to the Gist when `persistence.snapshots.uploadToIpfs.shareToGist` is set. Use `ssh` as key in `<release_name>-lotus-secret` and base64 encoded private SSH key as value. 
 
-## Deployment options
 
-Generally - there are two way of deploying Lotus node with dependent services:
-    1 - deployed in the single pod (single helm chart). Thus way each container will communicate through loopback interface
-    2 - deployed in the separate pods (multiple helm charts). In that case you will need to set `lotusDNS` when deploying IPFS, StateDiff and `ipfsDNS` when deploying Lotus
+## Prerequisites
 
-  *NOTE*: Internal snapshotting are currently available for the single pod deployment option only!
+###  Kubernetes cluster (required)
 
-## License
+Information on [getting started](https://kubernetes.io/docs/setup/) with Kubernetes. For most use cases, we'd advise starting with Kubernetes running in the cloud.
 
-This project is licensed under the [Apache 2.0](https://github.com/openworklabs/filecoin-chart/blob/master/LICENSE) license.
+### Minimum Machine Requirements
+
+Refer to the official Lotus documentation for the [minimal system requirements](https://lotus.filecoin.io/lotus/install/prerequisites/). In our experience you may want to set these values to almost the full capacity of the host node. Adjust the `LOTUS_FVM_CONCURRENCY` environment variable for better performance (refer to the [environment variables](https://lotus.filecoin.io/lotus/configure/ethereum-rpc/#environment-variables) section of the official documentation).
+
+
+### Connectivity
+
+By default the Lotus nodes are not exposed to the Internet. You can use any ingress controller of your choice for this purpose.
+We at Glif use the Kong Ingress Controller (refer to the official [Kong documentation](https://docs.konghq.com/kubernetes-ingress-controller/latest/). You can find our code examples [here](https://github.com/glifio/filecoin-iac/blob/main/k8s/konghq.tf).
+
+### CSI Driver (optional)
+
+We create persistent volumes through the ebs-cs storage class configured via the EBS CSI Driver. That allows the Chart to create persistent volumes in Kubernetes backed by EBS volumes of AWS.
+The CSI Driver is configured separately (refer to this repository for [code examples](https://github.com/glifio/filecoin-iac/blob/main/k8s/ebs_csi_driver.tf)).
+
+
+## Configuration variables for stateful set
+
+| Parameter                          | Description                                                                                                                                                                                                                       | Default                                                                                                                         |
+|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| lotusStsCreate                     | Create the Lotus statefulset if true.                                                                                                                                                                                             | `true`                                                                                                                          |
+| lotusStsLabels                     | A dictionary of the statefulset labels. Can be used as a service selector to provide a universal endpoint to the pods.                                                                                                            | `app: lotus-node-app`<br/>`release: stable`                                   |
+| lotusStsReplicas                   | The replicas number for the statefulset to create.                                                                                                                                                                                | `1 `                                                                                                                            |
+| nodeSelector                       | Constraints for scheduling pods to nodes.                                                                                                                                                                                         | `{}`                                                                                                                            |
+| lotusVolume.hostPath.path          | Path on the local disk that’s represented in the container as `INFRA_LOTUS_HOME`.                                                                                                                                                 | `/nvme/disk`                                                                                                                    | 
+| lotusVolume.hostPath.enabled       | If true, the `vol-lotus` volume is mounted as the ` /nvme/disk` path from the local disk.                                                                                                                                         | `true`                                                                                                                          |
+| InitContainerPermissions           | If true, create an InitContainer that creates default folders (for lotus and for snapshots) and sets filesystem permissions.                                                                                                      | `true`                                                                                                                          |
+| downloadSnapshot.enabled           | If true, create an InitContainer that downloads the chain snapshot.                                                                                                                                                               | `true`                                                                                                                          |
+| downloadSnapshot.unpack            | If true,unpack  the downloaded snapshot and copy it  to the  `$SNAPSHOTURL` path.                                                                                                                                                 | `true`                                                                                                                          |
+| downloadSnapshot.checkLedger       | If true, exit if the `INFRA_LOTUS_HOME/.lotus` directory exists.<br/> The existence of this directory means that lotus already has chainstate and the snapshot import is not required.                                            | `true `                                                                                                                         |
+| downloadSnapshot.dependecies.aria2 | Aria2 version. Used for reliable download of the snapshot.                                                                                                                                                                        | `1.36.0-r1`                                                                                                                     |
+| downloadSnapshot.dependecies.zstd  | Zstd version. Used for unpacking the ZST snapshots.                                                                                                                                                                               | `1.5.5-r0`                                                                                                                      |
+| lotusEnv.DOWNLOAD_FROM             | Downloads snapshot from the path.                                                                                                                                                                                                 | "https://snapshots.mainnet.filops.net/minimal/latest.zst"<br/> "https://snapshots.calibrationnet.filops.net/minimal/latest.zst" |
+| LotusEnv.SNAPSHOTURL               | Path in the container’s filesystem where copies unpacked snapshot                                                                                                                                                                 | `/home/lotus_user/snapshot/latest.car`                                                                                          |
+| lotusContainer.image               | Lotus Docker image.                                                                                                                                                                                                               | `glif/lotus:1.20.3-calibnet-arm-custom `                                                                                        |
+| lotusContainer.command             | Entrypoint of the Lotus container (refer to the [filecoin-docker](https://github.com/glifio/filecoin-docker) repo for more details).                                                                                              | `["/etc/lotus/docker/run"]`                                                                                                     |
+| lotusContainer.preStopCommand      | Delete the `$INFRA_LOTUS_HOME/.lotus/sync-complete` if the container stops. Refer to the [filecoin-docker](https://github.com/glifio/filecoin-docker) repo for more details.                                                      | `["/bin/sh","-c","rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]`                                                               |
+| livenessProbe.enabled              | If true, enable livenessProbe.                                                                                                                                                                                               | `true`                                                                                                                          |
+| livenessProbe.initialDelaySeconds  | The field tells the kubelet that it should wait 600 seconds before performing the first probe.                                                                                                                                    | `600`                                                                                                                           |
+| livenessProbe.periodSeconds        | The field specifies that the kubelet should perform a liveness probe every 20 seconds.                                                                                                                                            | `20`                                                                                                                            |
+| livenessProbe.successThreshold     | Minimum consecutive successes for the probe to be considered successful after having failed.                                                                                                                                      | `1`                                                                                                                             |
+| livenessProbe.timeoutSeconds       | Number of seconds after which the probe times out.                                                                                                                                                                                | `20`                                                                                                                            |
+| readinessProbe.enabled             | If true, enable ReadinessProbe.                                                                                                                                                                                                   | `true`                                                                                                                          |
+| readinessProbe.command             | To perform a probe, the kubelet executes the script in the target container (refer to the [filecoin-docker/sctipts/healthcheck](https://github.com/glifio/filecoin-docker/blob/master/scripts/healthcheck) file for more details. | `["healthcheck"]`                                                                                                               |
+| readinessProbe.initialDelaySeconds | Number of seconds after the container has started before readiness probes are initiated.                                                                                                                                          | `600`                                                                                                                           |
+| readinessProbe.periodSeconds       | How often (in seconds) to perform the probe.                                                                                                                                                                                      | `60`                                                                                                                            |
+| readinessProbe.successThreshold    | Minimum consecutive successes for the probe to be considered successful after having failed.                                                                                                                                      | `1`                                                                                                                             |
+| readinessProbe.timeoutSeconds      | Number of seconds after which the probe times out.                                                                                                                                                                                | `3`                                                                                                                             |
+| startupProbe.enabled               | If true, enable StartupProbe.                                                                                                                                                                                                     | `true`                                                                                                                          |
+| startupProbe.failureThreshold      | After a probe fails times in a row, Kubernetes considers that the overall check has failed: the container is not ready/healthy/live.                                                                                              | `1000`                                                                                                                          |
+| startupProbe.periodSeconds         | How often (in seconds) to perform the probe.                                                                                                                                                                                      | `200`                                                                                                                           |
+| startupProbe.successThreshold      | Minimum consecutive successes for the probe to be considered successful after having failed. Must be 1 for liveness and startup Probes.                                                                                           | `1`                                                                                                                             |
+| startupProbe.timeoutSeconds        | Number of seconds after which the probe times out. Defaults to 1 second.                                                                                                                                                          | `10`                                                                                                                            |
+| lotusVolumeAccessModes             | The volume can be mounted as read-write by a single node.<br/>ReadWriteOnce access mode can allow multiple pods to access the volume when the pods are running on the same node.                                                  | `ReadWriteOnce`                                                                                                                 |
+| lotusVolumeSize                    | The volume size of Lotus.                                                                                                                                                                                                         | `50Gi`                                                                                                                          |
+| lotusVolumeStorageClass            | Amazon EBS provides the volume type for our storage.                                                                                                                                                                              | `ebs-sc-gp2`                                                                                                                    |
+| createLotusService                 | Create the Lotus service if true.                                                                                                                                                                                                 | `true`                                                                                                                          |
+| lotusServiceAnnotations            | Set of the specify annotations.                                                                                                                                                                                                   | `prometheus.io/scrape: "true"`<br/> `prometheus.io/port: "1234"`<br/> `prometheus.io/path: "/debug/metrics"`                      |
+| createCache                        | Create the cache deployment if true.                                                                                                                                                                                              | `false`                                                                                                                                                                                                                             |
+| cacheImageRepository               | Cache image.                                                                                                                                                                                                                      |`protofire/filecoin-rpc-proxy:0.0.3`|
+| cacheDeploymentReplicas            | Indicates how many replicas should be in the deployment                                                                                                                                                                           | `2`                                  |
+| cacheRequestsCpu                   | The amount of CPU cache pod requests on schedule.                                                                                                                                                                                 | `500m`                                                                                                                                                                                                                            |
+| cacheRequestsMemory                | The amount of memory cache pod requests on schedule.                                                                                                                                                                              | `1Gi`                                                                                                                                                                                                                             |
+| cacheCpuLimit                      | The amount of CPU cache pod is limited to.                                                                                                                                                                                        | `3000m`                                                                                                                                                                                                                           |
+| cacheMemoryLimit                   | The amount of memory cache pod is limited to.                                                                                                                                                                                     | `3Gi`                                                                                                                                                                                                                             |
+
+
+## Usage example 
+````yaml
+nodeSelector:
+  nodeGroupName: group16
+  assign_to_space00_07_nodes: allow_any_pods
+
+lotusEnv:
+  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_IMPORT_SNAPSHOT: "true"
+  INFRA_LOTUS_GATEWAY: "true"
+  INFRA_CLEAR_RESTART: "false"
+  DOWNLOAD_FROM: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
+
+
+lotusContainer:
+  image: glif/lotus:v1.23.0-custom-mainnet-arm64-test
+
+lotusRequestsCpu: 12
+lotusRequestsMemory: 80Gi
+
+lotusCpuLimit: 25
+lotusMemoryLimit: 120Gi
+
+createLotusService: false
+````

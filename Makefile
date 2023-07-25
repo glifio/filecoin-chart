@@ -1,16 +1,6 @@
 all: lint package
 
-## Edit node and env
-#
-# Deploy archive_node
-#  NODE = test-calibrationapi
-#  ENV = dev
-#  NAMESPACE = network
-
-## Deploy archive_node
-# NODE = wallaby-archive
-# ENV = dev
-# NAMESPACE = network
+# DEV environment
 
 ### Deploy api_read_node
 #NODE = api-read-dev
@@ -22,32 +12,20 @@ all: lint package
 #ENV = dev
 #NAMESPACE = network
 
-# Deploy wallaby
-#NODE = wallaby-archive
-#ENV = mainnet
-#NAMESPACE = network
-
-# Deploy wallaby-slave
-#NODE = wallaby-archive-slave
-#ENV = dev
-#NAMESPACE = network
-
-# Deploy calibrationapi
-#NODE = calibrationapi
-#ENV = dev
-#NAMESPACE = network
-
-# Deploy calibrationapi-archive-node
-NODE = api-read-slave-10
-ENV = mainnet
-NAMESPACE = network
-
-## Deploy calibnetapi-jwt
-#NODE = calibrationapi-jwt
-#ENV = dev
-#NAMESPACE = network
 
 ## lotus nodes management
+
+# Calibration nodes
+
+# Deploy calibrationapi
+# NODE = calibrationapi-1
+# ENV = mainnet
+# NAMESPACE = network
+
+# # Deploy calibrationapi-archive-node
+# NODE = calibrationapi-archive-node
+# ENV = mainnet
+# NAMESPACE = network
 
 
 ####deploy cache service for api-read v0 mainnet
@@ -71,24 +49,24 @@ NAMESPACE = network
 #NAMESPACE = network
 
 ### Deploy api_read_slave_2_node
-#NODE = api-read-slave-2
-#ENV = mainnet
-#NAMESPACE = network
+# NODE = api-read-slave-10
+# ENV = mainnet
+# NAMESPACE = network
 
 ### Deploy api_read_slave_3_node
 # NODE = api-read-slave-3
 # ENV = mainnet
 # NAMESPACE = network
 
-#### Deploy space00
+# #### Deploy space00
 # NODE = space00
 # ENV = mainnet
 # NAMESPACE = network
 
 ### Deploy space06
-#NODE = space06
-#ENV = mainnet
-#NAMESPACE = network
+# NODE = space06
+# ENV = mainnet
+# NAMESPACE = network
 
 ### Deploy space06-cache
 #NODE = space06-cache
@@ -96,19 +74,49 @@ NAMESPACE = network
 #NAMESPACE = network
 
 #### Deploy space06-1
-#NODE = space06-1
-#ENV = mainnet
-#NAMESPACE = network
+NODE = space06
+ENV = mainnet
+NAMESPACE = network
 
 #### Deploy space07
-#NODE = space07
-#ENV = mainnet
-#NAMESPACE = network
+# NODE = space00
+# ENV = mainnet
+# NAMESPACE = network
 
 #### Deploy space07-cache
 #NODE = space07-cache
 #ENV = mainnet
 #NAMESPACE = network
+
+### Deploy blockscout-0
+# NODE = blockscout-0
+# ENV = mainnet
+# NAMESPACE = network
+
+
+### Deploy coinfirm
+# NODE = coinfirm
+# ENV = mainnet
+# NAMESPACE = network
+
+
+### Deploy fvm-archive
+# NODE = fvm-archive
+# ENV = mainnet
+# NAMESPACE = network
+
+# OVH environment
+
+### Deploy spacenet
+# NODE = spacenet-public
+# ENV = mainnet
+# NAMESPACE = network
+
+#### Deploy spacenet-slave
+# NODE = spacenet-public-slave-0
+# ENV = mainnet
+# NAMESPACE = network
+
 
 nodeInstall:
 	helm upgrade --history-max 3 --install -f values.yaml -f values/$(ENV)/$(NAMESPACE)/$(NODE).yaml $(NODE) -n $(NAMESPACE) .

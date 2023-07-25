@@ -4,7 +4,9 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-lotus-service
   labels:
-    app: lotus-node-app
+    {{- range $key, $value := .Values.lotusStsLabels }}
+      {{ $key }}: {{ $value }}
+    {{- end }}
   annotations:
   {{- range $key, $value := .Values.lotusServiceAnnotations }}
       {{ $key }}: {{ $value | quote }}
@@ -12,16 +14,22 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    release: {{ .Release.Name }}
+    {{- range $key, $value := .Values.lotusStsLabels }}
+      {{ $key }}: {{ $value }}
+      {{- end }}
   ports:
     - protocol: TCP
       port: 1234
       targetPort: 1234
       name: tcp-api
-    {{- if .Values.lotusEnv.INFRA_LOTUS_GATEWAY }}
     - protocol: TCP
       port: 2346
       targetPort: 2346
       name: gateway
+    {{- if .Values.enableLotusP2pPort }}
+    - protocol: TCP
+      port: 1235
+      targetPort: 1235
+      name: p2p
     {{- end}}
-{{- end }}
+  {{- end}}

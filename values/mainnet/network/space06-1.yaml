@@ -2,20 +2,21 @@ nodeSelector:
   nodeGroupName: group10
   assign_to_space00_07_nodes: allow_any_pods
 
-importSnapshot: true
-downloadSnapshotUrl: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
-snapshotLocation: "/home/lotus_user/snapshot/latest.car"
+lotusStsLabels:
+  release: space06
+  release-fork: space06-1
 
-isSlaveNode: true
-createLotusService: false
-customReleaseName: space06
 
 lotusEnv:
   INFRA_CLEAR_RESTART: "false"
   INFRA_LOTUS_GATEWAY: "true"
+  INFRA_IMPORT_SNAPSHOT: "true"
+  DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
+  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
 
 
-lotusImageRepository: glif/lotus:v1.23.0-custom-mainnet-amd64
+lotusContainer:
+  image: glif/lotus:v1.23.0-custom-mainnet-arm64
 
 lotusRequestsCpu: 7
 lotusRequestsMemory: 50Gi
@@ -23,5 +24,4 @@ lotusRequestsMemory: 50Gi
 lotusCpuLimit: 15
 lotusMemoryLimit: 120Gi
 
-isSpotInstance: true
-createServiceRoleBinding: false
+createLotusService: false
