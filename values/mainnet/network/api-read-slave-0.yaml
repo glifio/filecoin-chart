@@ -12,10 +12,11 @@ lotusEnv:
   INFRA_CLEAR_RESTART: "false"
   DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
+  LOTUS_FVM_CONCURRENCY_RESERVED: "4"
 
 
 lotusContainer:
-  image: glif/lotus:v1.23.0-custom-mainnet-arm64-test
+  image: glif/lotus:v1.23.2-custom-mainnet-arm64
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
