@@ -3,7 +3,6 @@ nodeSelector:
 
 lotusStsLabels:
   release: space07
-  routing: space07
 
 
 InitContainerPermissions: true

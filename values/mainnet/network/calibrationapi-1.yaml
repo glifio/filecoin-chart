@@ -10,7 +10,7 @@ lotusStsLabels:
 lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
   LOTUS_MAX_HEAP: "10GiB"
   DOWNLOAD_FROM: https://snapshots.calibrationnet.filops.net/minimal/latest.zst
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
