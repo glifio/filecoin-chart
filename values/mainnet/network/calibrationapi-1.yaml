@@ -10,7 +10,7 @@ lotusStsLabels:
 lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "false"
+  INFRA_CLEAR_RESTART: "true"
   LOTUS_MAX_HEAP: "10GiB"
   DOWNLOAD_FROM: https://snapshots.calibrationnet.filops.net/minimal/latest.zst
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
@@ -19,8 +19,8 @@ lotusContainer:
   image: glif/lotus:v1.23.0-eth-subscribe-calibnet-arm64
 
 
-lotusRequestsCpu: 12
-lotusRequestsMemory: 15Gi
+lotusRequestsCpu: 13
+lotusRequestsMemory: 20Gi
 lotusCpuLimit: 15
 lotusMemoryLimit: 30Gi
 
