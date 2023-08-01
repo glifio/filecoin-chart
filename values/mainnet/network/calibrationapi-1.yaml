@@ -19,8 +19,8 @@ lotusContainer:
   image: glif/lotus:v1.23.0-eth-subscribe-calibnet-arm64
 
 
-lotusRequestsCpu: 12
-lotusRequestsMemory: 15Gi
+lotusRequestsCpu: 13
+lotusRequestsMemory: 20Gi
 lotusCpuLimit: 15
 lotusMemoryLimit: 30Gi
 
