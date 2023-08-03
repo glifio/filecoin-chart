@@ -14,9 +14,15 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    {{- range $key, $value := .Values.lotusStsLabels }}
+    {{- if .Values.useCustomServiceSelector }}
+      {{- range $key, $value := .Values.customServiceSelector }}
       {{ $key }}: {{ $value }}
       {{- end }}
+    {{- else }}
+      {{- range $key, $value := .Values.lotusStsLabels }}
+      {{ $key }}: {{ $value }}
+      {{- end }}
+    {{- end }}
   ports:
     - protocol: TCP
       port: 1234
