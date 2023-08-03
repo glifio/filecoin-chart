@@ -147,3 +147,6 @@ cacheRequestsMemory: 1Gi
 cacheCpuLimit: 3000m
 # cacheMemoryLimit is the amount of memory cache pod is limited to
 cacheMemoryLimit: 3Gi
+
+useCustomServiceSelector: false
+customServiceSelector: {}
