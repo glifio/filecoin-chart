@@ -1,5 +1,5 @@
 nodeSelector:
-  nodeGroupName: group8
+  nodeGroupName: api-read-slave-1
 
 lotusStsLabels:
   release-fork: api-read-slave-1
@@ -20,7 +20,7 @@ lotusContainer:
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
 
-lotusCpuLimit: 25
+lotusCpuLimit: 16
 lotusMemoryLimit: 120Gi
 
 createLotusService: false
