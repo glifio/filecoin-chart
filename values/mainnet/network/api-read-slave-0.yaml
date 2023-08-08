@@ -1,6 +1,5 @@
 nodeSelector:
-  nodeGroupName: group16
-  assign_to_space00_07_nodes: allow_any_pods
+  nodeGroupName: api-read-slave-0
 
 lotusStsLabels:
   release-fork: api-read-slave-0
@@ -11,8 +10,11 @@ lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"
   DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
-  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
+  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car.zst
   LOTUS_FVM_CONCURRENCY_RESERVED: "4"
+
+downloadSnapshot:
+  unpack: false
 
 
 lotusContainer:
