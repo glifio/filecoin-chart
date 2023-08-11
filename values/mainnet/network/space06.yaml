@@ -1,12 +1,12 @@
 nodeSelector:
-  nodeGroupName: group29
+  nodeGroupName: space06
 
 lotusStsLabels:
   release: space06
 
 lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "false"
+  INFRA_CLEAR_RESTART: "true"
   LOTUS_FEVM_ENABLEETHRPC: "true"
   INFRA_IMPORT_SNAPSHOT: "true"
   DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst

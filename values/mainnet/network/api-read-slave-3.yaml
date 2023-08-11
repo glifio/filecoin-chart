@@ -1,5 +1,5 @@
 nodeSelector:
-  nodeGroupName: group17
+  nodeGroupName: api-read-slave-3
   assign_to_space00_07_nodes: allow_any_pods
 
 lotusStsLabels:
