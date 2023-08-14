@@ -128,6 +128,9 @@ lotusServiceAnnotations:
 
 enableLotusP2pPort: false
 
+lotusP2pPort: 1235
+
+
 
 ## CACHE
 
