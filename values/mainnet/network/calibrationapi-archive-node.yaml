@@ -18,6 +18,10 @@ lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "false"
   SNAPSHOTURL: null
   DOWNLOAD_FROM: null
+  LOTUS_LIBP2P_CONNMGRGRACE: "5m0s"
+  LOTUS_LIBP2P_CONNMGRHIGH: "500"
+  LOTUS_LIBP2P_CONNMGRLOW: "400"
+  LOTUS_PUBSUB_BOOTSTRAPPER: "true"
 
 lotusVolume:
   hostPath:
@@ -32,4 +36,7 @@ lotusRequestsCpu: 2
 lotusRequestsMemory: 10Gi
 lotusCpuLimit: 5
 lotusMemoryLimit: 60Gi
+
+enableLotusP2pPort: true
+lotusP2pPort: 1237
 

@@ -34,8 +34,8 @@ spec:
       name: gateway
     {{- if .Values.enableLotusP2pPort }}
     - protocol: TCP
-      port: 1235
-      targetPort: 1235
+      port: {{.Values.lotusP2pPort}}
+      targetPort: {{.Values.lotusP2pPort}}
       name: p2p
     {{- end}}
   {{- end}}
