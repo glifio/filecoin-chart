@@ -42,6 +42,11 @@ spec:
             path: {{ .Values.lotusVolume.hostPath.path }}
             type: Directory
       {{- end }}
+      {{- if .Values.useLotusConfigMap }}
+        - name: lotus-config
+          configMap:
+            name: {{ .Release.Name }}-configmap
+      {{- end }}
       initContainers:
       {{- if .Values.InitContainerPermissions }}
       - name: hostpath-permission
@@ -169,7 +174,7 @@ spec:
         - containerPort: 2346
           name: gateway
         volumeMounts:
-           {{- if .Values.lotusEnv.INFRA_SECRETVOLUME }}
+          {{- if .Values.lotusEnv.INFRA_SECRETVOLUME }}
           - name: lotus-secret-vol
             mountPath: /keystore
           {{- end }}
@@ -182,6 +187,11 @@ spec:
           - name: {{ .Values.lotusVolume.name }}
             mountPath: /home/lotus_user/snapshot
             subPath: snapshot
+          {{- end }}
+          {{- if .Values.useLotusConfigMap }}
+          - name: lotus-config
+            mountPath: /home/lotus_user/.lotus/config.toml
+            subPath: config.toml
           {{- end }}
         resources:
           limits:
