@@ -1,0 +1,18 @@
+{{- if .Values.useLotusConfigMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+data:
+  config.toml: |
+    [API]
+    ListenAddress = "/ip4/0.0.0.0/tcp/1234/http"
+    Timeout = "60s"
+    [Libp2p]
+    ListenAddresses = ["/ip4/0.0.0.0/tcp/{{ .Values.lotusP2pPort }}", "/ip6/::/tcp/{{ .Values.lotusP2pPort }}"]
+    AnnounceAddresses = []
+    [Pubsub]
+    RemoteTracer = ""
+    [Chainstore]
+    EnableSplitstore = false
+{{- end }}
