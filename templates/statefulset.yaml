@@ -169,7 +169,7 @@ spec:
         ports:
         - containerPort: 1234
           name: api
-        - containerPort: 1235
+        - containerPort: {{ .Values.lotusP2pPort }}
           name: p2p
         - containerPort: 2346
           name: gateway
