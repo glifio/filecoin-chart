@@ -190,7 +190,7 @@ spec:
           {{- end }}
           {{- if .Values.useLotusConfigMap }}
           - name: lotus-config
-            mountPath: /home/lotus_user/.lotus/config.toml
+            mountPath: /home/lotus_user/config.toml
             subPath: config.toml
           {{- end }}
         resources:
