@@ -40,3 +40,5 @@ lotusMemoryLimit: 60Gi
 enableLotusP2pPort: true
 lotusP2pPort: 1237
 
+useLotusConfigMap: true
+
