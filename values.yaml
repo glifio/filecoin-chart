@@ -155,4 +155,3 @@ useCustomServiceSelector: false
 customServiceSelector: {}
 
 useLotusConfigMap: false
-libp2pPort: 1235
