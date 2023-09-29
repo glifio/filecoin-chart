@@ -1,5 +1,5 @@
 nodeSelector:
-  nodeGroupName: group19
+  nodeGroupName: space07
 
 lotusStsLabels:
   release: space07
@@ -23,6 +23,7 @@ lotusEnv:
   LOTUS_LIBP2P_CONNMGRHIGH: "500"
   LOTUS_LIBP2P_CONNMGRLOW: "400"
   LOTUS_PUBSUB_BOOTSTRAPPER: "true"
+  INFRA_PERSISTNODEID: "true"
 
 lotusServiceAnnotations:
   # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
@@ -34,7 +35,7 @@ lotusServiceAnnotations:
   konghq.com/read-timeout: "86400000"
 
 lotusContainer:
-  image: glif/lotus:v1.23.0-custom-mainnet-arm64
+  image: glif/lotus:v1.23.3-blockstore-prune-mainnet-arm64
 
 # Lotus container mounts LVM from appHostPath
 lotusVolume:
@@ -43,9 +44,9 @@ lotusVolume:
     path: "/mnt/raid"
 
 lotusRequestsCpu: 23
-lotusRequestsMemory: 300Gi
-lotusCpuLimit: 35
-lotusMemoryLimit: 350Gi
+lotusRequestsMemory: 200Gi
+lotusCpuLimit: 32
+lotusMemoryLimit: 256Gi
 
 enableLotusP2pPort: true
 lotusP2pPort: 1235
