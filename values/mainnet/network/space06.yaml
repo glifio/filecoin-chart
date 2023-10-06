@@ -6,7 +6,7 @@ lotusStsLabels:
 
 lotusEnv:
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
   LOTUS_FEVM_ENABLEETHRPC: "true"
   INFRA_IMPORT_SNAPSHOT: "true"
   DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
@@ -26,7 +26,7 @@ lotusContainer:
   image: glif/lotus:v1.23.0-custom-mainnet-arm64
 
 lotusRequestsCpu: 12
-lotusRequestsMemory: 64Gi
+lotusRequestsMemory: 100Gi
 
 lotusCpuLimit: 15
 lotusMemoryLimit: 120Gi
