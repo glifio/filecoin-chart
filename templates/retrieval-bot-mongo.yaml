@@ -1,0 +1,39 @@
+{{- if .Values.retrievalBot }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-mongo
+spec:
+  replicas: {{ .Values.mongo.replicas }}
+  serviceName: {{ .Release.Name }}-mongo-service
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-mongo
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-mongo
+    spec:
+      containers:
+      - name: mongo
+        image: {{ .Values.mongo.image }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 27017
+        env:
+        {{- range $key, $value := .Values.mongo.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        resources:
+          limits:
+            memory: {{ .Values.mongo.limits.memory }}
+            cpu: {{ .Values.mongo.limits.cpu }}
+          requests:
+            memory: {{ .Values.mongo.requests.memory }}
+            cpu: {{ .Values.mongo.requests.cpu }}
+      nodeSelector:
+      {{- range $key, $value := .Values.mongo.nodeSelector }}
+          {{ $key }}: {{ $value | quote }}
+      {{- end }}
+{{- end }}

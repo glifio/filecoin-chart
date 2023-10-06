@@ -1,0 +1,23 @@
+{{- if .Values.retrievalBot }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-mongo-service
+  labels:
+  {{- range $key, $value := .Values.mongo.service.labels }}
+    {{ $key }}: {{ $value }}
+  {{- end }}
+  annotations:
+  {{- range $key, $value := .Values.mongo.service.annotations }}
+      {{ $key }}: {{ $value | quote }}
+  {{- end }}
+spec:
+  type: ClusterIP
+  selector:
+    app:  {{ .Release.Name }}-mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+      name: mongo
+{{- end}}

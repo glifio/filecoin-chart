@@ -1,0 +1,74 @@
+# Disable default bahavior of creating lotus
+lotusStsCreate: false
+createLotusService: false
+
+retrievalBot: true
+# Retrieval bot specs
+bot:
+  image: glif/lotus:retrieval-bot
+  replicas: 1
+
+  limits:
+    cpu: 5
+    memory: 35Gi
+
+  requests:
+    cpu: 500m
+    memory: 1Gi
+
+  env:
+    LOTUS_API_URL: https://api.node.glif.io/rpc/v1
+    LOTUS_API_TOKEN: 
+    QUEUE_MONGO_URI: mongodb://root:root@192.168.15.181/?retryWrites=true&w=majority
+    QUEUE_MONGO_DATABASE: test
+    RESULT_MONGO_URI: mongodb://root:root@192.168.15.181/?retryWrites=true&w=majority
+    RESULT_MONGO_DATABASE: test
+    STATEMARKETDEALS_MONGO_URI: mongodb://root:root@192.168.15.181/?retryWrites=true&w=majority
+    STATEMARKETDEALS_MONGO_DATABASE: test
+    PROVIDER_CACHE_TTL: 24h
+    LOCATION_CACHE_TTL: 720h
+    IPINFO_TOKEN: b6af5a98eb63b1
+    FILPLUS_INTEGRATION_BATCH_SIZE: 1000
+    GOLOG_LOG_FMT: json
+    GOLOG_LOG_LEVEL: info
+    FILPLUS_INTEGRATION_RANDOM_CONSTANT: 4.0
+    PROCESS_MODULES: ./graphsync_worker,./http_worker,./bitswap_worker
+    PROCESS_ERROR_INTERVAL: 5s
+    TASK_WORKER_POLL_INTERVAL: 30s
+    TASK_WORKER_TIMEOUT_BUFFER: 10s
+    ACCEPTED_CONTINENTS: 
+    ACCEPTED_COUNTRIES: 
+    CONCURRENCY_GRAPHSYNC_WORKER: 10
+    CONCURRENCY_BITSWAP_WORKER: 10
+    CONCURRENCY_HTTP_WORKER: 10
+    STATEMARKETDEALS_BATCH_SIZE: 1000
+    STATEMARKETDEALS_INTERVAL: 6h
+
+  nodeSelector:
+    assign_to_space00_07_nodes: allow_any_pods
+    kubernetes.io/arch: arm64
+
+# MongoDB specs
+mongo:
+  image: mongo:jammy
+  replicas: 1
+
+  limits:
+    cpu: 5
+    memory: 35Gi
+
+  requests:
+    cpu: 500m
+    memory: 1Gi
+
+  env:
+    MONGO_INITDB_ROOT_USERNAME: root
+    MONGO_INITDB_ROOT_PASSWORD: root
+
+  nodeSelector:
+    assign_to_space00_07_nodes: allow_any_pods
+
+  service:
+    labels:
+    annotations:
+      app: retrieval-bot-mongo

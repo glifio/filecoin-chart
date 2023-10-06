@@ -1,0 +1,38 @@
+{{- if .Values.retrievalBot }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-app
+  replicas: {{ .Values.bot.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-app
+    spec:
+      containers:
+      - name: retrieval-bot
+        image: {{ .Values.bot.image }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8080
+        env:
+        {{- range $key, $value := .Values.bot.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        resources:
+          limits:
+            memory: {{ .Values.bot.limits.memory }}
+            cpu: {{ .Values.bot.limits.cpu }}
+          requests:
+            memory: {{ .Values.bot.requests.memory }}
+            cpu: {{ .Values.bot.requests.cpu }}
+      nodeSelector:
+      {{- range $key, $value := .Values.bot.nodeSelector }}
+          {{ $key }}: {{ $value | quote }}
+      {{- end }}
+{{- end }}
