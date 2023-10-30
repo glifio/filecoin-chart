@@ -12,6 +12,9 @@ lotusEnv:
   DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car.zst
   LOTUS_FVM_CONCURRENCY_RESERVED: "4"
+  LOTUS_CHAINSTORE_ENABLESPLITSTORE: "true"
+  LOTUS_CHAINSTORE_SPLITSTORE_HOTSTOREMESSAGERETENTION: "3"
+  LOTUS_CHAINSTORE_SPLITSTORE_COLDSTORETYPE: "discard"
 
 downloadSnapshot:
   unpack: false
