@@ -8,7 +8,7 @@ lotusStsLabels:
 
 
 lotusEnv:
-  INFRA_CLEAR_RESTART: "false"
+  INFRA_CLEAR_RESTART: "true"
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_IMPORT_SNAPSHOT: "true"
   DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
@@ -21,10 +21,10 @@ lotusEnv:
 lotusContainer:
   image: glif/lotus:v1.23.0-custom-mainnet-arm64
 
-lotusRequestsCpu: 7
-lotusRequestsMemory: 50Gi
+lotusRequestsCpu: 14
+lotusRequestsMemory: 120Gi
 
-lotusCpuLimit: 15
-lotusMemoryLimit: 120Gi
+lotusCpuLimit: 16
+lotusMemoryLimit: 127Gi
 
 createLotusService: false
