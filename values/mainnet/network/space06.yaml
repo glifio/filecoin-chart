@@ -9,7 +9,7 @@ lotusEnv:
   INFRA_CLEAR_RESTART: "true"
   LOTUS_FEVM_ENABLEETHRPC: "true"
   INFRA_IMPORT_SNAPSHOT: "true"
-  DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
+  DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/latest/mainnet/
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
   LOTUS_CHAINSTORE_ENABLESPLITSTORE: "true"
   LOTUS_CHAINSTORE_SPLITSTORE_HOTSTOREMESSAGERETENTION: "3"
@@ -28,8 +28,8 @@ lotusServiceAnnotations:
 lotusContainer:
   image: glif/lotus:v1.23.0-custom-mainnet-arm64
 
-lotusRequestsCpu: 12
-lotusRequestsMemory: 100Gi
+lotusRequestsCpu: 30
+lotusRequestsMemory: 240Gi
 
-lotusCpuLimit: 15
-lotusMemoryLimit: 120Gi
+lotusCpuLimit: 32
+lotusMemoryLimit: 255Gi
