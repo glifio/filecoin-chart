@@ -20,7 +20,7 @@ lotusEnv:
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
 
 lotusContainer:
-  image: glif/lotus:v1.24.0-rc4-gw-calibnet-arm64
+  image: glif/lotus:v1.24.0-rc5-gw-calibnet-arm64
 
 
 lotusRequestsCpu: 13
