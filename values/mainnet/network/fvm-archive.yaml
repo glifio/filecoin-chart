@@ -26,9 +26,13 @@ lotusEnv:
   SNAPSHOTURL: null
   INFRA_IMPORT_SNAPSHOT: null
   DOWNLOAD_FROM: null
+  LOTUS_INDEX_ENABLEMSGINDEX: "true"
+  LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
+  LOTUS_FEVM_EVENTS_DISABLEREALTIMEFILTERAPI: "false"
+  LOTUS_FEVM_EVENTS_DISABLEHISTORICFILTERAPI: "false"
 
 lotusContainer:
-  image: glif/lotus:v1.23.0-custom-mainnet-arm64
+  image: glif/lotus:v1.23.3-gw-mainnet-arm64
 
 lotusVolume:
   hostPath:
