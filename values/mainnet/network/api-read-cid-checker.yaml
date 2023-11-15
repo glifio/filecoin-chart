@@ -1,9 +1,8 @@
 nodeSelector:
-  nodeGroupName: group28
-  assign_to_space00_07_nodes: allow_any_pods
+  nodeGroupName: api-read-cid-checker
 
 lotusStsLabels:
-  release-fork: api-read-slave-10
+  release-fork: api-read-cid-checker
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
@@ -17,10 +16,8 @@ lotusEnv:
 lotusContainer:
   image: glif/lotus:v1.23.2-custom-mainnet-arm64
 
-lotusRequestsCpu: 10
-lotusRequestsMemory: 60Gi
+lotusRequestsCpu: 25
+lotusRequestsMemory: 200Gi
 
-lotusCpuLimit: 25
-lotusMemoryLimit: 120Gi
-
-createLotusService: false
+lotusCpuLimit: 30
+lotusMemoryLimit: 250Gi
