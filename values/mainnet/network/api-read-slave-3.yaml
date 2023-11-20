@@ -10,7 +10,7 @@ lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "false"
-  DOWNLOAD_FROM: "https://snapshots.mainnet.filops.net/minimal/latest.zst"
+  DOWNLOAD_FROM: "https://forest-archive.chainsafe.dev/latest/mainnet/"
   SNAPSHOTURL: "/home/lotus_user/snapshot/latest.car"
   LOTUS_FVM_CONCURRENCY_RESERVED: "4"
   LOTUS_CHAINSTORE_ENABLESPLITSTORE: "true"
