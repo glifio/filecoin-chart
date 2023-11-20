@@ -10,13 +10,15 @@ lotusStsLabels:
 lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
   LOTUS_MAX_HEAP: "10GiB"
   DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/calibnet/lite/forest_snapshot_calibnet_2023-09-06_height_889400.forest.car.zst
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
+  INFRA_LOTUS_GW_LOOKBACK_LIMIT: "90000"
+  INFRA_LOTUS_GW_MAX_LOOKBACK: "720h0m0s"
 
 lotusContainer:
-  image: glif/lotus:v1.24.0-rc5-gw-calibnet-arm64
+  image: glif/lotus:v1.25.0-rc5-gw-calibnet-arm64
 
 
 lotusRequestsCpu: 3
