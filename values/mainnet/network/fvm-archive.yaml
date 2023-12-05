@@ -32,7 +32,7 @@ lotusEnv:
   LOTUS_FEVM_EVENTS_DISABLEHISTORICFILTERAPI: "false"
 
 lotusContainer:
-  image: glif/lotus:v1.23.3-gw-mainnet-arm64
+  image: glif/lotus:v1.25.0-gw-estimategas-mainnet-arm64
 
 lotusVolume:
   hostPath:
@@ -44,3 +44,9 @@ lotusRequestsCpu: 25
 lotusRequestsMemory: 200Gi
 lotusCpuLimit: 30
 lotusMemoryLimit: 250Gi
+
+livenessProbe:
+  initialDelaySeconds: 600
+
+readinessProbe:
+  initialDelaySeconds: 600
