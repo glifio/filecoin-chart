@@ -1,0 +1,32 @@
+nodeSelector:
+  nodeGroupName: api-read-slave-24
+
+lotusStsLabels:
+  release-fork: api-read-slave-24
+
+lotusEnv:
+  LOTUS_VM_ENABLE_TRACING: "true"
+  INFRA_IMPORT_SNAPSHOT: "true"
+  INFRA_LOTUS_GATEWAY: "true"
+  INFRA_CLEAR_RESTART: "false"
+  DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
+  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car.zst
+  LOTUS_FVM_CONCURRENCY_RESERVED: "4"
+  LOTUS_CHAINSTORE_ENABLESPLITSTORE: "true"
+  LOTUS_CHAINSTORE_SPLITSTORE_HOTSTOREMESSAGERETENTION: "3"
+  LOTUS_CHAINSTORE_SPLITSTORE_COLDSTORETYPE: "discard"
+
+downloadSnapshot:
+  unpack: false
+
+
+lotusContainer:
+  image: glif/lotus:v1.25.0-gw-miner-mainnet-arm64
+
+lotusRequestsCpu: 12
+lotusRequestsMemory: 80Gi
+
+lotusCpuLimit: 25
+lotusMemoryLimit: 120Gi
+
+createLotusService: false
