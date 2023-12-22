@@ -18,7 +18,7 @@ lotusEnv:
 
 
 lotusContainer:
-  image: glif/lotus:v1.25.0-gw-miner-mainnet-arm64
+  image: glif/lotus:v1.25.1-gw-mainnet-arm64
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi

@@ -74,7 +74,7 @@ all: lint package
 #NAMESPACE = network
 
 #### Deploy space06-1
-NODE = space06
+NODE = space07
 ENV = mainnet
 NAMESPACE = network
 
