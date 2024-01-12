@@ -103,7 +103,7 @@ spec:
             ARIA2_ITERATION=1;
             while [ $ARIA2_ITERATION -le 50 ]; do
               echo "Downloading zst snapshot, attempt $ARIA2_ITERATION";
-              aria2c --allow-overwrite -x 16 -s 32 -k 50M --lowest-speed-limit=1M "$DOWNLOAD_FROM" --console-log-level=info -o "downloaded_snapshot.zst";
+              aria2c --allow-overwrite -x 16 -s 32 -k 50M --lowest-speed-limit=1M "$DOWNLOAD_FROM" -o "downloaded_snapshot.zst";
               ARIA2_EXIT_CODE=$(echo $?);
               echo "Aria2 exit code is $ARIA2_EXIT_CODE";
               if [ $ARIA2_EXIT_CODE -eq 0 ]; then
