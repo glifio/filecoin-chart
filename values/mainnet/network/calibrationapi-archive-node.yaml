@@ -1,6 +1,6 @@
 # you have to put the group name from existing EKS working group names.
 nodeSelector:
-  nodeGroupName: group13
+  nodeGroupName: calibration-archive
   assign_to_space00_07_nodes: allow_any_pods
 
 lotusStsLabels:
@@ -12,7 +12,7 @@ downloadSnapshot:
 InitContainerPermissions: true
 
 lotusContainer:
-  image: glif/lotus:v1.25.0-rc5-gw-calibnet-arm64
+  image: glif/lotus:v1.25.1-gw-calibnet-arm64
 
 lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "false"
