@@ -1,38 +1,27 @@
 nodeSelector:
-  nodeGroupName: group2
+  nodeGroupName: api-read-dev
 
 lotusStsLabels:
-  release: api-read-dev-syncer
-  release-fork: api-read-dev
+  release: api-read-dev
+
+
+lotusServiceAnnotations:
+  konghq.com/read-timeout: "600000"
 
 
 lotusEnv:
-  LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
   INFRA_CLEAR_RESTART: "true"
-  DOWNLOAD_FROM: https://snapshots.mainnet.filops.net/minimal/latest.zst
+  LOTUS_MAX_HEAP: "10GiB"
+  DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/latest/calibnet/
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
-  LOTUS_CASSANDRA_UNIVERSAL_STORE: "yb-tserver-service.network.svc.cluster.local:9042"
-
 
 lotusContainer:
-  image: glif/lotus:cluster-mainnet-amd64
-  command: ["tail","-f","/dev/null"]
+  image: glif/lotus:v1.25.0-gw-miner-calibnet-arm64
 
-lotusRequestsCpu: 12
-lotusRequestsMemory: 50Gi
 
-lotusCpuLimit: 15
-lotusMemoryLimit: 60Gi
-
-livenessProbe:
-  enabled: false
-
-readinessProbe:
-  enabled: false
-
-startupProbe:
-  enabled: false
-
-createLotusService: false
+lotusRequestsCpu: 3
+lotusRequestsMemory: 20Gi
+lotusCpuLimit: 4
+lotusMemoryLimit: 25Gi
