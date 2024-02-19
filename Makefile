@@ -74,7 +74,7 @@ all: lint package
 #NAMESPACE = network
 
 #### Deploy space06-1
-NODE = space07
+NODE = calibrationapi-archive-node
 ENV = mainnet
 NAMESPACE = network
 
