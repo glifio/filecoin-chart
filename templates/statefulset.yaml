@@ -100,8 +100,18 @@ spec:
             echo "Ledger check is enabled, and the ledger already exists. Exiting...";
             exit 0;
             fi;
-            echo "Downloading zst snapshot";
-            aria2c --allow-overwrite --max-connection-per-server 5 --split 5 "$DOWNLOAD_FROM" -o "downloaded_snapshot.zst";
+            ARIA2_ITERATION=1;
+            while [ $ARIA2_ITERATION -le 50 ]; do
+              echo "Downloading zst snapshot, attempt $ARIA2_ITERATION";
+              aria2c --allow-overwrite -x 16 -s 32 -k 50M --lowest-speed-limit=1M "$DOWNLOAD_FROM" -o "downloaded_snapshot.zst";
+              ARIA2_EXIT_CODE=$(echo $?);
+              echo "Aria2 exit code is $ARIA2_EXIT_CODE";
+              if [ $ARIA2_EXIT_CODE -eq 0 ]; then
+                break;
+              fi;
+              ARIA2_ITERATION=$(( ARIA2_ITERATION - 1 ));
+            done
+            
             if [ "$ENABLE_UNPACK" = false ]; then
             echo "Unpack is disabled. Copying to the destination as is...";
             mv "downloaded_snapshot.zst" "$SNAPSHOTURL";
