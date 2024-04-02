@@ -23,10 +23,10 @@ lotusEnv:
   LOTUS_FEVM_EVENTS_DISABLEHISTORICFILTERAPI: "false"
 
 lotusContainer:
-  image: glif/lotus:v1.25.1-gw-mainnet-arm64
+  image: glif/lotus:v1.26.1-gw-mainnet-arm64
 
-lotusRequestsCpu: 10
-lotusRequestsMemory: 60Gi
+lotusRequestsCpu: 12
+lotusRequestsMemory: 80Gi
 
 lotusCpuLimit: 25
 lotusMemoryLimit: 120Gi
