@@ -18,10 +18,16 @@ lotusEnv:
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
 
 lotusContainer:
-  image: glif/lotus:v1.25.0-gw-miner-calibnet-arm64
+  image: glif/lotus:v1.26.0-rc2-gw-calibnet-arm64
 
 
 lotusRequestsCpu: 3
 lotusRequestsMemory: 20Gi
 lotusCpuLimit: 4
 lotusMemoryLimit: 25Gi
+
+livenessProbe:
+  initialDelaySeconds: 300
+
+readinessProbe:
+  initialDelaySeconds: 300
