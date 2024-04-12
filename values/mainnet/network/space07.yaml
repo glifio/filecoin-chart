@@ -9,7 +9,6 @@ useCustomServiceSelector: true
 customServiceSelector:
   routing: space07
 
-
 InitContainerPermissions: true
 
 downloadSnapshot:
@@ -30,6 +29,7 @@ lotusEnv:
   LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
   LOTUS_FEVM_EVENTS_DISABLEREALTIMEFILTERAPI: "false"
   LOTUS_FEVM_EVENTS_DISABLEHISTORICFILTERAPI: "false"
+  LOTUS_EVENTS_ENABLEACTOREVENTSAPI: "false"
 
 lotusServiceAnnotations:
   # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
@@ -49,12 +49,18 @@ lotusVolume:
     enableSubPath: false
     path: "/mnt/raid"
 
-lotusRequestsCpu: 23
-lotusRequestsMemory: 200Gi
-lotusCpuLimit: 32
-lotusMemoryLimit: 256Gi
+lotusRequestsCpu: 40
+lotusRequestsMemory: 368Gi
+lotusCpuLimit: 48
+lotusMemoryLimit: 384Gi
 
 enableLotusP2pPort: true
 lotusP2pPort: 1235
 
 useLotusConfigMap: true
+
+livenessProbe:
+  initialDelaySeconds: 600
+
+readinessProbe:
+  initialDelaySeconds: 600

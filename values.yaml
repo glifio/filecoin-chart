@@ -35,7 +35,7 @@ InitContainerPermissions: true
 downloadSnapshot:
   enabled: true
   url: null
-  unpack: true
+  unpack: false
   checkLedger: true
   dependecies:
     aria2: "1.36.0-r1"
@@ -66,7 +66,7 @@ lotusEnv:
   LOTUS_SKIP_APPLY_TS_MESSAGE_CALL_WITH_GAS: "1"
   LOTUS_FVM_CONCURRENCY: 24
   LOTUS_VM_ENABLE_TRACING: "true"
-
+  LOTUS_EVENTS_ENABLEACTOREVENTSAPI: "true"
 
 ## LOTUS CONTAINER
 
@@ -75,12 +75,12 @@ lotusContainer:
   image: "glif/lotus:1.20.3-calibnet-arm-custom"
   imagePullPolicy: Always
   command: ["/etc/lotus/docker/run"]
-  preStopCommand: ["/bin/sh", "-c", "rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]
-
+  preStopCommand:
+    ["/bin/sh", "-c", "rm -f $INFRA_LOTUS_HOME/.lotus/sync-complete"]
 
 livenessProbe:
   enabled: true
-  initialDelaySeconds: 600
+  initialDelaySeconds: 300
   periodSeconds: 20
   successThreshold: 1
   timeoutSeconds: 20
@@ -88,7 +88,7 @@ livenessProbe:
 readinessProbe:
   enabled: true
   command: ["healthcheck"]
-  initialDelaySeconds: 600
+  initialDelaySeconds: 300
   periodSeconds: 60
   successThreshold: 1
   timeoutSeconds: 3
@@ -110,10 +110,9 @@ lotusVolumeSize: "50Gi"
 # the volume can be mounted as read-write by a single node.
 # ReadWriteOnce access mode can allow multiple pods to access the volume when the pods are running on the same node.
 lotusVolumeAccessModes:
-- ReadWriteOnce
+  - ReadWriteOnce
 #Amazon EBS provides the volume type for our storage
 lotusVolumeStorageClass: "ebs-sc-gp2"
-
 
 ## SERVICE
 
@@ -129,8 +128,6 @@ lotusServiceAnnotations:
 enableLotusP2pPort: false
 
 lotusP2pPort: 1235
-
-
 
 ## CACHE
 
