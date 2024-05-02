@@ -36,3 +36,5 @@ lotusCpuLimit: 25
 lotusMemoryLimit: 120Gi
 
 createLotusService: false
+
+createDedicatedService: true

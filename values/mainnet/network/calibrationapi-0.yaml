@@ -32,3 +32,5 @@ livenessProbe:
 
 readinessProbe:
   initialDelaySeconds: 300
+
+createDedicatedService: true
