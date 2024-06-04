@@ -1,18 +1,21 @@
 nodeSelector:
-  nodeGroupName: api-read-slave-0
+  nodeGroupName: api-read-slave-1
 
 lotusStsLabels:
-  release-fork: api-read-slave-0
+  release-fork: api-read-slave-1
 
 lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "false"
+  INFRA_CLEAR_RESTART: "true"
   DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/latest/mainnet/
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car.zst
   LOTUS_FVM_CONCURRENCY_RESERVED: "4"
-  LOTUS_FVM_CONCURRENCY: "32"
+  LOTUS_CHAINSTORE_ENABLESPLITSTORE: "true"
+  LOTUS_CHAINSTORE_SPLITSTORE_HOTSTOREMESSAGERETENTION: "3"
+  LOTUS_CHAINSTORE_SPLITSTORE_COLDSTORETYPE: "discard"
+  LOTUS_FVM_CONCURRENCY: "12"
   LOTUS_INDEX_ENABLEMSGINDEX: "true"
   LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
   LOTUS_FEVM_EVENTS_DISABLEREALTIMEFILTERAPI: "false"
@@ -29,7 +32,7 @@ lotusContainer:
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
 
-lotusCpuLimit: 25
+lotusCpuLimit: 16
 lotusMemoryLimit: 120Gi
 
 createLotusService: false

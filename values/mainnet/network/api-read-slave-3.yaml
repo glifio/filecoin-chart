@@ -36,3 +36,9 @@ lotusMemoryLimit: 120Gi
 createLotusService: false
 
 createDedicatedService: true
+
+livenessProbe:
+  initialDelaySeconds: 600
+
+readinessProbe:
+  initialDelaySeconds: 600

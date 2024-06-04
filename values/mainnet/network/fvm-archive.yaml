@@ -29,10 +29,10 @@ lotusEnv:
   LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
   LOTUS_FEVM_EVENTS_DISABLEREALTIMEFILTERAPI: "false"
   LOTUS_FEVM_EVENTS_DISABLEHISTORICFILTERAPI: "false"
-  LOTUS_EVENTS_ENABLEACTOREVENTSAPI: "false"
+  LOTUS_EVENTS_ENABLEACTOREVENTSAPI: "true"
 
 lotusContainer:
-  image: glif/lotus:v1.26.2-gw-mainnet-arm64
+  image: glif/lotus:v1.26.3-gw-mainnet-arm64
 
 lotusVolume:
   hostPath:
@@ -45,7 +45,7 @@ lotusCpuLimit: 30
 lotusMemoryLimit: 250Gi
 
 livenessProbe:
-  initialDelaySeconds: 300
+  initialDelaySeconds: 600
 
 readinessProbe:
-  initialDelaySeconds: 300
+  initialDelaySeconds: 600

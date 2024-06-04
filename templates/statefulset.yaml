@@ -51,7 +51,7 @@ spec:
       {{- if .Values.InitContainerPermissions }}
       - name: hostpath-permission
         image: busybox
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         command: ["/bin/sh","-c"]
         args:
           - mkdir -p /tmp/lotus /tmp/snapshot && chown -R 2000:2000 /tmp;
@@ -64,7 +64,7 @@ spec:
       {{- if .Values.downloadSnapshot.enabled }}
       - name: download-zst-snapshot
         image: alpine:3.17
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         workingDir: /home/lotus_user/snapshot
         env:
           - name: INFRA_CLEAR_RESTART
