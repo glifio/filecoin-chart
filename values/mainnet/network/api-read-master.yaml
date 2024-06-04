@@ -14,9 +14,6 @@ lotusEnv:
   DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/latest/mainnet/
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
   LOTUS_FVM_CONCURRENCY_RESERVED: "4"
-  LOTUS_CHAINSTORE_ENABLESPLITSTORE: "true"
-  LOTUS_CHAINSTORE_SPLITSTORE_HOTSTOREMESSAGERETENTION: "3"
-  LOTUS_CHAINSTORE_SPLITSTORE_COLDSTORETYPE: "discard"
   LOTUS_FVM_CONCURRENCY: "32"
   LOTUS_INDEX_ENABLEMSGINDEX: "true"
   LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
@@ -26,10 +23,12 @@ lotusEnv:
   LOTUS_FEVM_EVENTS_FILTERTTL: "16h40m0s"
 
 lotusContainer:
-  image: glif/lotus:v1.26.2-gw-mainnet-arm64
+  image: glif/lotus:v1.26.3-gw-mainnet-arm64
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
 
 lotusCpuLimit: 15
 lotusMemoryLimit: 120Gi
+
+createDedicatedService: true

@@ -24,7 +24,7 @@ lotusEnv:
   LOTUS_FEVM_EVENTS_FILTERTTL: "16h40m0s"
 
 lotusContainer:
-  image: glif/lotus:v1.26.2-gw-mainnet-arm64
+  image: glif/lotus:v1.26.3-gw-mainnet-arm64
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
@@ -33,3 +33,5 @@ lotusCpuLimit: 25
 lotusMemoryLimit: 120Gi
 
 createLotusService: false
+
+createDedicatedService: true

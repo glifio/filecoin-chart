@@ -1,0 +1,29 @@
+{{- if .Values.createDedicatedService }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-one-pod-svc
+  annotations:
+  {{- range $key, $value := .Values.lotusServiceAnnotations }}
+      {{ $key }}: {{ $value | quote }}
+  {{- end }}
+spec:
+  type: ClusterIP
+  selector:
+    statefulset.kubernetes.io/pod-name: {{ .Release.Name }}-lotus-0
+  ports:
+    - protocol: TCP
+      port: 1234
+      targetPort: 1234
+      name: lotus-daemon
+    - protocol: TCP
+      port: 2346
+      targetPort: 2346
+      name: lotus-gateway
+    {{- if .Values.enableLotusP2pPort }}
+    - protocol: TCP
+      port: {{.Values.lotusP2pPort}}
+      targetPort: {{.Values.lotusP2pPort}}
+      name: p2p
+    {{- end}}
+{{- end }}
