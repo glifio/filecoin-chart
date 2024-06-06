@@ -24,7 +24,7 @@ downloadSnapshot:
   unpack: false
 
 lotusContainer:
-  image: glif/lotus:v1.26.3-gw-mainnet-arm64
+  image: glif/lotus:v1.27.0-gw-mainnet-arm64
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
