@@ -210,6 +210,19 @@ spec:
           requests:
             cpu: {{ .Values.lotusRequestsCpu }}
             memory: {{ .Values.lotusRequestsMemory }}
+      {{- if .Values.subway.enabled }}
+      - name: subway
+        image: {{ .Values.subway.image }}
+        imagePullPolicy: {{ .Values.subway.imagePullPolicy }}
+        env:
+          - name: UPSTREAM_URL
+            value: {{ .Values.subway.upstreamUrl }}
+        ports:
+          - containerPort: 8545
+            name: subway
+          - containerPort: 9616
+            name: subway-metrics
+      {{- end }}
 
       nodeSelector:
       {{- range $key, $value := .Values.nodeSelector }}
