@@ -32,3 +32,6 @@ lotusCpuLimit: 15
 lotusMemoryLimit: 120Gi
 
 createDedicatedService: true
+
+subway:
+  enabled: true

@@ -37,3 +37,6 @@ livenessProbe:
 
 readinessProbe:
   initialDelaySeconds: 600
+
+subway:
+  enabled: true
