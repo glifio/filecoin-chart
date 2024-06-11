@@ -154,3 +154,15 @@ customServiceSelector: {}
 useLotusConfigMap: false
 
 createDedicatedService: false
+
+lotusRequestsCpu: 12
+lotusRequestsMemory: 80Gi
+
+lotusCpuLimit: 25
+lotusMemoryLimit: 120Gi
+
+subway:
+  enabled: false
+  image: glif/lotus:subway
+  imagePullPolicy: Always
+  upstreamUrl: ws://localhost:2346/rpc/v1

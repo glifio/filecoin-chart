@@ -34,3 +34,6 @@ readinessProbe:
   initialDelaySeconds: 300
 
 createDedicatedService: true
+
+subway:
+  enabled: true

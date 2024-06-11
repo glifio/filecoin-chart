@@ -38,4 +38,10 @@ spec:
       targetPort: {{.Values.lotusP2pPort}}
       name: p2p
     {{- end}}
+    {{- if .Values.subway.enabled }}
+    - protocol: TCP
+      port: 8545
+      targetPort: 8545
+      name: subway
+    {{- end }}
   {{- end}}

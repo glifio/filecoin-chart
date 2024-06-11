@@ -27,3 +27,6 @@ lotusMemoryLimit: 30Gi
 createLotusService: false
 
 createDedicatedService: true
+
+subway:
+  enabled: true
