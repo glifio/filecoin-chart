@@ -18,7 +18,7 @@ lotusEnv:
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
 
 lotusContainer:
-  image: glif/lotus:v1.26.0-rc2-gw-calibnet-arm64
+  image: glif/lotus:v1.27.0-gw-calibnet-arm64-getlogs
 
 
 lotusRequestsCpu: 3
@@ -31,3 +31,4 @@ livenessProbe:
 
 readinessProbe:
   initialDelaySeconds: 300
+  timeoutSeconds: 10

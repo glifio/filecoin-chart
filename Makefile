@@ -3,9 +3,9 @@ all: lint package
 # DEV environment
 
 ### Deploy api_read_node
-#NODE = api-read-dev
-#ENV = dev
-#NAMESPACE = network
+NODE = api-read-dev
+ENV = dev
+NAMESPACE = network
 
 ##deploy cache service for api-read
 #NODE = api-read-cache-dev
@@ -74,9 +74,9 @@ all: lint package
 #NAMESPACE = network
 
 #### Deploy space06-1
-NODE = calibrationapi-archive-node
-ENV = mainnet
-NAMESPACE = network
+# NODE = calibrationapi-archive-node
+# ENV = mainnet
+# NAMESPACE = network
 
 #### Deploy space07
 # NODE = space00
