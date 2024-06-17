@@ -40,8 +40,12 @@ spec:
     {{- end}}
     {{- if .Values.subway.enabled }}
     - protocol: TCP
-      port: 8545
-      targetPort: 8545
-      name: subway
+      port: {{ .Values.subway.rpcV1.serverPort }}
+      targetPort: {{ .Values.subway.rpcV1.serverPort }}
+      name: rpc-v1
+    - protocol: TCP
+      port: {{ .Values.subway.rpcV0.serverPort }}
+      targetPort: {{ .Values.subway.rpcV0.serverPort }}
+      name: rpc-v0
     {{- end }}
   {{- end}}

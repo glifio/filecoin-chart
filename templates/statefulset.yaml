@@ -211,17 +211,36 @@ spec:
             cpu: {{ .Values.lotusRequestsCpu }}
             memory: {{ .Values.lotusRequestsMemory }}
       {{- if .Values.subway.enabled }}
-      - name: subway
+      - name: rpc-v1
         image: {{ .Values.subway.image }}
         imagePullPolicy: {{ .Values.subway.imagePullPolicy }}
         env:
           - name: UPSTREAM_URL
-            value: {{ .Values.subway.upstreamUrl }}
+            value: {{ .Values.subway.rpcV1.upstreamUrl }}
+          - name: RPC_PORT
+            value: {{ .Values.subway.rpcV1.serverPort | quote }}
+          - name: METRICS_PORT
+            value: {{ .Values.subway.rpcV1.metricsPort | quote }}
         ports:
-          - containerPort: 8545
-            name: subway
-          - containerPort: 9616
-            name: subway-metrics
+          - containerPort: {{ .Values.subway.rpcV1.serverPort }}
+            name: rpc-v1
+          - containerPort: {{ .Values.subway.rpcV1.metricsPort }}
+            name: rpc-v1-metrics
+      - name: rpc-v0
+        image: {{ .Values.subway.image }}
+        imagePullPolicy: {{ .Values.subway.imagePullPolicy }}
+        env:
+          - name: UPSTREAM_URL
+            value: {{ .Values.subway.rpcV0.upstreamUrl }}
+          - name: RPC_PORT
+            value: {{ .Values.subway.rpcV0.serverPort | quote }}
+          - name: METRICS_PORT
+            value: {{ .Values.subway.rpcV0.metricsPort | quote }}
+        ports:
+          - containerPort: {{ .Values.subway.rpcV0.serverPort }}
+            name: rpc-v0
+          - containerPort: {{ .Values.subway.rpcV0.metricsPort }}
+            name: rpc-v0-metrics
       {{- end }}
 
       nodeSelector:
