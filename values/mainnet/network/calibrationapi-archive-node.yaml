@@ -12,7 +12,7 @@ downloadSnapshot:
 InitContainerPermissions: true
 
 lotusContainer:
-  image: glif/lotus:v1.26.1-gw-calibnet-arm64
+  image: glif/lotus:v1.28.0-rc4-gw-calibnet-legacy-arm64
 
 lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "false"
