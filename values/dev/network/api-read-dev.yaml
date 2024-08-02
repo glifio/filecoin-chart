@@ -1,13 +1,11 @@
 nodeSelector:
-  nodeGroupName: api-read-dev
+  nodeGroupName: api-read-dev-ltsh
 
 lotusStsLabels:
   release: api-read-dev
 
-
 lotusServiceAnnotations:
   konghq.com/read-timeout: "600000"
-
 
 lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "true"
@@ -18,8 +16,7 @@ lotusEnv:
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
 
 lotusContainer:
-  image: glif/lotus:v1.28.0-rc4-gw-calibnet-health-arm64
-
+  image: glif/lotus:master-2024-07-19-calibnet-ltsh-arm64
 
 lotusRequestsCpu: 3
 lotusRequestsMemory: 20Gi
