@@ -22,7 +22,7 @@ lotusEnv:
   LOTUS_FEVM_EVENTS_FILTERTTL: "16h40m0s"
 
 lotusContainer:
-  image: glif/lotus:v1.27.1-gw-mainnet-arm64
+  image: glif/lotus:v1.28.1-gw-mainnet-arm64
 
 lotusRequestsCpu: 25
 lotusRequestsMemory: 200Gi
@@ -33,10 +33,10 @@ lotusMemoryLimit: 250Gi
 createDedicatedService: true
 
 livenessProbe:
-  initialDelaySeconds: 600
+  initialDelaySeconds: 300
 
 readinessProbe:
-  initialDelaySeconds: 600
+  initialDelaySeconds: 300
 
 subway:
   enabled: true
