@@ -8,7 +8,7 @@ lotusEnv:
   LOTUS_VM_ENABLE_TRACING: "true"
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
   DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/latest/mainnet/
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
   LOTUS_FVM_CONCURRENCY_RESERVED: "4"
@@ -24,7 +24,7 @@ lotusEnv:
   LOTUS_FEVM_EVENTS_FILTERTTL: "16h40m0s"
 
 lotusContainer:
-  image: glif/lotus:v1.28.1-gw-mainnet-arm64
+  image: glif/lotus:v1.28.2-gw-mainnet-arm64
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi
