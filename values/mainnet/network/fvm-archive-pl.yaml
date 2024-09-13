@@ -1,5 +1,5 @@
 nodeSelector:
-  nodeGroupName: fvm-archive
+  nodeGroupName: fvm-archive-pl
 
 lotusServiceAnnotations:
   # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
@@ -18,7 +18,7 @@ downloadSnapshot:
   enabled: false
 
 lotusStsLabels:
-  release: fvm-archive
+  release: fvm-archive-pl
 
 lotusEnv:
   LOTUS_MAX_HEAP: "100GiB"
