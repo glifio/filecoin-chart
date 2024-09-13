@@ -32,7 +32,7 @@ lotusEnv:
   LOTUS_EVENTS_ENABLEACTOREVENTSAPI: "true"
 
 lotusContainer:
-  image: glif/lotus:v1.28.1-gw-mainnet-arm64
+  image: glif/lotus:v1.29.0-gw-mainnet-arm64
 
 lotusVolume:
   hostPath:
