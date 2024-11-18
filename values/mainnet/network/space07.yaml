@@ -30,6 +30,7 @@ lotusEnv:
   LOTUS_FEVM_EVENTS_DISABLEREALTIMEFILTERAPI: "false"
   LOTUS_FEVM_EVENTS_DISABLEHISTORICFILTERAPI: "false"
   LOTUS_EVENTS_ENABLEACTOREVENTSAPI: "false"
+  LOTUS_DISABLE_PRE_MIGRATIONS: "1"
 
 lotusServiceAnnotations:
   # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
@@ -41,7 +42,7 @@ lotusServiceAnnotations:
   konghq.com/read-timeout: "86400000"
 
 lotusContainer:
-  image: glif/lotus:v1.28.1-gw-mainnet-arm64
+  image: glif/lotus:v1.30.0-gw-mainnet-arm64
 
 # Lotus container mounts LVM from appHostPath
 lotusVolume:

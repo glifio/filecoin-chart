@@ -3,8 +3,8 @@ all: lint package
 # DEV environment
 
 ### Deploy api_read_node
-NODE = api-read-dev
-ENV = dev
+NODE = fvm-archive
+ENV = mainnet
 NAMESPACE = network
 
 ##deploy cache service for api-read
