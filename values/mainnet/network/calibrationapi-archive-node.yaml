@@ -12,7 +12,7 @@ downloadSnapshot:
 InitContainerPermissions: true
 
 lotusContainer:
-  image: glif/lotus:v1.28.0-rc5-gw-calibnet-arm64
+  image: glif/lotus:v1.30.0-rc3-gw-calibnet-arm64
 
 lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "false"
@@ -23,8 +23,8 @@ lotusEnv:
   LOTUS_LIBP2P_CONNMGRLOW: "400"
   LOTUS_PUBSUB_BOOTSTRAPPER: "true"
   INFRA_PERSISTNODEID: "true"
-  LOTUS_FVM_CONCURRENCY_RESERVED: "1"
-  LOTUS_FVM_CONCURRENCY: "3"
+  LOTUS_FVM_CONCURRENCY_RESERVED: "4"
+  LOTUS_FVM_CONCURRENCY: "16"
   LOTUS_INDEX_ENABLEMSGINDEX: "true"
   LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
 
@@ -38,9 +38,9 @@ lotusVolumeAccessModes:
   - ReadWriteOnce
 
 lotusRequestsCpu: 2
-lotusRequestsMemory: 10Gi
-lotusCpuLimit: 5
-lotusMemoryLimit: 60Gi
+lotusRequestsMemory: 16Gi
+lotusCpuLimit: 16
+lotusMemoryLimit: 128Gi
 
 enableLotusP2pPort: true
 lotusP2pPort: 1237

@@ -20,14 +20,14 @@ lotusEnv:
   LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
   LOTUS_FEVM_EVENTS_DISABLEREALTIMEFILTERAPI: "false"
   LOTUS_FEVM_EVENTS_DISABLEHISTORICFILTERAPI: "false"
-  LOTUS_FEVM_EVENTS_MAXFILTERHEIGHTRANGE: "2000"
-  LOTUS_FEVM_EVENTS_FILTERTTL: "16h40m0s"
+  LOTUS_EVENTS_MAXFILTERHEIGHTRANGE: "2000"
+  LOTUS_EVENTS_FILTERTTL: "16h40m0s"
 
 downloadSnapshot:
   unpack: false
 
 lotusContainer:
-  image: glif/lotus:v1.29.0-gw-mainnet-arm64
+  image: glif/lotus:v1.30.0-gw-mainnet-arm64
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi

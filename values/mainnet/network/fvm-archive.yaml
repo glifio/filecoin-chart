@@ -27,22 +27,25 @@ lotusEnv:
   DOWNLOAD_FROM: null
   LOTUS_INDEX_ENABLEMSGINDEX: "true"
   LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
-  LOTUS_FEVM_EVENTS_DISABLEREALTIMEFILTERAPI: "false"
-  LOTUS_FEVM_EVENTS_DISABLEHISTORICFILTERAPI: "false"
+  LOTUS_EVENTS_DISABLEREALTIMEFILTERAPI: "false"
+  LOTUS_EVENTS_DISABLEHISTORICFILTERAPI: "false"
+  LOTUS_EVENTS_MAXFILTERRESULTS: "100000"
   LOTUS_EVENTS_ENABLEACTOREVENTSAPI: "true"
+  LOTUS_FVM_CONCURRENCY_RESERVED: "4"
+  LOTUS_DISABLE_PRE_MIGRATIONS: "1"
 
 lotusContainer:
-  image: glif/lotus:v1.29.0-gw-mainnet-arm64
+  image: glif/lotus:v1.30.0-gw-mainnet-arm64
 
 lotusVolume:
   hostPath:
     enableSubPath: false
     path: /mnt/raid
 
-lotusRequestsCpu: 25
-lotusRequestsMemory: 200Gi
-lotusCpuLimit: 30
-lotusMemoryLimit: 250Gi
+lotusRequestsCpu: 40
+lotusRequestsMemory: 368Gi
+lotusCpuLimit: 48
+lotusMemoryLimit: 384Gi
 
 livenessProbe:
   initialDelaySeconds: 600

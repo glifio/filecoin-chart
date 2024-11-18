@@ -17,7 +17,7 @@ lotusEnv:
   # INFRA_LOTUS_GW_MAX_LOOKBACK: "720h0m0s"
 
 lotusContainer:
-  image: glif/lotus:v1.29.0-gw-calibnet-arm64
+  image: glif/lotus:v1.30.0-rc2-gw-calibnet-arm64
 
 lotusRequestsCpu: 3
 lotusRequestsMemory: 20Gi

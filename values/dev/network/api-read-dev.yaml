@@ -10,13 +10,14 @@ lotusServiceAnnotations:
 lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
   LOTUS_MAX_HEAP: "10GiB"
   DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/latest/calibnet/
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
+  LOTUS_CHAINSTORE_BADGERVERSION: "4"
 
 lotusContainer:
-  image: glif/lotus:master-2024-07-19-calibnet-ltsh-arm64
+  image: glif/lotus:v1.30.0-rc2-gw-calibnet-arm64
 
 lotusRequestsCpu: 3
 lotusRequestsMemory: 20Gi
