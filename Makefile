@@ -3,7 +3,7 @@ all: lint package
 # DEV environment
 
 ### Deploy api_read_node
-NODE = fvm-archive
+NODE = api-read-master
 ENV = mainnet
 NAMESPACE = network
 

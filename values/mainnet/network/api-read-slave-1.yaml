@@ -28,6 +28,7 @@ downloadSnapshot:
 
 lotusContainer:
   image: glif/lotus:v1.30.0-gw-mainnet-arm64
+  imagePullPolicy: Always
 
 lotusRequestsCpu: 12
 lotusRequestsMemory: 80Gi

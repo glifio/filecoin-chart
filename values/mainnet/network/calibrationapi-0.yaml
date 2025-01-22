@@ -21,7 +21,7 @@ lotusEnv:
   LOTUS_CHAININDEXER_RECONCILEEMPTYINDEX: "true"
 
 lotusContainer:
-  image: glif/lotus:v1.32.0-rc1-gw-calibnet-arm64
+  image: glif/lotus:v1.32.0-rc2-gw-ffi-calibnet-arm64
 
 lotusRequestsCpu: 3
 lotusRequestsMemory: 20Gi

@@ -12,7 +12,7 @@ downloadSnapshot:
 InitContainerPermissions: true
 
 lotusContainer:
-  image: glif/lotus:v1.30.0-rc3-gw-calibnet-arm64
+  image: glif/lotus:v1.32.0-rc2-gw-ffi-calibnet-arm64
 
 lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "false"
@@ -25,8 +25,10 @@ lotusEnv:
   INFRA_PERSISTNODEID: "true"
   LOTUS_FVM_CONCURRENCY_RESERVED: "4"
   LOTUS_FVM_CONCURRENCY: "16"
-  LOTUS_INDEX_ENABLEMSGINDEX: "true"
-  LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
+  LOTUS_EVENTS_MAXFILTERRESULTS: "100000"
+  LOTUS_CHAININDEXER_ENABLEINDEXER: "true"
+  LOTUS_CHAININDEXER_GCRETENTIONEPOCHS: "0"
+
 
 lotusVolume:
   hostPath:
