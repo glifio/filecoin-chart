@@ -23,6 +23,7 @@ lotusEnv:
 
 lotusContainer:
   image: glif/lotus:v1.30.0-gw-mainnet-arm64
+  imagePullPolicy: Always
 
 lotusRequestsCpu: 25
 lotusRequestsMemory: 200Gi
