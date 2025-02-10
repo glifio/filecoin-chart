@@ -10,18 +10,21 @@ lotusServiceAnnotations:
   konghq.com/read-timeout: "600000"
 
 lotusEnv:
+  DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/latest/calibnet/
+  INFRA_CLEAR_RESTART: "false"
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
-  INFRA_CLEAR_RESTART: "false"
-  DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/latest/calibnet/
-  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car
-  LOTUS_MAX_HEAP: "10GiB"
   LOTUS_CHAININDEXER_ENABLEINDEXER: "true"
   LOTUS_CHAININDEXER_GCRETENTIONEPOCHS: "2880"
   LOTUS_CHAININDEXER_RECONCILEEMPTYINDEX: "true"
+  LOTUS_CHAINSTORE_ENABLESPLITSTORE: "true"
+  LOTUS_CHAINSTORE_SPLITSTORE_COLDSTORETYPE: "discard"
+  LOTUS_CHAINSTORE_SPLITSTORE_HOTSTOREMESSAGERETENTION: "3"
+  LOTUS_MAX_HEAP: "10GiB"
+  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car.zst
 
 lotusContainer:
-  image: glif/lotus:v1.32.0-rc2-gw-ffi-calibnet-arm64
+  image: glif/lotus:v1.32.0-rc2-gw-StateChangedActors-calibnet-arm64
 
 lotusRequestsCpu: 3
 lotusRequestsMemory: 20Gi
