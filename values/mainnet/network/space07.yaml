@@ -15,22 +15,21 @@ downloadSnapshot:
   enabled: false
 
 lotusEnv:
-  LOTUS_MAX_HEAP: "100GiB"
-  SNAPSHOTURL: null
   DOWNLOAD_FROM: null
+  INFRA_IMPORT_SNAPSHOT: null
+  INFRA_PERSISTNODEID: "true"
+  LOTUS_CHAININDEXER_ENABLEINDEXER: "true"
+  LOTUS_CHAININDEXER_GCRETENTIONEPOCHS: "0"
+  LOTUS_DISABLE_PRE_MIGRATIONS: "1"
+  LOTUS_EVENTS_ENABLEACTOREVENTSAPI: "false"
+  LOTUS_FVM_CONCURRENCY_RESERVED: "4"
+  LOTUS_FVM_CONCURRENCY: "32"
   LOTUS_LIBP2P_CONNMGRGRACE: "5m0s"
   LOTUS_LIBP2P_CONNMGRHIGH: "500"
   LOTUS_LIBP2P_CONNMGRLOW: "400"
+  LOTUS_MAX_HEAP: "100GiB"
   LOTUS_PUBSUB_BOOTSTRAPPER: "true"
-  INFRA_PERSISTNODEID: "true"
-  LOTUS_FVM_CONCURRENCY_RESERVED: "4"
-  LOTUS_FVM_CONCURRENCY: "32"
-  LOTUS_INDEX_ENABLEMSGINDEX: "true"
-  LOTUS_FEVM_ETHTXHASHMAPPINGLIFETIMEDAYS: "0"
-  LOTUS_FEVM_EVENTS_DISABLEREALTIMEFILTERAPI: "false"
-  LOTUS_FEVM_EVENTS_DISABLEHISTORICFILTERAPI: "false"
-  LOTUS_EVENTS_ENABLEACTOREVENTSAPI: "false"
-  LOTUS_DISABLE_PRE_MIGRATIONS: "1"
+  SNAPSHOTURL: null
 
 lotusServiceAnnotations:
   # We add annotation below, because faced with long operation, which has taken around 2 minutes to complete on
@@ -42,7 +41,7 @@ lotusServiceAnnotations:
   konghq.com/read-timeout: "86400000"
 
 lotusContainer:
-  image: glif/lotus:v1.30.0-gw-mainnet-arm64
+  image: glif/lotus:v1.31.1-mainnet-arm64
 
 # Lotus container mounts LVM from appHostPath
 lotusVolume:

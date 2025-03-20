@@ -22,7 +22,7 @@ lotusEnv:
 
 
 lotusContainer:
-  image: glif/lotus:v1.32.0-rc2-gw-StateChangedActors-calibnet-arm64
+  image: glif/lotus:v1.32.0-rc3-gw-calibnet-arm64
   imagePullPolicy: Always
 
 lotusRequestsCpu: 3

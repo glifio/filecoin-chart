@@ -18,22 +18,24 @@ downloadSnapshot:
   enabled: false
 
 lotusStsLabels:
-  release: thegraph
+  release: fvm-archive
+  release-fork: thegraph
 
 lotusEnv:
-  LOTUS_MAX_HEAP: "100GiB"
-  SNAPSHOTURL: null
-  INFRA_IMPORT_SNAPSHOT: null
   DOWNLOAD_FROM: null
-  LOTUS_EVENTS_ENABLEACTOREVENTSAPI: "true"
-  LOTUS_FVM_CONCURRENCY_RESERVED: "4"
-  LOTUS_DISABLE_PRE_MIGRATIONS: "1"
+  INFRA_IMPORT_SNAPSHOT: null
   LOTUS_CHAININDEXER_ENABLEINDEXER: "true"
   LOTUS_CHAININDEXER_GCRETENTIONEPOCHS: "0"
+  LOTUS_DISABLE_PRE_MIGRATIONS: "1"
+  LOTUS_EVENTS_ENABLEACTOREVENTSAPI: "true"
+  LOTUS_EVENTS_MAXFILTERRESULTS: "100000"
+  LOTUS_FVM_CONCURRENCY_RESERVED: "4"
+  LOTUS_MAX_HEAP: "100GiB"
+  SNAPSHOTURL: null
 
 
 lotusContainer:
-  image: glif/lotus:v1.31.0-rc1-gw-mainnet-arm64
+  image: glif/lotus:v1.31.1-mainnet-arm64
   imagePullPolicy: Always
 
 lotusVolume:
