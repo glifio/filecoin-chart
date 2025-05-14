@@ -41,7 +41,7 @@ lotusServiceAnnotations:
   konghq.com/read-timeout: "86400000"
 
 lotusContainer:
-  image: glif/lotus:v1.31.1-mainnet-arm64
+  image: glif/lotus:v1.32.3-gw-mainnet-arm64
 
 # Lotus container mounts LVM from appHostPath
 lotusVolume:
@@ -49,8 +49,8 @@ lotusVolume:
     enableSubPath: false
     path: "/mnt/raid"
 
-lotusRequestsCpu: 40
-lotusRequestsMemory: 368Gi
+lotusRequestsCpu: 32
+lotusRequestsMemory: 256Gi
 lotusCpuLimit: 48
 lotusMemoryLimit: 384Gi
 
@@ -64,3 +64,5 @@ livenessProbe:
 
 readinessProbe:
   initialDelaySeconds: 600
+
+hostNetwork: true

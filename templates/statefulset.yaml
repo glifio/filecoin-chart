@@ -25,6 +25,9 @@ spec:
         {{ $key }}: {{ $value }}
         {{- end }}
     spec:
+      {{- if .Values.hostNetwork }}
+      hostNetwork: true
+      {{- end }}
       securityContext:
         runAsGroup: 2000
         runAsUser: 2000

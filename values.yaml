@@ -172,3 +172,5 @@ subway:
     upstreamUrl: ws://localhost:2346/rpc/v1
     serverPort: 8545
     metricsPort: 9616
+
+hostNetwork: false

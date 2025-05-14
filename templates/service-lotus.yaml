@@ -32,12 +32,6 @@ spec:
       port: 2346
       targetPort: 2346
       name: gateway
-    {{- if .Values.enableLotusP2pPort }}
-    - protocol: TCP
-      port: {{.Values.lotusP2pPort}}
-      targetPort: {{.Values.lotusP2pPort}}
-      name: p2p
-    {{- end}}
     {{- if .Values.subway.enabled }}
     - protocol: TCP
       port: {{ .Values.subway.rpcV1.serverPort }}

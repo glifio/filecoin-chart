@@ -32,10 +32,11 @@ lotusEnv:
   LOTUS_FVM_CONCURRENCY_RESERVED: "4"
   LOTUS_MAX_HEAP: "100GiB"
   SNAPSHOTURL: null
+  LOTUS_FEVM_ETHBLKCACHESIZE: "20000"
 
 
 lotusContainer:
-  image: glif/lotus:v1.31.1-mainnet-arm64
+  image: glif/lotus:v1.32.3-gw-mainnet-arm64
   imagePullPolicy: Always
 
 lotusVolume:

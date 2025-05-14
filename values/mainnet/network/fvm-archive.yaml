@@ -34,7 +34,7 @@ lotusEnv:
   SNAPSHOTURL: null
 
 lotusContainer:
-  image: glif/lotus:v1.31.0-rc1-gw-mainnet-arm64
+  image: glif/lotus:v1.32.3-gw-mainnet-arm64
 
 lotusVolume:
   hostPath:
