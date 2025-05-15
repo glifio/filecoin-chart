@@ -42,4 +42,10 @@ spec:
       targetPort: {{ .Values.subway.rpcV0.serverPort }}
       name: rpc-v0
     {{- end }}
+    {{- if .Values.enableLotusP2pPort}}
+    - protocol: TCP
+      port: {{ .Values.lotusP2pPort }}
+      targetPort: {{ .Values.lotusP2pPort }}
+      name: p2p
+    {{- end }}
   {{- end}}
