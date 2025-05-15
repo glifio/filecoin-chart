@@ -53,3 +53,5 @@ livenessProbe:
 
 readinessProbe:
   initialDelaySeconds: 300
+
+hostNetwork: true
