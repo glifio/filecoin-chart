@@ -11,7 +11,7 @@ downloadSnapshot:
 InitContainerPermissions: true
 
 lotusContainer:
-  image: glif/lotus:v1.32.2-gw-calibnet-arm64
+  image: glif/lotus:v1.33.0-branch-calibnet-arm64
 
 lotusEnv:
   DOWNLOAD_FROM: null

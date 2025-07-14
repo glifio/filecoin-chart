@@ -25,7 +25,7 @@ lotusEnv:
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car.zst
 
 lotusContainer:
-  image: glif/lotus:v1.32.3-gw-StateVerifiedRegistryRootKey-mainnet-arm64
+  image: glif/lotus:v1.33.0-branch-mainnet-arm64
   imagePullPolicy: Always
 
 lotusRequestsCpu: 12
@@ -35,6 +35,3 @@ lotusCpuLimit: 15
 lotusMemoryLimit: 120Gi
 
 createDedicatedService: true
-
-subway:
-  enabled: true

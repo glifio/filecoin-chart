@@ -26,7 +26,7 @@ downloadSnapshot:
   unpack: false
 
 lotusContainer:
-  image: glif/lotus:v1.32.3-gw-StateVerifiedRegistryRootKey-mainnet-arm64
+  image: glif/lotus:v1.33.0-branch-mainnet-arm64
   imagePullPolicy: Always
 
 lotusRequestsCpu: 12
@@ -38,6 +38,3 @@ lotusMemoryLimit: 120Gi
 createLotusService: false
 
 createDedicatedService: true
-
-subway:
-  enabled: true

@@ -22,7 +22,7 @@ lotusEnv:
 
 
 lotusContainer:
-  image: glif/lotus:v1.32.2-gw-calibnet-arm64
+  image: glif/lotus:v1.33.0-branch-calibnet-arm64
   imagePullPolicy: Always
 
 lotusRequestsCpu: 3
@@ -33,6 +33,3 @@ lotusMemoryLimit: 30Gi
 createLotusService: false
 
 createDedicatedService: true
-
-subway:
-  enabled: true
