@@ -1,5 +1,5 @@
 nodeSelector:
-  nodeGroupName: api-read-dev
+  nodeGroupName: api-read-dev-al2023
 
 lotusStsLabels:
   release: api-read-dev

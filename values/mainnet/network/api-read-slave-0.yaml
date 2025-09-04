@@ -1,5 +1,5 @@
 nodeSelector:
-  nodeGroupName: api-read-slave-0
+  nodeGroupName: api-read-slave-0-al2023
 
 lotusStsLabels:
   release-fork: api-read-slave-0

@@ -42,6 +42,7 @@ lotusServiceAnnotations:
 
 lotusContainer:
   image: glif/lotus:v1.33.0-branch-mainnet-arm64
+  imagePullPolicy: Always
 
 # Lotus container mounts LVM from appHostPath
 lotusVolume:

@@ -1,6 +1,5 @@
 nodeSelector:
-  nodeGroupName: group18
-  assign_to_space00_07_nodes: allow_any_pods
+  nodeGroupName: api-read-master-al2023
 
 lotusServiceAnnotations:
   konghq.com/override: filecoin-mainnet-apn1-glif-eks-kong-sticky-sessions

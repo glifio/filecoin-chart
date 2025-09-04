@@ -1,6 +1,5 @@
 nodeSelector:
-  nodeGroupName: calibnet-0
-  assign_to_space00_07_nodes: allow_any_pods
+  nodeGroupName: calibnet-0-al2023
 
 lotusStsLabels:
   release: calibrationapi-0
@@ -11,7 +10,7 @@ lotusServiceAnnotations:
 
 lotusEnv:
   DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/latest/calibnet/
-  INFRA_CLEAR_RESTART: "true"
+  INFRA_CLEAR_RESTART: "false"
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
   LOTUS_CHAININDEXER_ENABLEINDEXER: "true"

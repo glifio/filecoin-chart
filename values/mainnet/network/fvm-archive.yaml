@@ -42,7 +42,7 @@ lotusVolume:
     path: /mnt/raid
 
 lotusRequestsCpu: 40
-lotusRequestsMemory: 368Gi
+lotusRequestsMemory: 300Gi
 lotusCpuLimit: 48
 lotusMemoryLimit: 384Gi
 
