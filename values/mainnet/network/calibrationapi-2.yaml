@@ -1,0 +1,34 @@
+nodeSelector:
+  nodeGroupName: calibnet-2-al2023
+
+lotusStsLabels:
+  release: calibrationapi-0
+  release-fork: calibrationapi-2
+
+lotusEnv:
+  DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/latest/calibnet/
+  INFRA_CLEAR_RESTART: "false"
+  INFRA_IMPORT_SNAPSHOT: "true"
+  INFRA_LOTUS_GATEWAY: "true"
+  LOTUS_CHAININDEXER_ENABLEINDEXER: "true"
+  LOTUS_CHAININDEXER_GCRETENTIONEPOCHS: "2880"
+  LOTUS_CHAININDEXER_RECONCILEEMPTYINDEX: "true"
+  LOTUS_CHAINSTORE_ENABLESPLITSTORE: "true"
+  LOTUS_CHAINSTORE_SPLITSTORE_COLDSTORETYPE: "discard"
+  LOTUS_CHAINSTORE_SPLITSTORE_HOTSTOREMESSAGERETENTION: "3"
+  LOTUS_MAX_HEAP: "10GiB"
+  SNAPSHOTURL: /home/lotus_user/snapshot/latest.car.zst
+
+
+lotusContainer:
+  image: glif/lotus:v1.34.0-rc1-gw-calibnet-arm64
+  imagePullPolicy: Always
+
+lotusRequestsCpu: 3
+lotusRequestsMemory: 20Gi
+lotusCpuLimit: 8
+lotusMemoryLimit: 60Gi
+
+createLotusService: false
+
+createDedicatedService: true
