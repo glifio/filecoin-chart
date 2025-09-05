@@ -3,7 +3,7 @@ all: lint package
 # DEV environment
 
 ### Deploy api_read_node
-NODE = api-read-slave-2
+NODE = calibrationapi-archive-node
 ENV = mainnet
 NAMESPACE = network
 
