@@ -7,7 +7,7 @@ lotusStsLabels:
 
 lotusEnv:
   DOWNLOAD_FROM: https://forest-archive.chainsafe.dev/latest/calibnet/
-  INFRA_CLEAR_RESTART: "false"
+  INFRA_CLEAR_RESTART: "true"
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
   LOTUS_CHAININDEXER_ENABLEINDEXER: "true"
@@ -21,7 +21,7 @@ lotusEnv:
 
 
 lotusContainer:
-  image: glif/lotus:v1.34.0-rc1-gw-calibnet-arm64
+  image: glif/lotus:v1.34.0-rc2-gw-calibnet-arm64
   imagePullPolicy: Always
 
 lotusRequestsCpu: 3

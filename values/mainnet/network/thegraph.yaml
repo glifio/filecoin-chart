@@ -36,7 +36,7 @@ lotusEnv:
 
 
 lotusContainer:
-  image: glif/lotus:v1.33.0-branch-mainnet-arm64
+  image: glif/lotus:v1.34.1-gw-mainnet-arm64
   imagePullPolicy: Always
 
 lotusVolume:

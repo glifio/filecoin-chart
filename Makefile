@@ -3,7 +3,7 @@ all: lint package
 # DEV environment
 
 ### Deploy api_read_node
-NODE = calibrationapi-archive-node
+NODE = space07
 ENV = mainnet
 NAMESPACE = network
 
