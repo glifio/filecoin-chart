@@ -3,7 +3,7 @@ all: lint package
 # DEV environment
 
 ### Deploy api_read_node
-NODE = space07
+NODE = api-read-master
 ENV = mainnet
 NAMESPACE = network
 

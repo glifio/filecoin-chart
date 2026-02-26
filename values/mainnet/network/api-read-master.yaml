@@ -11,7 +11,7 @@ lotusEnv:
   INFRA_IMPORT_SNAPSHOT: "true"
   INFRA_LOTUS_GATEWAY: "true"
   LOTUS_CHAININDEXER_ENABLEINDEXER: "true"
-  LOTUS_CHAININDEXER_GCRETENTIONEPOCHS: "2880"
+  LOTUS_CHAININDEXER_GCRETENTIONEPOCHS: "2419200"
   LOTUS_CHAININDEXER_RECONCILEEMPTYINDEX: "true"
   LOTUS_CHAINSTORE_ENABLESPLITSTORE: "true"
   LOTUS_CHAINSTORE_SPLITSTORE_COLDSTORETYPE: "discard"
@@ -24,7 +24,7 @@ lotusEnv:
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car.zst
 
 lotusContainer:
-  image: glif/lotus:v1.34.1-gw-mainnet-arm64
+  image: glif/lotus:v1.35.0-gw-mainnet-arm64
   imagePullPolicy: Always
 
 lotusRequestsCpu: 12

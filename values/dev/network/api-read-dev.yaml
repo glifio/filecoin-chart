@@ -22,7 +22,7 @@ lotusEnv:
   SNAPSHOTURL: /home/lotus_user/snapshot/latest.car.zst
 
 lotusContainer:
-  image: glif/lotus:v1.32.2-gw-calibnet-arm64
+  image: glif/lotus:v1.34.0-rc2-gw-calibnet-arm64
 
 lotusRequestsCpu: 1
 lotusRequestsMemory: 10Gi
