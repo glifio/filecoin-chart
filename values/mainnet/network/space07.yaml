@@ -42,7 +42,7 @@ lotusServiceAnnotations:
   konghq.com/read-timeout: "86400000"
 
 lotusContainer:
-  image: glif/lotus:v1.34.1-gw-mainnet-arm64
+  image: glif/lotus:v1.35.0-gw-mainnet-arm64
   imagePullPolicy: Always
 
 # Lotus container mounts LVM from appHostPath

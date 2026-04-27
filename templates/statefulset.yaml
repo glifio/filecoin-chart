@@ -149,7 +149,6 @@ spec:
         livenessProbe:
           tcpSocket:
             port: api
-          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
           successThreshold: {{ .Values.livenessProbe.successThreshold }}
           timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
@@ -159,7 +158,6 @@ spec:
           exec:
             command:
             {{ toYaml .Values.readinessProbe.command }}
-          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
           successThreshold: {{ .Values.readinessProbe.successThreshold }}
           timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
@@ -168,12 +166,7 @@ spec:
         startupProbe:
           exec:
             command:
-            - cat
-            {{- if eq .Values.lotusEnv.INFRA_IMPORT_SNAPSHOT "true" }}
-            - /home/lotus_user/.lotus/import-complete
-            {{- else }}
-            - /home/lotus_user/.lotus/sync-complete
-            {{- end }}
+            {{ toYaml .Values.readinessProbe.command }}
           failureThreshold: {{ .Values.startupProbe.failureThreshold }}
           periodSeconds: {{ .Values.startupProbe.periodSeconds }}
           successThreshold: {{ .Values.startupProbe.successThreshold }}
