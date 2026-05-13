@@ -11,7 +11,7 @@ downloadSnapshot:
 InitContainerPermissions: true
 
 lotusContainer:
-  image: glif/lotus:v1.35.1-gw-calibnet-arm64
+  image: glif/lotus:v1.36.0-rc1-gw-hotfix-calibnet-arm64
 
 lotusEnv:
   DOWNLOAD_FROM: null
@@ -19,7 +19,7 @@ lotusEnv:
   INFRA_PERSISTNODEID: "true"
   LOTUS_CHAININDEXER_ENABLEINDEXER: "true"
   LOTUS_CHAININDEXER_GCRETENTIONEPOCHS: "0"
-  LOTUS_EVENTS_MAXFILTERRESULTS: "100000"
+  LOTUS_EVENTS_MAXFILTERRESULTS: "1000000"
   LOTUS_FVM_CONCURRENCY_RESERVED: "4"
   LOTUS_FVM_CONCURRENCY: "16"
   LOTUS_LIBP2P_CONNMGRGRACE: "5m0s"

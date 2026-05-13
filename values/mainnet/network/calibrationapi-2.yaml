@@ -21,7 +21,7 @@ lotusEnv:
 
 
 lotusContainer:
-  image: glif/lotus:v1.35.0-gw-safe-calibnet-arm64
+  image: glif/lotus:v1.36.0-rc1-gw-hotfix-calibnet-arm64
   imagePullPolicy: Always
 
 lotusRequestsCpu: 3

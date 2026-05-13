@@ -32,7 +32,7 @@ lotusEnv:
   LOTUS_FVM_CONCURRENCY_RESERVED: "4"
   LOTUS_MAX_HEAP: "100GiB"
   SNAPSHOTURL: null
-  LOTUS_FEVM_ETHBLKCACHESIZE: "20000"
+  LOTUS_FEVM_ETHBLKCACHESIZE: "20000" # If you're wondering why the node is less available than fvm-archive, this is why
   LOTUS_EXEC_TRACE_CACHE_SIZE: "1440"
 
 

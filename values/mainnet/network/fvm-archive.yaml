@@ -35,6 +35,7 @@ lotusEnv:
 
 lotusContainer:
   image: glif/lotus:v1.35.1-gw-mainnet-arm64
+  imagePullPolicy: Always
 
 lotusVolume:
   hostPath:
